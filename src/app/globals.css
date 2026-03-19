@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #080810;
+  --surface: #0f0f1c;
+  --border: #1c1c30;
+  --orbit-purple: #7c6cf6;
+  --text-primary: #f0eef8;
+  --text-muted: #6b63b5;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+
+.card {
+  @apply rounded-xl border border-[color:var(--border)] bg-[color:var(--surface)] transition-all duration-200;
+}
+
+.card-hover {
+  @apply hover:-translate-y-0.5 hover:border-[rgba(124,108,246,0.4)];
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-[color:var(--orbit-purple)] px-5 py-2 text-sm font-medium text-[color:var(--text-primary)] transition-colors duration-150;
+}
+
+.btn-primary:hover {
+  background-color: #8d7dff;
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center rounded-full border border-[color:var(--orbit-purple)] bg-transparent px-5 py-2 text-sm font-medium text-[color:var(--orbit-purple)] transition-colors duration-150;
+}
+
+.btn-outline:hover {
+  background-color: rgba(124, 108, 246, 0.08);
+}
+
+.pill {
+  @apply rounded-full border border-[color:var(--border)] bg-[color:var(--surface)] px-3 py-1 text-xs font-medium text-[color:var(--text-muted)];
+}
+
