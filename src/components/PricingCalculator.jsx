@@ -1,0 +1,276 @@
+import { useState, useEffect, useRef } from "react";
+import { useLanguage } from "../context/LanguageContext";
+import {
+  serviceTypes,
+  vexxo,
+  addOns,
+  timeline,
+  comparison,
+  pageRange,
+} from "../config/pricing";
+
+const fmt = (n) =>
+  new Intl.NumberFormat("nl-BE", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(n);
+
+/** Smooth animated counter hook */
+function useCountUp(target) {
+  const [display, setDisplay] = useState(target);
+  const prevRef = useRef(target);
+  const rafRef  = useRef(null);
+
+  useEffect(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const from = prevRef.current;
+    const diff = target - from;
+    if (diff === 0) return;
+
+    const duration = Math.min(Math.abs(diff) * 0.6, 600);
+    const startTime = performance.now();
+
+    const animate = (now) => {
+      const t = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setDisplay(Math.round(from + diff * eased));
+      if (t < 1) rafRef.current = requestAnimationFrame(animate);
+      else prevRef.current = target;
+    };
+
+    rafRef.current = requestAnimationFrame(animate);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, [target]);
+
+  return display;
+}
+
+export default function PricingCalculator() {
+  const { t, lang } = useLanguage();
+  const [service,     setService]     = useState(serviceTypes[0].id);
+  const [pages,       setPages]       = useState(pageRange.default);
+  const [seo,         setSeo]         = useState(false);
+  const [content,     setContent]     = useState(false);
+  const [tl,          setTl]          = useState("regular");
+
+  // Computed prices
+  const tlExtra      = timeline[tl].perPage;
+  const addonExtra   = (seo ? addOns.seo.perPage : 0) + (content ? addOns.content.perPage : 0);
+  const effectivePPP = vexxo.perPage + tlExtra + addonExtra;
+
+  const vexxoRaw      = vexxo.base + effectivePPP * pages;
+  const agencyRaw     = comparison.agency.base     + comparison.agency.perPage     * pages;
+  const freelancerRaw = comparison.freelancer.base + comparison.freelancer.perPage * pages;
+
+  const vexxoDisplay      = useCountUp(vexxoRaw);
+  const agencyDisplay     = useCountUp(agencyRaw);
+  const freelancerDisplay = useCountUp(freelancerRaw);
+
+  const tlabel = (obj) => lang === "nl" ? obj.labelNL : obj.labelEN;
+
+  return (
+    <section id="pricing" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
+      {/* Header */}
+      <div className="text-center mb-16 space-y-3">
+        <span className="text-secondary font-bold text-xs tracking-widest uppercase">
+          {t("pricing.badge")}
+        </span>
+        <h2 className="text-4xl md:text-5xl font-headline font-bold text-on-surface">
+          {t("pricing.title")}
+        </h2>
+        <p className="text-on-surface-variant">{t("pricing.subtitle")}</p>
+      </div>
+
+      <div className="grid lg:grid-cols-12 gap-8 items-start">
+        {/* ── Controls ── */}
+        <div className="lg:col-span-7 glass-card p-6 md:p-8 rounded-3xl space-y-10">
+
+          {/* Service type */}
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider mb-4 text-on-surface-variant">
+              {t("pricing.serviceType")}
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              {serviceTypes.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => setService(s.id)}
+                  className={`p-3 rounded-xl text-sm font-bold transition-all border ${
+                    service === s.id
+                      ? "border-primary/60 bg-primary/10 text-primary"
+                      : "border-outline-variant/30 bg-white/[0.03] text-on-surface-variant hover:border-outline-variant/60"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Pages slider */}
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <label className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+                {t("pricing.pages")}
+              </label>
+              <span className="text-primary font-bold text-sm">
+                {pages} {pages === 1 ? "page" : "pages"} · {t("pricing.perPageLabel")}: €{effectivePPP}
+              </span>
+            </div>
+            <input
+              type="range"
+              min={pageRange.min}
+              max={pageRange.max}
+              value={pages}
+              onChange={(e) => setPages(Number(e.target.value))}
+              className="w-full h-2 rounded-lg cursor-pointer"
+            />
+            <div className="flex justify-between text-[11px] text-on-surface-variant mt-1">
+              <span>{pageRange.min}</span>
+              <span>{pageRange.max}</span>
+            </div>
+          </div>
+
+          {/* Add-ons */}
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider mb-4 text-on-surface-variant">
+              {t("pricing.addOns")}
+            </label>
+            <div className="space-y-3">
+              {[
+                { checked: seo,     set: setSeo,     obj: addOns.seo },
+                { checked: content, set: setContent, obj: addOns.content },
+              ].map(({ checked, set, obj }) => (
+                <label key={obj.labelEN} className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] cursor-pointer hover:bg-white/[0.06] transition-all border border-transparent hover:border-outline-variant/20">
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={(e) => set(e.target.checked)}
+                    className="w-4 h-4 rounded"
+                  />
+                  <span className="text-sm font-medium text-on-surface">
+                    {lang === "nl" ? obj.labelNL : obj.labelEN}
+                    <span className="ml-2 text-xs text-on-surface-variant">+€{obj.perPage}/{t("pricing.perPageLabel")}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Timeline */}
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider mb-4 text-on-surface-variant">
+              {t("pricing.timeline")}
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              {Object.entries(timeline).map(([key, val]) => (
+                <label key={key} className={`flex flex-col gap-1 p-3 rounded-xl cursor-pointer border transition-all ${
+                  tl === key ? "border-primary/60 bg-primary/8 text-primary" : "border-outline-variant/30 bg-white/[0.03] text-on-surface-variant hover:border-outline-variant/60"
+                }`}>
+                  <input type="radio" className="sr-only" checked={tl === key} onChange={() => setTl(key)} />
+                  <span className="text-xs font-bold text-on-surface">{tlabel(val)}</span>
+                  <span className="text-[11px]">
+                    {val.perPage > 0 ? `+€${val.perPage}/${t("pricing.perPageLabel")}` : t("pricing.noSurcharge")}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Price cards ── */}
+        <div className="lg:col-span-5 space-y-4">
+          {/* Agency */}
+          <div className="p-6 rounded-2xl bg-surface-container border border-outline-variant/20 opacity-55">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">
+                  {lang === "nl" ? comparison.agency.labelNL : comparison.agency.labelEN}
+                </p>
+                <p className="text-2xl font-headline font-bold text-on-surface-variant tabular-nums">
+                  {fmt(agencyDisplay)}
+                </p>
+                <p className="text-[11px] text-on-surface-variant/60 mt-1">
+                  {t("pricing.baseLabel")} €{comparison.agency.base} + €{comparison.agency.perPage}/{t("pricing.perPageLabel")}
+                </p>
+              </div>
+              <span className="material-symbols-outlined text-on-surface-variant/40 text-3xl">corporate_fare</span>
+            </div>
+            <p className="text-xs text-on-surface-variant/60 mt-3">{t("pricing.agencyNote")}</p>
+          </div>
+
+          {/* Freelancer */}
+          <div className="p-6 rounded-2xl bg-surface-container border border-outline-variant/20 opacity-55">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">
+                  {lang === "nl" ? comparison.freelancer.labelNL : comparison.freelancer.labelEN}
+                </p>
+                <p className="text-2xl font-headline font-bold text-on-surface-variant tabular-nums">
+                  {fmt(freelancerDisplay)}
+                </p>
+                <p className="text-[11px] text-on-surface-variant/60 mt-1">
+                  {t("pricing.baseLabel")} €{comparison.freelancer.base} + €{comparison.freelancer.perPage}/{t("pricing.perPageLabel")}
+                </p>
+              </div>
+              <span className="material-symbols-outlined text-on-surface-variant/40 text-3xl">person</span>
+            </div>
+            <p className="text-xs text-on-surface-variant/60 mt-3">{t("pricing.freelancerNote")}</p>
+          </div>
+
+          {/* Vexxo — highlighted */}
+          <div
+            className="relative p-8 rounded-3xl overflow-hidden"
+            style={{
+              background: "linear-gradient(135deg, rgba(189,157,255,0.18) 0%, rgba(8,8,16,0.95) 50%, rgba(253,118,26,0.12) 100%)",
+              border: "1px solid rgba(189,157,255,0.35)",
+              boxShadow: "0 0 50px rgba(189,157,255,0.1), 0 0 100px rgba(253,118,26,0.05)",
+            }}
+          >
+            <div className="absolute -top-8 -right-8 w-32 h-32 bg-secondary/15 blur-[50px] rounded-full" />
+            <div className="relative z-10">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <span className="bg-gradient-to-r from-primary to-secondary text-on-primary-fixed text-[10px] font-bold px-2 py-0.5 rounded mb-2 inline-block">
+                    BEST VALUE
+                  </span>
+                  <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">
+                    {t("pricing.withVexxo")}
+                  </p>
+                  <p className="text-5xl font-headline font-extrabold text-on-surface tabular-nums">
+                    {fmt(vexxoDisplay)}
+                  </p>
+                  <p className="text-[11px] text-on-surface-variant mt-1">
+                    {t("pricing.baseLabel")} €{vexxo.base} + €{effectivePPP}/{t("pricing.perPageLabel")}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                  <span className="material-symbols-outlined text-primary">bolt</span>
+                </div>
+              </div>
+
+              <ul className="space-y-2 mb-6">
+                {["Direct founder communication", "2-week delivery time", "Premium support"].map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-sm text-on-surface">
+                    <span className="material-symbols-outlined text-secondary text-base">check_circle</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="#contact"
+                className="block w-full py-4 bg-white text-background rounded-xl font-bold text-center hover:scale-[1.02] active:scale-95 transition-all text-sm"
+              >
+                {t("pricing.selectPlan")}
+              </a>
+            </div>
+          </div>
+
+          <p className="text-[11px] text-on-surface-variant/60 text-center px-2">{t("pricing.note")}</p>
+        </div>
+      </div>
+    </section>
+  );
+}

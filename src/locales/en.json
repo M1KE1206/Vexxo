@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "Home",
+    "portfolio": "Portfolio",
+    "about": "About",
+    "pricing": "Pricing",
+    "contact": "Contact",
+    "getStarted": "Get Started →",
+    "clientPortal": "Client portal"
+  },
+  "hero": {
+    "badge": "Digital Craftsman",
+    "headline1": "Clean code.",
+    "headline2": "Sharp design.",
+    "headline3": "Real results.",
+    "subheadline": "Helping startups and entrepreneurs scale their vision through high-performance web experiences. Built for speed, designed for conversions.",
+    "ctaPrimary": "Start a project",
+    "ctaSecondary": "View our work",
+    "studioLabel": "DIGITAL STUDIO",
+    "studioTagline": "One dedicated contact, clear communication, and a website that grows with your business."
+  },
+  "portfolio": {
+    "title": "Selected Work",
+    "badge": "Portfolio",
+    "subtitle": "A collection of digital experiences focused on performance and aesthetic precision.",
+    "viewProject": "View case",
+    "moreComingSoon": "More projects coming soon."
+  },
+  "about": {
+    "badge": "The Founder",
+    "title": "Who's behind Vexxo Studio?",
+    "subtitle": "I'm a student entrepreneur bridging the gap between academic theory and real-world execution. Vexxo Studio started as a passion project and evolved into a boutique agency focused on helping fellow founders build products that don't just look good — they perform.",
+    "skillsTitle": "Skills",
+    "contactTitle": "Contact",
+    "contactSubtitle": "Have an idea or project in mind? Feel free to send a mail — I usually reply within 1–2 business days.",
+    "stats": {
+      "projects": "Projects",
+      "countries": "Countries",
+      "satisfaction": "Satisfaction"
+    },
+    "badge2": "Student Entrepreneur",
+    "badge2sub": "Continuous Growth"
+  },
+  "company": {
+    "badge": "About Us",
+    "title": "Built for builders.",
+    "subtitle": "No agency overhead. No back-and-forth. Just a founder who cares about your product as much as you do.",
+    "mission": {
+      "title": "Mission",
+      "body": "To help entrepreneurs and startups build high-performance web experiences at a fair price — without agency bloat or freelancer chaos."
+    },
+    "vision": {
+      "title": "Vision",
+      "body": "A world where every ambitious founder has access to world-class web design without the world-class price tag."
+    },
+    "values": {
+      "title": "Our Values",
+      "transparency": "Transparency",
+      "quality": "Quality",
+      "speed": "Speed",
+      "partnership": "Partnership"
+    },
+    "process": {
+      "title": "How We Work",
+      "subtitle": "A clear 5-step process. No surprises — you know where we stand at every moment.",
+      "steps": ["Discovery", "Strategy", "Build", "Launch", "Support"]
+    },
+    "comparison": {
+      "title": "Why Vexxo vs the rest?",
+      "subtitle": "See how we stack up against a typical agency or freelancer.",
+      "agencyLabel": "Typical Agency",
+      "freelancerLabel": "Regular Freelancer",
+      "vexxoLabel": "Vexxo Studio",
+      "bestValue": "BEST VALUE",
+      "features": [
+        "Direct founder communication",
+        "2-week avg. delivery",
+        "Fair, transparent pricing",
+        "Premium support",
+        "No hidden costs",
+        "Design + Dev under one roof"
+      ]
+    }
+  },
+  "pricing": {
+    "badge": "Transparency",
+    "title": "Pricing Calculator",
+    "subtitle": "No hidden costs. No agency bloat. Just value.",
+    "serviceType": "Service Type",
+    "pages": "Number of Pages",
+    "addOns": "Add-ons",
+    "timeline": "Timeline",
+    "note": "This is an indicative estimate. The final price is determined after the intake call.",
+    "withVexxo": "Vexxo Studio",
+    "vexxoTagline": "Save time, money, and stress.",
+    "agencyNote": "High margins, long turnaround.",
+    "freelancerNote": "Lots of back-and-forth, less structure.",
+    "selectPlan": "Select this plan",
+    "noSurcharge": "No extra charge",
+    "baseLabel": "Base",
+    "perPageLabel": "per page"
+  },
+  "contact": {
+    "title": "Ready to build something great?",
+    "subtitle": "I typically respond within 24–48 hours. Let's discuss your project and see if we're a good fit.",
+    "ctaButton": "Start your project →",
+    "email": "Email address",
+    "name": "Name",
+    "message": "Message",
+    "send": "Send message",
+    "responseTime": "I'll reply within 1–2 business days.",
+    "thanks": "Thanks! We'll be in touch soon."
+  },
+  "footer": {
+    "copy": "© 2026 Vexxo Studio — All rights reserved.",
+    "work": "Work",
+    "about": "About",
+    "pricing": "Pricing",
+    "clientPortal": "Client Portal"
+  },
+  "services": {
+    "title": "What we do",
+    "subtitle": "From first sketch to launch. You get a website that looks great and actually works for your business.",
+    "pageTitle": "Services & Pricing",
+    "pageSubtitle": "Choose a plan that fits your business."
+  },
+  "process": {
+    "title": "How it works",
+    "subtitle": "A clear step-by-step process, no surprises."
+  },
+  "cta": {
+    "title": "Ready to start?",
+    "subtitle": "Tell us briefly what you need and we'll schedule a free intake call.",
+    "button": "Go to the client portal"
+  }
+}
