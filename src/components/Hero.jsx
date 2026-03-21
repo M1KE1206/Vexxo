@@ -1,8 +1,10 @@
 import { useLanguage } from "../context/LanguageContext";
+import { useModal } from "../context/ModalContext";
 import HeroComputer from "./HeroComputer";
 
 export default function Hero() {
   const { t } = useLanguage();
+  const { openModal } = useModal();
 
   return (
     <section
@@ -31,9 +33,9 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <a href="#contact" className="btn-primary text-base">
+            <button onClick={() => openModal()} className="btn-primary text-base">
               {t("hero.ctaPrimary")}
-            </a>
+            </button>
             <a href="#portfolio" className="btn-outline text-base">
               {t("hero.ctaSecondary")}
             </a>

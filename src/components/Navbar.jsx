@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
+import { useModal } from "../context/ModalContext";
 
 const NAV_LINKS = [
   { key: "portfolio", href: "#portfolio" },
@@ -10,6 +11,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const { t, lang, setLang } = useLanguage();
+  const { openModal } = useModal();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -55,12 +57,12 @@ export default function Navbar() {
         </div>
 
         {/* Get Started CTA */}
-        <a
-          href="#contact"
+        <button
+          onClick={() => openModal()}
           className="hidden md:inline-flex btn-primary text-sm px-6 py-2.5"
         >
           {t("nav.getStarted")}
-        </a>
+        </button>
 
         {/* Mobile hamburger */}
         <button
@@ -102,9 +104,9 @@ export default function Navbar() {
               </a>
             ))}
             <div className="flex items-center gap-4 pt-4">
-              <a href="#contact" onClick={() => setOpen(false)} className="btn-primary text-sm px-6 py-2.5">
+              <button onClick={() => { openModal(); setOpen(false); }} className="btn-primary text-sm px-6 py-2.5">
                 {t("nav.getStarted")}
-              </a>
+              </button>
               <button
                 onClick={() => { setLang(lang === "nl" ? "en" : "nl"); setOpen(false); }}
                 className="rounded-full border border-outline-variant/50 px-3 py-1.5 text-[11px] font-bold text-on-surface-variant"

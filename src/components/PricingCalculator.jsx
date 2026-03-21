@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "../context/LanguageContext";
+import { useModal } from "../context/ModalContext";
 import {
   serviceTypes,
   vexxo,
@@ -48,6 +49,7 @@ function useCountUp(target) {
 
 export default function PricingCalculator() {
   const { t, lang } = useLanguage();
+  const { openModal } = useModal();
   const [service,     setService]     = useState(serviceTypes[0].id);
   const [pages,       setPages]       = useState(pageRange.default);
   const [seo,         setSeo]         = useState(false);
@@ -259,12 +261,20 @@ export default function PricingCalculator() {
                 ))}
               </ul>
 
-              <a
-                href="#contact"
+              <button
+                onClick={() => openModal({
+                  fromCalculator: true,
+                  serviceType: service,
+                  pages,
+                  seoAddon: seo,
+                  contentAddon: content,
+                  timeline: tl,
+                  calculatedPrice: vexxoRaw,
+                })}
                 className="block w-full py-4 bg-white text-background rounded-xl font-bold text-center hover:scale-[1.02] active:scale-95 transition-all text-sm"
               >
                 {t("pricing.selectPlan")}
-              </a>
+              </button>
             </div>
           </div>
 
