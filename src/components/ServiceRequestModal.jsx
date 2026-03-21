@@ -1,18 +1,19 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, memo } from "react";
 import { useModal } from "../context/ModalContext";
 import { useLanguage } from "../context/LanguageContext";
 import { serviceCategories, packages } from "../config/services";
 import { vexxo, addOns, timeline as timelineConfig } from "../config/pricing";
 
-const fmt = (n) =>
-  new Intl.NumberFormat("nl-BE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
+// Created once — Intl.NumberFormat construction is expensive
+const formatter = new Intl.NumberFormat("nl-BE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+const fmt = (n) => formatter.format(n);
 
 // serviceType IDs from calculator now match category IDs directly (design/development/fullstack)
 
-/** Step indicator */
-function StepBadge({ num, label, active, done }) {
+/** Step indicator — memoized so it only re-renders when its own props change */
+const StepBadge = memo(function StepBadge({ num, label, active, done }) {
   return (
-    <div className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+    <div className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${
       active ? "bg-gradient-to-r from-primary to-secondary text-on-primary-fixed" :
       done   ? "bg-surface-container-high text-primary border border-primary/30" :
                "bg-surface-container text-on-surface-variant"
@@ -21,19 +22,19 @@ function StepBadge({ num, label, active, done }) {
       <span className="hidden sm:inline">{label}</span>
     </div>
   );
-}
+});
 
-/** Package card */
-function PkgCard({ pkg, selected, onSelect, lang }) {
+/** Package card — memoized so only the 2 affected cards re-render on selection change */
+const PkgCard = memo(function PkgCard({ pkg, selected, onSelect, lang }) {
   const name = lang === "nl" ? pkg.nameNL : pkg.name;
   const desc = lang === "nl" ? pkg.descriptionNL : pkg.description;
   return (
     <div
       onClick={() => onSelect(pkg)}
-      className={`relative rounded-xl p-4 cursor-pointer border transition-all duration-200 hover:-translate-y-1 ${
+      className={`relative rounded-xl p-4 cursor-pointer border duration-200 hover:-translate-y-1 ${
         selected
-          ? "border-primary/70 bg-primary/8 shadow-[0_0_24px_rgba(124,58,237,0.2)]"
-          : "border-outline-variant/30 bg-surface-container hover:border-primary/40"
+          ? "border-primary/70 bg-primary/8 shadow-[0_0_24px_rgba(124,58,237,0.2)] transition-[border-color,box-shadow,background]"
+          : "border-outline-variant/30 bg-surface-container hover:border-primary/40 transition-[transform,border-color]"
       }`}
     >
       {/* Checkmark */}
@@ -55,7 +56,7 @@ function PkgCard({ pkg, selected, onSelect, lang }) {
         </span>
         <button
           onClick={(e) => { e.stopPropagation(); onSelect(pkg); }}
-          className={`text-xs font-bold px-3 py-1 rounded-full transition-all ${
+          className={`text-xs font-bold px-3 py-1 rounded-full transition-colors ${
             selected
               ? "text-primary"
               : "text-on-surface-variant hover:text-primary"
@@ -66,10 +67,10 @@ function PkgCard({ pkg, selected, onSelect, lang }) {
       </div>
     </div>
   );
-}
+});
 
-/** Order summary sidebar */
-function OrderSummary({ pkg, prefill, lang, onSend, loading, sent, t }) {
+/** Order summary sidebar — memoized, only re-renders when selection or send state changes */
+const OrderSummary = memo(function OrderSummary({ pkg, prefill, lang, onSend, loading, sent, t }) {
   const hasCalc   = prefill?.fromCalculator;
   const tlExtra   = hasCalc ? (timelineConfig[prefill.timeline]?.perPage ?? 0) : 0;
   const addonCost = hasCalc
@@ -154,7 +155,7 @@ function OrderSummary({ pkg, prefill, lang, onSend, loading, sent, t }) {
       <button
         onClick={onSend}
         disabled={loading || sent}
-        className="w-full py-4 rounded-xl font-bold text-sm text-on-primary-fixed flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
+        className="w-full py-4 rounded-xl font-bold text-sm text-on-primary-fixed flex items-center justify-center gap-2 transition-[opacity,transform] hover:scale-[1.02] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
         style={{ background: "linear-gradient(to right, #7C3AED, #F97316)" }}
       >
         {loading ? (
@@ -186,7 +187,7 @@ function OrderSummary({ pkg, prefill, lang, onSend, loading, sent, t }) {
       </div>
     </div>
   );
-}
+});
 
 /** Main modal */
 export default function ServiceRequestModal() {
@@ -204,13 +205,11 @@ export default function ServiceRequestModal() {
   // Open/close animation
   useEffect(() => {
     if (isOpen) {
-      // Reset state
       setStep(1);
       setSelectedPkg(null);
       setSent(false);
       setLoading(false);
       setForm({ fullName: "", company: "", email: "", phone: "", preferredContact: "email", deadline: "", notes: "" });
-      // Apply prefill category (IDs match directly)
       if (prefillData?.fromCalculator && prefillData.serviceType) {
         setActiveTab(prefillData.serviceType);
       } else {
@@ -224,51 +223,56 @@ export default function ServiceRequestModal() {
 
   // Escape key
   useEffect(() => {
-    const handler = (e) => { if (e.key === "Escape") closeModal(); };
+    const handler = (e) => { if (e.key === "Escape" && isOpen) closeModal(); };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [closeModal]);
+  }, [closeModal, isOpen]);
 
-  const handleSelect = (pkg) => {
+  // Stable callback — required for PkgCard.memo to skip re-renders
+  const handleSelect = useCallback((pkg) => {
     setSelectedPkg(pkg);
-    if (step === 1) {
-      setStep(2);
-      // Scroll left panel to brief section
-      setTimeout(() => {
-        scrollRef.current?.querySelector("#brief-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 100);
-    }
-  };
+    setStep((prev) => {
+      if (prev === 1) {
+        setTimeout(() => {
+          scrollRef.current?.querySelector("#brief-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+        return 2;
+      }
+      return prev;
+    });
+  }, []);
 
-  const handleSend = () => {
-    if (loading || sent) return;
-    setLoading(true);
-    // Wire up to Resend / Formspree / EmailJS here
-    console.log("Service request:", { pkg: selectedPkg?.id, prefillData, form });
-    setTimeout(() => { setLoading(false); setSent(true); }, 1400);
-  };
+  const handleSend = useCallback(() => {
+    setLoading((prev) => {
+      if (prev) return prev;
+      console.log("Service request:", { pkg: selectedPkg?.id, prefillData, form });
+      setTimeout(() => { setLoading(false); setSent(true); }, 1400);
+      return true;
+    });
+  }, [selectedPkg, prefillData, form]);
 
-  const setField = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
-  const inputCls = "w-full rounded-xl border border-outline-variant/30 bg-surface-container-high px-4 py-2.5 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40";
-
-  if (!isOpen) return null;
+  const setField = useCallback((key) => (e) => {
+    const val = e.target.value;
+    setForm((f) => ({ ...f, [key]: val }));
+  }, []);
 
   const catPkgs = packages[activeTab] || [];
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto py-4 px-4 transition-all duration-300 ${visible ? "opacity-100" : "opacity-0"}`}
-      style={{ background: visible ? "rgba(10,10,19,0.88)" : "transparent", backdropFilter: visible ? "blur(20px)" : "none" }}
+      className={`fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto py-4 px-4 transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0"}`}
+      style={{ background: "rgba(10,10,19,0.9)", visibility: isOpen ? "visible" : "hidden", pointerEvents: isOpen ? "auto" : "none" }}
       onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}
     >
       <div
-        className={`relative w-full max-w-5xl my-auto transition-all duration-300 ${visible ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
-        style={{ background: "rgba(22,22,30,0.97)", border: "1px solid rgba(124,58,237,0.18)", borderRadius: "1.5rem", backdropFilter: "blur(24px)" }}
+        className={`relative w-full max-w-5xl my-auto transition-[transform,opacity] duration-300 ${visible ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
+        style={{ background: "rgba(20,20,28,0.99)", border: "1px solid rgba(124,58,237,0.18)", borderRadius: "1.5rem" }}
       >
         {/* Close */}
         <button
           onClick={closeModal}
-          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-primary/50 transition-all text-xl font-light"
+          aria-label="Close modal"
+          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-primary/50 transition-colors text-xl font-light"
         >
           ×
         </button>
@@ -280,9 +284,9 @@ export default function ServiceRequestModal() {
           {/* Steps */}
           <div className="flex items-center gap-2 mt-5 flex-wrap">
             <StepBadge num="①" label={t("modal.stepChoose")} active={step === 1} done={step > 1} />
-            <span className="text-outline text-sm">→</span>
+            <span className="text-outline text-sm" aria-hidden="true">→</span>
             <StepBadge num="②" label={t("modal.stepBrief")}  active={step === 2} done={step > 2} />
-            <span className="text-outline text-sm">→</span>
+            <span className="text-outline text-sm" aria-hidden="true">→</span>
             <StepBadge num="③" label={t("modal.stepSend")}   active={sent}       done={false} />
           </div>
         </div>
@@ -301,7 +305,7 @@ export default function ServiceRequestModal() {
                   <button
                     key={cat.id}
                     onClick={() => setActiveTab(cat.id)}
-                    className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                       activeTab === cat.id
                         ? "bg-surface-bright text-on-surface shadow-sm"
                         : "text-on-surface-variant hover:text-on-surface"
@@ -333,22 +337,22 @@ export default function ServiceRequestModal() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{t("modal.fields.fullName")}</label>
-                    <input type="text" value={form.fullName} onChange={setField("fullName")} placeholder={t("modal.fields.fullNamePlaceholder")} className={inputCls} />
+                    <input type="text" value={form.fullName} onChange={setField("fullName")} placeholder={t("modal.fields.fullNamePlaceholder")} className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-high px-4 py-2.5 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40" />
                   </div>
                   <div className="space-y-1.5">
                     <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{t("modal.fields.companyName")}</label>
-                    <input type="text" value={form.company} onChange={setField("company")} placeholder={t("modal.fields.companyPlaceholder")} className={inputCls} />
+                    <input type="text" value={form.company} onChange={setField("company")} placeholder={t("modal.fields.companyPlaceholder")} className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-high px-4 py-2.5 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40" />
                   </div>
                 </div>
                 {/* Email + Phone */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{t("modal.fields.email")}</label>
-                    <input type="email" value={form.email} onChange={setField("email")} placeholder={t("modal.fields.emailPlaceholder")} className={inputCls} />
+                    <input type="email" value={form.email} onChange={setField("email")} placeholder={t("modal.fields.emailPlaceholder")} className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-high px-4 py-2.5 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40" />
                   </div>
                   <div className="space-y-1.5">
                     <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{t("modal.fields.phone")}</label>
-                    <input type="tel" value={form.phone} onChange={setField("phone")} placeholder={t("modal.fields.phonePlaceholder")} className={inputCls} />
+                    <input type="tel" value={form.phone} onChange={setField("phone")} placeholder={t("modal.fields.phonePlaceholder")} className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-high px-4 py-2.5 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40" />
                   </div>
                 </div>
                 {/* Preferred contact + Deadline */}
@@ -360,9 +364,9 @@ export default function ServiceRequestModal() {
                         <label key={opt} className="flex items-center gap-2 cursor-pointer">
                           <div
                             onClick={() => setForm((f) => ({ ...f, preferredContact: opt }))}
-                            className={`w-10 h-5 rounded-full transition-all cursor-pointer relative ${form.preferredContact === opt ? "bg-primary" : "bg-surface-container-highest"}`}
+                            className={`w-10 h-5 rounded-full transition-colors cursor-pointer relative ${form.preferredContact === opt ? "bg-primary" : "bg-surface-container-highest"}`}
                           >
-                            <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-on-primary-fixed transition-all duration-200 ${form.preferredContact === opt ? "left-5" : "left-0.5"}`} />
+                            <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-on-primary-fixed transition-[left] duration-200 ${form.preferredContact === opt ? "left-5" : "left-0.5"}`} />
                           </div>
                           <span className="text-xs text-on-surface-variant capitalize">
                             {opt === "email" ? t("modal.fields.contactEmail") : t("modal.fields.contactPhone")}
@@ -373,13 +377,13 @@ export default function ServiceRequestModal() {
                   </div>
                   <div className="space-y-1.5">
                     <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{t("modal.fields.deadline")}</label>
-                    <input type="date" value={form.deadline} onChange={setField("deadline")} className={inputCls} />
+                    <input type="date" value={form.deadline} onChange={setField("deadline")} className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-high px-4 py-2.5 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40" />
                   </div>
                 </div>
                 {/* Notes */}
                 <div className="space-y-1.5">
                   <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{t("modal.fields.notes")}</label>
-                  <textarea rows={4} value={form.notes} onChange={setField("notes")} placeholder={t("modal.fields.notesPlaceholder")} className={inputCls + " resize-none"} />
+                  <textarea rows={4} value={form.notes} onChange={setField("notes")} placeholder={t("modal.fields.notesPlaceholder")} className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-high px-4 py-2.5 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40 resize-none" />
                 </div>
               </div>
             </div>
