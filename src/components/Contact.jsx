@@ -60,7 +60,7 @@ export default function Contact() {
         {/* Left — contact info */}
         <div className="space-y-8">
           <div>
-            <span className="text-secondary font-bold text-xs tracking-widest uppercase">{t("contact.badge")}</span>
+            <span className="text-accent font-bold text-xs tracking-widest uppercase">{t("contact.badge")}</span>
             <h2 className="text-4xl md:text-5xl font-headline font-bold mt-3 text-on-surface">
               {t("contact.title")}
             </h2>

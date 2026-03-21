@@ -33,7 +33,7 @@ function PkgCard({ pkg, selected, onSelect, lang }) {
       onClick={() => onSelect(pkg)}
       className={`relative rounded-xl p-4 cursor-pointer border transition-all duration-200 hover:-translate-y-1 ${
         selected
-          ? "border-primary/70 bg-primary/8 shadow-[0_0_24px_rgba(189,157,255,0.2)]"
+          ? "border-primary/70 bg-primary/8 shadow-[0_0_24px_rgba(124,58,237,0.2)]"
           : "border-outline-variant/30 bg-surface-container hover:border-primary/40"
       }`}
     >
@@ -47,7 +47,7 @@ function PkgCard({ pkg, selected, onSelect, lang }) {
       <div className="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center mb-3">
         <span className="material-symbols-outlined text-on-surface-variant" style={{ fontSize: 20 }}>{pkg.icon}</span>
       </div>
-      <h4 className="font-bold text-sm text-on-surface mb-1">{name}</h4>
+      <h4 className={`font-bold text-sm mb-1 ${selected ? "text-primary" : "text-on-surface"}`}>{name}</h4>
       <p className="text-xs text-on-surface-variant leading-relaxed mb-4">{desc}</p>
       <div className="flex items-center justify-between">
         <span className="text-sm font-bold text-on-surface">{fmt(pkg.price)}</span>
@@ -89,7 +89,7 @@ function OrderSummary({ pkg, prefill, lang, onSend, loading, sent, t }) {
       <div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">{t("modal.package")}</p>
         <div className="flex justify-between items-center">
-          <p className="font-bold text-on-surface text-sm">{displayName}</p>
+          <p className={`font-bold text-sm ${pkg ? "text-primary" : "text-on-surface-variant"}`}>{displayName}</p>
           <p className="text-primary font-bold text-sm">{pkg || hasCalc ? fmt(displayPrice) : "—"}</p>
         </div>
       </div>
@@ -153,7 +153,7 @@ function OrderSummary({ pkg, prefill, lang, onSend, loading, sent, t }) {
         onClick={onSend}
         disabled={loading || sent}
         className="w-full py-4 rounded-xl font-bold text-sm text-on-primary-fixed flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
-        style={{ background: "linear-gradient(to right, #bd9dff, #fd761a)" }}
+        style={{ background: "linear-gradient(to right, #7C3AED, #F97316)" }}
       >
         {loading ? (
           <>
@@ -173,7 +173,7 @@ function OrderSummary({ pkg, prefill, lang, onSend, loading, sent, t }) {
       {/* Social proof */}
       <div className="flex items-center gap-3 pt-2 border-t border-outline-variant/20">
         <div className="flex -space-x-2">
-          {["#bd9dff","#fd761a","#8a4cfc"].map((c, i) => (
+          {["#7C3AED","#F97316","#6d28d9"].map((c, i) => (
             <div key={i} className="w-7 h-7 rounded-full border-2 border-surface-container-low flex items-center justify-center text-[9px] font-bold text-on-primary-fixed" style={{ background: c }}>
               {["M","A","J"][i]}
             </div>
@@ -261,7 +261,7 @@ export default function ServiceRequestModal() {
     >
       <div
         className={`relative w-full max-w-5xl my-auto transition-all duration-300 ${visible ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
-        style={{ background: "rgba(22,22,30,0.97)", border: "1px solid rgba(189,157,255,0.18)", borderRadius: "1.5rem", backdropFilter: "blur(24px)" }}
+        style={{ background: "rgba(22,22,30,0.97)", border: "1px solid rgba(124,58,237,0.18)", borderRadius: "1.5rem", backdropFilter: "blur(24px)" }}
       >
         {/* Close */}
         <button

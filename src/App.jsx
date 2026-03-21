@@ -19,21 +19,23 @@ export default function App() {
           {/* Noise texture overlay */}
           <div className="fixed inset-0 bg-noise pointer-events-none z-0" aria-hidden="true" />
 
-          <Navbar />
+          <div className="page-content">
+            <Navbar />
 
-          <main className="relative z-10 pt-20">
-            <Hero />
-            <Portfolio />
-            <AboutMe />
-            <AboutCompany />
-            <PricingCalculator />
-            <Contact />
-          </main>
+            <main className="relative z-10 pt-20">
+              <Hero />
+              <Portfolio />
+              <AboutMe />
+              <AboutCompany />
+              <PricingCalculator />
+              <Contact />
+            </main>
 
-          <Footer />
-          <ScrollToTop />
+            <Footer />
+            <ScrollToTop />
+          </div>
 
-          {/* Service request modal — rendered at root level */}
+          {/* Service request modal — rendered outside page-content so it keeps its animations */}
           <ServiceRequestModal />
         </div>
       </ModalProvider>

@@ -5,7 +5,7 @@ import { FormEvent, useState } from "react";
 const steps = [
   "Kies je service",
   "Vul je brief in",
-  "Ontvang bevestiging binnen 2 werkdagen",
+  "Ontvang bevestiging binnen 1 werkdag",
   "Intakegesprek",
   "Aan de slag",
 ];
@@ -183,7 +183,7 @@ export default function ClientportaalPage() {
 
           {submitted && (
             <p className="mt-3 text-xs text-[color:var(--text-primary)]">
-              Bedankt! Ik neem binnen 2 werkdagen contact op.
+              Bedankt! Ik neem binnen 1 werkdag contact op.
             </p>
           )}
 

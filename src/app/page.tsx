@@ -4,7 +4,7 @@ import { LogoMark } from "@/components/LogoMark";
 const steps = [
   "Kies je service",
   "Vul je brief in",
-  "Ontvang bevestiging binnen 2 werkdagen",
+  "Ontvang bevestiging binnen 1 werkdag",
   "Intakegesprek",
   "Aan de slag",
 ];

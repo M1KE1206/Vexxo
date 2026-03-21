@@ -102,7 +102,7 @@ export default function HeroComputer() {
      bg-[rgba(30,30,40,0.7)] backdrop-blur-sm text-on-surface-variant
      transition-all duration-100 select-none cursor-pointer
      hover:border-primary/50 hover:text-on-surface active:scale-90
-     ${pressed === k ? "scale-90 border-primary/70 bg-primary/15 shadow-[0_0_8px_rgba(189,157,255,0.5)]" : ""}`;
+     ${pressed === k ? "scale-90 border-primary/70 bg-primary/15 shadow-[0_0_8px_rgba(124,58,237,0.5)]" : ""}`;
 
   return (
     <div className="relative w-full max-w-[400px] mx-auto">
@@ -114,7 +114,7 @@ export default function HeroComputer() {
         <div style={{ transform: "rotateX(6deg)", transformStyle: "preserve-3d" }}>
 
           {/* Monitor body */}
-          <div className="relative rounded-2xl border border-primary/20 bg-gradient-to-b from-[#1c1c28] to-[#13131e] shadow-[0_0_50px_rgba(189,157,255,0.12),inset_0_1px_0_rgba(255,255,255,0.06)]">
+          <div className="relative rounded-2xl border border-primary/20 bg-gradient-to-b from-[#1c1c28] to-[#13131e] shadow-[0_0_50px_rgba(124,58,237,0.12),inset_0_1px_0_rgba(255,255,255,0.06)]">
             {/* Gradient edge top */}
             <div className="absolute inset-x-0 top-0 h-[2px] rounded-t-2xl bg-gradient-to-r from-primary via-secondary to-primary opacity-70" />
 
@@ -155,7 +155,7 @@ export default function HeroComputer() {
           {/* Stand */}
           <div className="mx-auto w-8 h-5 bg-gradient-to-b from-[#1c1c28] to-[#13131e] border-x border-b border-primary/10" />
           {/* Base */}
-          <div className="mx-auto h-[6px] w-28 rounded-full bg-gradient-to-b from-[#1c1c28] to-[#13131e] border border-primary/10 shadow-[0_0_20px_rgba(189,157,255,0.08)]" />
+          <div className="mx-auto h-[6px] w-28 rounded-full bg-gradient-to-b from-[#1c1c28] to-[#13131e] border border-primary/10 shadow-[0_0_20px_rgba(124,58,237,0.08)]" />
         </div>
       </div>
 

@@ -40,20 +40,20 @@ function VexxoCard({ label, price, note, checks, features, badgeLabel }) {
       {/* Gradient border wrapper */}
       <div
         className="absolute -inset-[1px] rounded-[1.1rem] z-0"
-        style={{ background: "linear-gradient(135deg, #bd9dff, #fd761a)" }}
+        style={{ background: "linear-gradient(135deg, #7C3AED, #F97316)" }}
       />
       {/* Glow behind card */}
       <div className="absolute -inset-6 bg-primary/10 blur-3xl rounded-3xl z-0 pointer-events-none" />
 
       <div
         className="relative z-10 rounded-2xl p-10 flex flex-col"
-        style={{ background: "linear-gradient(135deg, rgba(189,157,255,0.12) 0%, rgba(14,14,19,0.98) 60%, rgba(253,118,26,0.08) 100%)" }}
+        style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.12) 0%, rgba(14,14,19,0.98) 60%, rgba(249,115,22,0.08) 100%)" }}
       >
         {/* Badge */}
         <div className="text-center mb-5">
           <span
             className="inline-block text-[10px] font-bold px-3 py-1 rounded-full text-on-primary-fixed mb-3"
-            style={{ background: "linear-gradient(to right, #bd9dff, #fd761a)" }}
+            style={{ background: "linear-gradient(to right, #7C3AED, #F97316)" }}
           >
             {badgeLabel}
           </span>
@@ -90,7 +90,7 @@ export default function AboutCompany() {
     <section className="py-24 px-6 md:px-8 max-w-7xl mx-auto space-y-20">
       {/* Section header */}
       <div className="text-center space-y-4">
-        <span className="text-secondary font-bold text-xs tracking-widest uppercase">{t("company.badge")}</span>
+        <span className="text-accent font-bold text-xs tracking-widest uppercase">{t("company.badge")}</span>
         <h2 className="text-4xl md:text-5xl font-headline font-bold text-on-surface">{t("company.title")}</h2>
         <p className="text-on-surface-variant max-w-2xl mx-auto">{t("company.subtitle")}</p>
       </div>
@@ -134,12 +134,12 @@ export default function AboutCompany() {
         </div>
         <div className="relative">
           <div className="absolute top-6 left-[10%] right-[10%] h-px hidden md:block"
-            style={{ background: "linear-gradient(to right, #bd9dff, #fd761a)" }} />
+            style={{ background: "linear-gradient(to right, #7C3AED, #F97316)" }} />
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             {(Array.isArray(processSteps) ? processSteps : []).map((step, i) => (
               <div key={i} className="flex flex-col items-center text-center gap-3">
                 <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center font-headline font-extrabold text-on-primary-fixed text-sm"
-                  style={{ background: "linear-gradient(135deg, #bd9dff, #fd761a)" }}>
+                  style={{ background: "linear-gradient(135deg, #7C3AED, #F97316)" }}>
                   {i + 1}
                 </div>
                 <span className="text-sm font-semibold text-on-surface">{step}</span>

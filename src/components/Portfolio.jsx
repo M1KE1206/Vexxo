@@ -20,7 +20,7 @@ export default function Portfolio() {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
         <div>
-          <span className="text-secondary font-bold text-xs tracking-widest uppercase">
+          <span className="text-accent font-bold text-xs tracking-widest uppercase">
             {t("portfolio.badge")}
           </span>
           <h2 className="text-4xl md:text-5xl font-headline font-bold mt-2 text-on-surface">

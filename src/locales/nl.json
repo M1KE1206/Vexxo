@@ -111,7 +111,7 @@
   },
   "modal": {
     "title": "Service Aanvragen",
-    "subtitle": "Kies je pakket, vul je brief in — ik neem binnen 2 werkdagen contact op.",
+    "subtitle": "Kies je pakket, vul je brief in — ik neem binnen 1 werkdagen contact op.",
     "stepChoose": "KIES SERVICE",
     "stepBrief": "BRIEF INVULLEN",
     "stepSend": "VERSTUUR",
@@ -135,7 +135,7 @@
     "timeline": "Tijdlijn",
     "sendingLabel": "Versturen…",
     "successTitle": "Aanvraag verstuurd!",
-    "successBody": "Ik neem binnen 2 werkdagen contact op.",
+    "successBody": "Ik neem binnen 1 werkdag contact op.",
     "noPackage": "Geen pakket geselecteerd",
     "fields": {
       "fullName": "Volledige Naam",
@@ -157,7 +157,7 @@
   "contact": {
     "badge": "Contact",
     "title": "Neem contact op",
-    "subtitle": "Heb je een vraag? Wil je gewoon even chatten? Ik reageer binnen 2 werkdagen.",
+    "subtitle": "Heb je een vraag? Wil je gewoon even chatten? Ik reageer binnen 1 werkdag.",
     "email": "E-mailadres",
     "name": "Volledige Naam",
     "subject": "Onderwerp",

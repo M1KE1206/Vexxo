@@ -24,13 +24,14 @@ export function ModalProvider({ children }) {
   const openModal = useCallback((data = null) => {
     setPrefillData(data);
     setIsOpen(true);
-    // Prevent body scroll while modal is open
     document.body.style.overflow = "hidden";
+    document.body.classList.add("modal-open");
   }, []);
 
   const closeModal = useCallback(() => {
     setIsOpen(false);
     document.body.style.overflow = "";
+    document.body.classList.remove("modal-open");
   }, []);
 
   return (

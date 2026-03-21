@@ -14,14 +14,15 @@
   --surface-bright: #2c2b33;
   --on-surface: #f9f5fd;
   --on-surface-variant: #acaab1;
-  --primary: #bd9dff;
-  --primary-dim: #8a4cfc;
-  --on-primary-fixed: #000000;
-  --secondary: #fd761a;
+  --primary: #7C3AED;
+  --primary-dim: #6d28d9;
+  --on-primary-fixed: #ffffff;
+  --secondary: #F97316;
+  --accent: #C084FC;
   --outline: #76747b;
   --outline-variant: #48474d;
   /* Legacy */
-  --orbit-purple: #bd9dff;
+  --orbit-purple: #7C3AED;
   --border: #48474d;
   --text-primary: #f9f5fd;
   --text-muted: #acaab1;
@@ -67,9 +68,9 @@ body {
   transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 .glass-card:hover {
-  border-color: rgba(189, 157, 255, 0.35);
+  border-color: rgba(124, 58, 237, 0.35);
   transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(189, 157, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08);
 }
 
 /* --- Gradient text utility --- */
@@ -94,7 +95,7 @@ body {
 }
 .btn-primary:hover {
   transform: scale(1.02);
-  box-shadow: 0 0 40px rgba(189, 157, 255, 0.3);
+  box-shadow: 0 0 40px rgba(124, 58, 237, 0.3);
 }
 .btn-primary:active {
   transform: scale(0.97);
@@ -104,7 +105,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  border: 1px solid rgba(189, 157, 255, 0.25);
+  border: 1px solid rgba(124, 58, 237, 0.25);
   color: var(--on-surface);
   font-weight: 700;
   border-radius: 9999px;
@@ -113,7 +114,7 @@ body {
 }
 .btn-outline:hover {
   background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(189, 157, 255, 0.5);
+  border-color: rgba(124, 58, 237, 0.5);
 }
 
 /* --- Legacy card (used in some components) --- */
@@ -121,7 +122,7 @@ body {
   @apply rounded-xl border border-[var(--border)] bg-[var(--surface)] transition-all duration-200;
 }
 .card-hover {
-  @apply hover:-translate-y-0.5 hover:border-[rgba(189,157,255,0.4)];
+  @apply hover:-translate-y-0.5 hover:border-[rgba(124,58,237,0.4)];
 }
 .pill {
   @apply rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-medium text-[var(--text-muted)];
@@ -147,4 +148,10 @@ input[type="radio"] {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* --- Pause background animations while modal is open --- */
+body.modal-open .page-content * {
+  animation-play-state: paused !important;
+  transition: none !important;
 }

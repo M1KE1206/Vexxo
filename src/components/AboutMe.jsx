@@ -23,7 +23,7 @@ export default function AboutMe() {
         {/* Text — left on desktop */}
         <div className="order-2 md:order-1 space-y-8">
           <div>
-            <span className="text-secondary font-bold text-xs tracking-widest uppercase">
+            <span className="text-accent font-bold text-xs tracking-widest uppercase">
               {t("about.badge")}
             </span>
             <h2 className="text-4xl md:text-5xl font-headline font-bold mt-3 text-on-surface">

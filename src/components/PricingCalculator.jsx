@@ -75,7 +75,7 @@ export default function PricingCalculator() {
     <section id="pricing" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="text-center mb-16 space-y-3">
-        <span className="text-secondary font-bold text-xs tracking-widest uppercase">
+        <span className="text-accent font-bold text-xs tracking-widest uppercase">
           {t("pricing.badge")}
         </span>
         <h2 className="text-4xl md:text-5xl font-headline font-bold text-on-surface">
@@ -225,9 +225,9 @@ export default function PricingCalculator() {
           <div
             className="relative p-8 rounded-3xl overflow-hidden"
             style={{
-              background: "linear-gradient(135deg, rgba(189,157,255,0.18) 0%, rgba(8,8,16,0.95) 50%, rgba(253,118,26,0.12) 100%)",
-              border: "1px solid rgba(189,157,255,0.35)",
-              boxShadow: "0 0 50px rgba(189,157,255,0.1), 0 0 100px rgba(253,118,26,0.05)",
+              background: "linear-gradient(135deg, rgba(124,58,237,0.18) 0%, rgba(8,8,16,0.95) 50%, rgba(249,115,22,0.12) 100%)",
+              border: "1px solid rgba(124,58,237,0.35)",
+              boxShadow: "0 0 50px rgba(124,58,237,0.1), 0 0 100px rgba(249,115,22,0.05)",
             }}
           >
             <div className="absolute -top-8 -right-8 w-32 h-32 bg-secondary/15 blur-[50px] rounded-full" />

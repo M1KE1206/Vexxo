@@ -4,7 +4,7 @@ import HeroComputer from "./HeroComputer";
 
 export default function Hero() {
   const { t } = useLanguage();
-  const { openModal } = useModal();
+  const { openModal, isOpen } = useModal();
 
   return (
     <section
@@ -18,7 +18,7 @@ export default function Hero() {
       <div className="grid md:grid-cols-12 gap-12 items-center w-full">
         {/* Left — text */}
         <div className="md:col-span-7 z-10 space-y-8">
-          <span className="inline-block text-secondary font-bold tracking-[0.2em] text-xs uppercase">
+          <span className="inline-block text-accent font-bold tracking-[0.2em] text-xs uppercase">
             {t("hero.badge")}
           </span>
 
@@ -42,10 +42,10 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right — 3D Computer */}
+        {/* Right — 3D Computer (unmounted while modal is open for performance) */}
         <div className="md:col-span-5 flex justify-center md:justify-end">
           <div className="w-full scale-[0.8] sm:scale-90 md:scale-100 origin-center">
-            <HeroComputer />
+            {!isOpen && <HeroComputer />}
           </div>
         </div>
       </div>
