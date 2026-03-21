@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { useModal } from "../context/ModalContext";
+import { useScrollSpy } from "../hooks/useScrollSpy";
 
 const NAV_LINKS = [
   { key: "portfolio", href: "#portfolio" },
@@ -14,6 +15,7 @@ export default function Navbar() {
   const { openModal } = useModal();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const activeSection = useScrollSpy(["portfolio", "about", "pricing", "contact"]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -37,15 +39,21 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8 font-headline font-bold tracking-tight text-sm">
-          {NAV_LINKS.map(({ key, href }) => (
-            <a
-              key={key}
-              href={href}
-              className="text-on-surface-variant hover:text-on-surface transition-colors"
-            >
-              {t(`nav.${key}`)}
-            </a>
-          ))}
+          {NAV_LINKS.map(({ key, href }) => {
+            const isActive = activeSection === key;
+            return (
+              <a
+                key={key}
+                href={href}
+                className={`relative transition-colors ${isActive ? "text-primary" : "text-on-surface-variant hover:text-on-surface"}`}
+              >
+                {t(`nav.${key}`)}
+                {isActive && (
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
+                )}
+              </a>
+            );
+          })}
         </div>
 
         {/* Right side: CTA + language toggle */}

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 import { company } from "../config/company";
+import { fadeUp, viewport, ease } from "../lib/animations";
 
 /** Auto-dismissing toast notification */
 function Toast({ message, onDismiss }) {
@@ -53,9 +55,19 @@ export default function Contact() {
 
   const inputCls = "w-full rounded-xl border border-outline-variant/30 bg-surface-container-high px-4 py-3 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40";
 
+  const reduce = useReducedMotion();
+  const ini = reduce ? false : "hidden";
+
   return (
     <section id="contact" aria-labelledby="contact-heading" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
-      <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
+      <motion.div
+        className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start"
+        variants={fadeUp}
+        initial={ini}
+        whileInView="visible"
+        viewport={viewport}
+        transition={{ duration: 0.6, ease }}
+      >
 
         {/* Left — contact info */}
         <div className="space-y-8">
@@ -178,7 +190,7 @@ export default function Contact() {
             <p className="text-[11px] text-center text-on-surface-variant">{t("contact.responseTime")}</p>
           </form>
         </div>
-      </div>
+      </motion.div>
 
       {/* Success toast */}
       {toast && (

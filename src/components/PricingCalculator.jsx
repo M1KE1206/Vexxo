@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 import { useModal } from "../context/ModalContext";
+import { fadeUp, scaleIn, slideLeft, slideRight, stagger, viewport, ease } from "../lib/animations";
 import {
   serviceTypes,
   vexxo,
@@ -70,11 +72,20 @@ export default function PricingCalculator() {
   const freelancerDisplay = useCountUp(freelancerRaw);
 
   const tlabel = (obj) => lang === "nl" ? obj.labelNL : obj.labelEN;
+  const reduce = useReducedMotion();
+  const ini = reduce ? false : "hidden";
 
   return (
     <section id="pricing" aria-labelledby="pricing-heading" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="text-center mb-16 space-y-3">
+      <motion.div
+        className="text-center mb-16 space-y-3"
+        variants={fadeUp}
+        initial={ini}
+        whileInView="visible"
+        viewport={viewport}
+        transition={{ duration: 0.5, ease }}
+      >
         <span className="text-accent font-bold text-xs tracking-widest uppercase">
           {t("pricing.badge")}
         </span>
@@ -82,11 +93,18 @@ export default function PricingCalculator() {
           {t("pricing.title")}
         </h2>
         <p className="text-on-surface-variant">{t("pricing.subtitle")}</p>
-      </div>
+      </motion.div>
 
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* ── Controls ── */}
-        <div className="lg:col-span-7 glass-card p-6 md:p-8 rounded-3xl space-y-10">
+        <motion.div
+          className="lg:col-span-7 glass-card p-6 md:p-8 rounded-3xl space-y-10"
+          variants={slideLeft}
+          initial={ini}
+          whileInView="visible"
+          viewport={viewport}
+          transition={{ duration: 0.6, ease }}
+        >
 
           {/* Service type */}
           <div>
@@ -179,12 +197,18 @@ export default function PricingCalculator() {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Price cards ── */}
-        <div className="lg:col-span-5 space-y-4">
+        <motion.div
+          className="lg:col-span-5 space-y-4"
+          variants={stagger(0.12)}
+          initial={ini}
+          whileInView="visible"
+          viewport={viewport}
+        >
           {/* Agency */}
-          <div className="p-6 rounded-2xl bg-surface-container border border-outline-variant/20 opacity-55">
+          <motion.div variants={scaleIn} transition={{ duration: 0.4, ease }} className="p-6 rounded-2xl bg-surface-container border border-outline-variant/20 opacity-55">
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">
@@ -200,10 +224,10 @@ export default function PricingCalculator() {
               <span className="material-symbols-outlined text-on-surface-variant/40 text-3xl">corporate_fare</span>
             </div>
             <p className="text-xs text-on-surface-variant/60 mt-3">{t("pricing.agencyNote")}</p>
-          </div>
+          </motion.div>
 
           {/* Freelancer */}
-          <div className="p-6 rounded-2xl bg-surface-container border border-outline-variant/20 opacity-55">
+          <motion.div variants={scaleIn} transition={{ duration: 0.4, ease }} className="p-6 rounded-2xl bg-surface-container border border-outline-variant/20 opacity-55">
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">
@@ -219,10 +243,10 @@ export default function PricingCalculator() {
               <span className="material-symbols-outlined text-on-surface-variant/40 text-3xl">person</span>
             </div>
             <p className="text-xs text-on-surface-variant/60 mt-3">{t("pricing.freelancerNote")}</p>
-          </div>
+          </motion.div>
 
           {/* Vexxo — highlighted */}
-          <div
+          <motion.div variants={scaleIn} transition={{ duration: 0.4, ease }}
             className="relative p-8 rounded-3xl overflow-hidden"
             style={{
               background: "linear-gradient(135deg, rgba(124,58,237,0.18) 0%, rgba(8,8,16,0.95) 50%, rgba(249,115,22,0.12) 100%)",
@@ -276,10 +300,10 @@ export default function PricingCalculator() {
                 {t("pricing.selectPlan")}
               </button>
             </div>
-          </div>
+          </motion.div>
 
-          <p className="text-[11px] text-on-surface-variant/60 text-center px-2">{t("pricing.note")}</p>
-        </div>
+          <motion.p variants={fadeUp} transition={{ duration: 0.4, ease }} className="text-[11px] text-on-surface-variant/60 text-center px-2">{t("pricing.note")}</motion.p>
+        </motion.div>
       </div>
     </section>
   );

@@ -10,6 +10,7 @@
   },
   "hero": {
     "badge": "Digitale Vakman",
+    "available": "Beschikbaar voor projecten",
     "headline1": "Strakke code.",
     "headline2": "Scherp design.",
     "headline3": "Echte resultaten.",
@@ -17,14 +18,35 @@
     "ctaPrimary": "Start een project",
     "ctaSecondary": "Bekijk ons werk",
     "studioLabel": "DIGITAAL STUDIO",
-    "studioTagline": "Eén vast aanspreekpunt, heldere communicatie en een website die mee groeit met je bedrijf."
+    "studioTagline": "Eén vast aanspreekpunt, heldere communicatie en een website die mee groeit met je bedrijf.",
+    "techStack": ["React", "Tailwind", "Figma", "Next.js", "Framer"]
   },
   "portfolio": {
     "title": "Geselecteerd Werk",
     "badge": "Portfolio",
     "subtitle": "Een selectie digitale ervaringen met focus op performance en esthetische precisie.",
     "viewProject": "Bekijk case",
-    "moreComingSoon": "Meer projecten volgen binnenkort."
+    "moreComingSoon": "Meer projecten volgen binnenkort.",
+    "tags": {
+      "all": "Alles",
+      "design": "Design",
+      "development": "Development",
+      "fullstack": "Fullstack"
+    },
+    "projects": {
+      "kapperszaak": {
+        "title": "Demo — Kapperszaak",
+        "description": "Strakke one-pager met online afspraakmodule voor een moderne kapsalon."
+      },
+      "loodgieter": {
+        "title": "Demo — Loodgieter",
+        "description": "Praktische website met prijsindicaties, spoedknop en duidelijke call-to-actions."
+      },
+      "horeca": {
+        "title": "Demo — Horeca",
+        "description": "Digitale menukaart, reservaties en eventpagina voor een druk bezocht horecazaak."
+      }
+    }
   },
   "about": {
     "badge": "De Oprichter",

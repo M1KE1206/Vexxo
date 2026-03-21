@@ -1,31 +1,9 @@
+/** Project IDs and tag IDs only — all display text lives in locales */
 export const projects = [
-  {
-    id: "kapperszaak",
-    title: "Demo — Kapperszaak",
-    tag: "Design",
-    description:
-      "Strakke one-pager met online afspraakmodule voor een moderne kapsalon.",
-    link: null,
-    image: null,
-  },
-  {
-    id: "loodgieter",
-    title: "Demo — Loodgieter",
-    tag: "Development",
-    description:
-      "Praktische website met prijsindicaties, spoedknop en duidelijke call-to-actions.",
-    link: null,
-    image: null,
-  },
-  {
-    id: "horeca",
-    title: "Demo — Horeca",
-    tag: "Fullstack",
-    description:
-      "Digitale menukaart, reservaties en eventpagina voor een druk bezocht horecazaak.",
-    link: null,
-    image: null,
-  },
+  { id: "kapperszaak", tagId: "Design" },
+  { id: "loodgieter",  tagId: "Development" },
+  { id: "horeca",      tagId: "Fullstack" },
 ];
 
-export const tags = ["All", "Design", "Development", "Fullstack"];
+/** Internal tag IDs used for filtering — display labels come from t("portfolio.tags.*") */
+export const tagIds = ["All", "Design", "Development", "Fullstack"];

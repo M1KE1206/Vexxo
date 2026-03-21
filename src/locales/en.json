@@ -10,6 +10,7 @@
   },
   "hero": {
     "badge": "Digital Craftsman",
+    "available": "Available for projects",
     "headline1": "Clean code.",
     "headline2": "Sharp design.",
     "headline3": "Real results.",
@@ -17,14 +18,35 @@
     "ctaPrimary": "Start a project",
     "ctaSecondary": "View our work",
     "studioLabel": "DIGITAL STUDIO",
-    "studioTagline": "One dedicated contact, clear communication, and a website that grows with your business."
+    "studioTagline": "One dedicated contact, clear communication, and a website that grows with your business.",
+    "techStack": ["React", "Tailwind", "Figma", "Next.js", "Framer"]
   },
   "portfolio": {
     "title": "Selected Work",
     "badge": "Portfolio",
     "subtitle": "A collection of digital experiences focused on performance and aesthetic precision.",
     "viewProject": "View case",
-    "moreComingSoon": "More projects coming soon."
+    "moreComingSoon": "More projects coming soon.",
+    "tags": {
+      "all": "All",
+      "design": "Design",
+      "development": "Development",
+      "fullstack": "Fullstack"
+    },
+    "projects": {
+      "kapperszaak": {
+        "title": "Demo — Barbershop",
+        "description": "Clean one-pager with online booking module for a modern barbershop."
+      },
+      "loodgieter": {
+        "title": "Demo — Plumber",
+        "description": "Practical website with price estimates, emergency button and clear call-to-actions."
+      },
+      "horeca": {
+        "title": "Demo — Hospitality",
+        "description": "Digital menu, reservations and event page for a busy hospitality venue."
+      }
+    }
   },
   "about": {
     "badge": "The Founder",

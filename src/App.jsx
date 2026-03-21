@@ -14,6 +14,7 @@ import PricingCalculator from "./components/PricingCalculator";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import CustomCursor from "./components/CustomCursor";
 
 // Lazy-load the modal — it's large and only shown on demand
 const ServiceRequestModal = lazy(() => import("./components/ServiceRequestModal"));
@@ -66,8 +67,8 @@ export default function App() {
           <StructuredData />
 
           <div className="min-h-screen bg-background text-on-surface font-body selection:bg-primary/30 dark">
-            {/* Noise texture overlay */}
-            <div className="fixed inset-0 bg-noise pointer-events-none z-0" aria-hidden="true" />
+            {/* Custom cursor */}
+            <CustomCursor />
 
             <div className="page-content">
               <Navbar />
