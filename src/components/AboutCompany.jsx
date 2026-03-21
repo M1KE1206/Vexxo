@@ -1,4 +1,6 @@
 import { useLanguage } from "../context/LanguageContext";
+import { useModal } from "../context/ModalContext";
+import { MIN_PRICE } from "../config/pricing";
 
 const VALUE_ICONS = ["visibility", "star", "bolt", "handshake"];
 const VALUE_KEYS  = ["transparency", "quality", "speed", "partnership"];
@@ -33,21 +35,23 @@ function MutedCard({ label, price, note, checks, features }) {
   );
 }
 
-/** Highlighted Vexxo card */
-function VexxoCard({ label, price, note, checks, features, badgeLabel }) {
+/** Highlighted Vexxo card — subtle gradient border, flat dark background */
+function VexxoCard({ label, price, note, checks, features, badgeLabel, onCta, ctaLabel }) {
   return (
-    <div className="relative order-first md:order-none">
-      {/* Gradient border wrapper */}
+    <div
+      className="relative order-first md:order-none"
+      style={{ boxShadow: "0 0 24px rgba(124,58,237,0.25)" }}
+    >
+      {/* Gradient border (1.5px) */}
       <div
-        className="absolute -inset-[1px] rounded-[1.1rem] z-0"
+        className="absolute -inset-[1.5px] rounded-[1.1rem] z-0"
         style={{ background: "linear-gradient(135deg, #7C3AED, #F97316)" }}
       />
-      {/* Glow behind card */}
-      <div className="absolute -inset-6 bg-primary/10 blur-3xl rounded-3xl z-0 pointer-events-none" />
 
+      {/* Card body — flat dark, no gradient fill */}
       <div
         className="relative z-10 rounded-2xl p-10 flex flex-col"
-        style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.12) 0%, rgba(14,14,19,0.98) 60%, rgba(249,115,22,0.08) 100%)" }}
+        style={{ background: "rgba(25,25,31,0.95)" }}
       >
         {/* Badge */}
         <div className="text-center mb-5">
@@ -72,6 +76,14 @@ function VexxoCard({ label, price, note, checks, features, badgeLabel }) {
             </li>
           ))}
         </ul>
+
+        {/* CTA */}
+        <button
+          onClick={onCta}
+          className="mt-6 btn-primary w-full justify-center text-sm"
+        >
+          {ctaLabel}
+        </button>
       </div>
     </div>
   );
@@ -79,6 +91,7 @@ function VexxoCard({ label, price, note, checks, features, badgeLabel }) {
 
 export default function AboutCompany() {
   const { t } = useLanguage();
+  const { openModal } = useModal();
 
   const features          = t("company.comparison.features");
   const agencyChecks      = t("company.comparison.agencyChecks");
@@ -133,13 +146,15 @@ export default function AboutCompany() {
           <p className="text-on-surface-variant text-sm max-w-xl mx-auto">{t("company.process.subtitle")}</p>
         </div>
         <div className="relative">
+          {/* Connector line: purple → soft accent (no orange) */}
           <div className="absolute top-6 left-[10%] right-[10%] h-px hidden md:block"
-            style={{ background: "linear-gradient(to right, #7C3AED, #F97316)" }} />
+            style={{ background: "linear-gradient(to right, #7C3AED, #C084FC)" }} />
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             {(Array.isArray(processSteps) ? processSteps : []).map((step, i) => (
               <div key={i} className="flex flex-col items-center text-center gap-3">
+                {/* Solid purple circle with glow */}
                 <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center font-headline font-extrabold text-on-primary-fixed text-sm"
-                  style={{ background: "linear-gradient(135deg, #7C3AED, #F97316)" }}>
+                  style={{ background: "#7C3AED", boxShadow: "0 0 12px rgba(124,58,237,0.5)" }}>
                   {i + 1}
                 </div>
                 <span className="text-sm font-semibold text-on-surface">{step}</span>
@@ -166,11 +181,13 @@ export default function AboutCompany() {
           />
           <VexxoCard
             label={t("company.comparison.vexxoLabel")}
-            price={t("company.comparison.vexxoPrice")}
+            price={`${t("modal.fromPrice")} €${MIN_PRICE}`}
             note={t("company.comparison.vexxoNote")}
             checks={Array.isArray(vexxoChecks) ? vexxoChecks : []}
             features={Array.isArray(features) ? features : []}
             badgeLabel={t("company.comparison.bestChoice")}
+            onCta={openModal}
+            ctaLabel={t("company.comparison.startProject")}
           />
           <MutedCard
             label={t("company.comparison.freelancerLabel")}

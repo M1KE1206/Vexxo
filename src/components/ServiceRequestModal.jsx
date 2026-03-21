@@ -7,8 +7,7 @@ import { vexxo, addOns, timeline as timelineConfig } from "../config/pricing";
 const fmt = (n) =>
   new Intl.NumberFormat("nl-BE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
 
-/** serviceType from calculator → category id */
-const CAT_MAP = { landing: "design", multipage: "development", ecommerce: "fullstack" };
+// serviceType IDs from calculator now match category IDs directly (design/development/fullstack)
 
 /** Step indicator */
 function StepBadge({ num, label, active, done }) {
@@ -47,10 +46,13 @@ function PkgCard({ pkg, selected, onSelect, lang }) {
       <div className="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center mb-3">
         <span className="material-symbols-outlined text-on-surface-variant" style={{ fontSize: 20 }}>{pkg.icon}</span>
       </div>
-      <h4 className={`font-bold text-sm mb-1 ${selected ? "text-primary" : "text-on-surface"}`}>{name}</h4>
+      <h4 className="font-bold text-sm mb-1 text-primary">{name}</h4>
       <p className="text-xs text-on-surface-variant leading-relaxed mb-4">{desc}</p>
       <div className="flex items-center justify-between">
-        <span className="text-sm font-bold text-on-surface">{fmt(pkg.price)}</span>
+        <span className="text-sm font-bold text-on-surface">
+          {fmt(pkg.price)}
+          {pkg.priceNote && <span className="text-xs text-on-surface-variant ml-0.5">{pkg.priceNote}</span>}
+        </span>
         <button
           onClick={(e) => { e.stopPropagation(); onSelect(pkg); }}
           className={`text-xs font-bold px-3 py-1 rounded-full transition-all ${
@@ -208,9 +210,9 @@ export default function ServiceRequestModal() {
       setSent(false);
       setLoading(false);
       setForm({ fullName: "", company: "", email: "", phone: "", preferredContact: "email", deadline: "", notes: "" });
-      // Apply prefill category
-      if (prefillData?.fromCalculator && CAT_MAP[prefillData.serviceType]) {
-        setActiveTab(CAT_MAP[prefillData.serviceType]);
+      // Apply prefill category (IDs match directly)
+      if (prefillData?.fromCalculator && prefillData.serviceType) {
+        setActiveTab(prefillData.serviceType);
       } else {
         setActiveTab("design");
       }
@@ -310,7 +312,7 @@ export default function ServiceRequestModal() {
                 ))}
               </div>
               {/* Package cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {catPkgs.map((pkg) => (
                   <PkgCard
                     key={pkg.id}

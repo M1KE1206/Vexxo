@@ -46,23 +46,22 @@ export default function Navbar() {
               {t(`nav.${key}`)}
             </a>
           ))}
-
-          {/* Language toggle */}
-          <button
-            onClick={() => setLang(lang === "nl" ? "en" : "nl")}
-            className="rounded-full border border-outline-variant/50 px-3 py-1 text-[11px] font-bold text-on-surface-variant hover:text-on-surface hover:border-primary/50 transition-all"
-          >
-            {lang === "nl" ? "EN" : "NL"}
-          </button>
         </div>
 
-        {/* Get Started CTA */}
-        <button
-          onClick={() => openModal()}
-          className="hidden md:inline-flex btn-primary text-sm px-6 py-2.5"
-        >
-          {t("nav.getStarted")}
-        </button>
+        {/* Right side: CTA + language toggle */}
+        <div className="hidden md:flex items-center gap-4">
+          <button onClick={() => openModal()} className="btn-primary text-sm px-6 py-2.5">
+            {t("nav.getStarted")}
+          </button>
+          <button
+            onClick={() => setLang(lang === "nl" ? "en" : "nl")}
+            className="flex items-center gap-1 text-[11px] font-bold transition-colors hover:text-on-surface-variant"
+          >
+            <span className={lang === "nl" ? "text-on-surface" : "text-on-surface-variant/40"}>NL</span>
+            <span className="text-on-surface-variant/30">|</span>
+            <span className={lang === "en" ? "text-on-surface" : "text-on-surface-variant/40"}>EN</span>
+          </button>
+        </div>
 
         {/* Mobile hamburger */}
         <button
@@ -109,9 +108,11 @@ export default function Navbar() {
               </button>
               <button
                 onClick={() => { setLang(lang === "nl" ? "en" : "nl"); setOpen(false); }}
-                className="rounded-full border border-outline-variant/50 px-3 py-1.5 text-[11px] font-bold text-on-surface-variant"
+                className="flex items-center gap-1 text-[11px] font-bold"
               >
-                {lang === "nl" ? "EN" : "NL"}
+                <span className={lang === "nl" ? "text-on-surface" : "text-on-surface-variant/40"}>NL</span>
+                <span className="text-on-surface-variant/30">|</span>
+                <span className={lang === "en" ? "text-on-surface" : "text-on-surface-variant/40"}>EN</span>
               </button>
             </div>
           </div>

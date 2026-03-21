@@ -3,18 +3,21 @@
 //  All components read from this file.
 // ─────────────────────────────────────────────
 
-/** Service type buttons in the calculator (informational) */
+/** Service type buttons in the calculator — matches modal category IDs */
 export const serviceTypes = [
-  { id: "landing",   label: "Landing Page" },
-  { id: "multipage", label: "Multi-page App" },
-  { id: "ecommerce", label: "E-commerce" },
+  { id: "design",      label: "Design" },
+  { id: "development", label: "Development" },
+  { id: "fullstack",   label: "Fullstack" },
 ];
 
 /** Vexxo base pricing */
 export const vexxo = {
-  base: 399,      // fixed base price (€)
-  perPage: 49.99, // added per page (€)
+  base: 299,  // fixed base price (€)
+  perPage: 49, // added per page (€)
 };
+
+/** Minimum possible price (1 page, no add-ons, regular speed) — used in comparison card */
+export const MIN_PRICE = vexxo.base + vexxo.perPage; // 348
 
 /** Add-ons — extra cost per page */
 export const addOns = {
@@ -41,8 +44,8 @@ export const timeline = {
  * Competitor comparison pricing (static).
  *
  * Verification — worst case (30 pages + SEO + Content + 7 days):
- *   Vexxo:      399 + (49.99 + 30 + 30 + 50) × 30 = €5,199  ✓
- *   Freelancer: 1000 + 200 × 30               = €7,000  ✓ (Vexxo ~26% cheaper)
+ *   Vexxo:      299 + (49 + 30 + 30 + 50) × 30 = €4,769  ✓
+ *   Freelancer: 1000 + 200 × 30               = €7,000  ✓ (Vexxo ~32% cheaper)
  *   Agency:     2000 + 400 × 30               = €14,000 ✓
  */
 export const comparison = {
