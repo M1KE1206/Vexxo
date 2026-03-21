@@ -72,13 +72,13 @@ export default function PricingCalculator() {
   const tlabel = (obj) => lang === "nl" ? obj.labelNL : obj.labelEN;
 
   return (
-    <section id="pricing" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
+    <section id="pricing" aria-labelledby="pricing-heading" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="text-center mb-16 space-y-3">
         <span className="text-accent font-bold text-xs tracking-widest uppercase">
           {t("pricing.badge")}
         </span>
-        <h2 className="text-4xl md:text-5xl font-headline font-bold text-on-surface">
+        <h2 id="pricing-heading" className="text-4xl md:text-5xl font-headline font-bold text-on-surface">
           {t("pricing.title")}
         </h2>
         <p className="text-on-surface-variant">{t("pricing.subtitle")}</p>

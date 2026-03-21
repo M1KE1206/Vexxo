@@ -54,14 +54,14 @@ export default function Contact() {
   const inputCls = "w-full rounded-xl border border-outline-variant/30 bg-surface-container-high px-4 py-3 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40";
 
   return (
-    <section id="contact" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
+    <section id="contact" aria-labelledby="contact-heading" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
       <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
 
         {/* Left — contact info */}
         <div className="space-y-8">
           <div>
             <span className="text-accent font-bold text-xs tracking-widest uppercase">{t("contact.badge")}</span>
-            <h2 className="text-4xl md:text-5xl font-headline font-bold mt-3 text-on-surface">
+            <h2 id="contact-heading" className="text-4xl md:text-5xl font-headline font-bold mt-3 text-on-surface">
               {t("contact.title")}
             </h2>
             <p className="text-on-surface-variant mt-4 leading-relaxed">

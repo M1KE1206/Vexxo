@@ -4,7 +4,8 @@
       "Bash(ls C:/Users/david/Vexxo/*.html)",
       "Bash(grep -E '\\\\.\\(html|js|ts|jsx|tsx\\)$')",
       "Bash(npm install:*)",
-      "Bash(npx vite:*)"
+      "Bash(npx vite:*)",
+      "Bash(npm run:*)"
     ]
   }
 }

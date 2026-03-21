@@ -29,7 +29,7 @@ export default function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <nav className="flex justify-between items-center px-6 md:px-8 py-4 max-w-7xl mx-auto">
+      <nav aria-label="Main navigation" className="flex justify-between items-center px-6 md:px-8 py-4 max-w-7xl mx-auto">
         {/* Logo */}
         <a href="#hero" className="text-xl md:text-2xl font-extrabold gradient-text font-headline">
           Vexxo Studio
@@ -55,11 +55,12 @@ export default function Navbar() {
           </button>
           <button
             onClick={() => setLang(lang === "nl" ? "en" : "nl")}
+            aria-label={lang === "nl" ? "Switch to English" : "Schakel naar Nederlands"}
             className="flex items-center gap-1 text-[11px] font-bold transition-colors hover:text-on-surface-variant"
           >
-            <span className={lang === "nl" ? "text-on-surface" : "text-on-surface-variant/40"}>NL</span>
-            <span className="text-on-surface-variant/30">|</span>
-            <span className={lang === "en" ? "text-on-surface" : "text-on-surface-variant/40"}>EN</span>
+            <span lang="nl" className={lang === "nl" ? "text-on-surface" : "text-on-surface-variant/40"}>NL</span>
+            <span className="text-on-surface-variant/30" aria-hidden="true">|</span>
+            <span lang="en" className={lang === "en" ? "text-on-surface" : "text-on-surface-variant/40"}>EN</span>
           </button>
         </div>
 
@@ -108,11 +109,12 @@ export default function Navbar() {
               </button>
               <button
                 onClick={() => { setLang(lang === "nl" ? "en" : "nl"); setOpen(false); }}
+                aria-label={lang === "nl" ? "Switch to English" : "Schakel naar Nederlands"}
                 className="flex items-center gap-1 text-[11px] font-bold"
               >
-                <span className={lang === "nl" ? "text-on-surface" : "text-on-surface-variant/40"}>NL</span>
-                <span className="text-on-surface-variant/30">|</span>
-                <span className={lang === "en" ? "text-on-surface" : "text-on-surface-variant/40"}>EN</span>
+                <span lang="nl" className={lang === "nl" ? "text-on-surface" : "text-on-surface-variant/40"}>NL</span>
+                <span className="text-on-surface-variant/30" aria-hidden="true">|</span>
+                <span lang="en" className={lang === "en" ? "text-on-surface" : "text-on-surface-variant/40"}>EN</span>
               </button>
             </div>
           </div>

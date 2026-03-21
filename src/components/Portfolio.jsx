@@ -16,14 +16,14 @@ export default function Portfolio() {
   const filtered = activeTag === "All" ? projects : projects.filter((p) => p.tag === activeTag);
 
   return (
-    <section id="portfolio" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
+    <section id="portfolio" aria-labelledby="portfolio-heading" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
         <div>
           <span className="text-accent font-bold text-xs tracking-widest uppercase">
             {t("portfolio.badge")}
           </span>
-          <h2 className="text-4xl md:text-5xl font-headline font-bold mt-2 text-on-surface">
+          <h2 id="portfolio-heading" className="text-4xl md:text-5xl font-headline font-bold mt-2 text-on-surface">
             {t("portfolio.title")}
           </h2>
         </div>

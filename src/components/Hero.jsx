@@ -1,6 +1,9 @@
+import { lazy, Suspense } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { useModal } from "../context/ModalContext";
-import HeroComputer from "./HeroComputer";
+
+// Lazy-load the heavy 3D terminal — only render when visible and modal is closed
+const HeroComputer = lazy(() => import("./HeroComputer"));
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -9,11 +12,12 @@ export default function Hero() {
   return (
     <section
       id="hero"
+      aria-labelledby="hero-heading"
       className="relative min-h-[calc(100vh-80px)] flex items-center px-6 md:px-8 max-w-7xl mx-auto py-16 overflow-hidden"
     >
       {/* Background glow blobs */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-primary/8 blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-secondary/6 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-primary/8 blur-[140px] rounded-full pointer-events-none" aria-hidden="true" />
+      <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-secondary/6 blur-[120px] rounded-full pointer-events-none" aria-hidden="true" />
 
       <div className="grid md:grid-cols-12 gap-12 items-center w-full">
         {/* Left — text */}
@@ -22,7 +26,7 @@ export default function Hero() {
             {t("hero.badge")}
           </span>
 
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-headline font-extrabold tracking-tight leading-[1.1]">
+          <h1 id="hero-heading" className="text-5xl md:text-6xl lg:text-7xl font-headline font-extrabold tracking-tight leading-[1.1]">
             {t("hero.headline1")}<br />
             {t("hero.headline2")}<br />
             <span className="gradient-text">{t("hero.headline3")}</span>
@@ -43,9 +47,13 @@ export default function Hero() {
         </div>
 
         {/* Right — 3D Computer (unmounted while modal is open for performance) */}
-        <div className="md:col-span-5 flex justify-center md:justify-end">
+        <div className="md:col-span-5 flex justify-center md:justify-end" aria-hidden="true">
           <div className="w-full scale-[0.8] sm:scale-90 md:scale-100 origin-center">
-            {!isOpen && <HeroComputer />}
+            {!isOpen && (
+              <Suspense fallback={null}>
+                <HeroComputer />
+              </Suspense>
+            )}
           </div>
         </div>
       </div>

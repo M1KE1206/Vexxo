@@ -6,7 +6,7 @@ const AUTO_LINES = [
   "> compiling components ✓",
   "> optimizing performance ✓",
   "> deploying to production...",
-  "> site is live. 🚀",
+  "> site is live. Ready to build! 🚀",
 ];
 
 const KEY_ROWS = [

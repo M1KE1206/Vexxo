@@ -13,6 +13,7 @@ export default function AboutMe() {
   return (
     <section
       id="about"
+      aria-labelledby="about-heading"
       className="py-24 px-6 md:px-8 bg-surface-container-low relative overflow-hidden"
     >
       {/* Decorative blobs */}
@@ -26,7 +27,7 @@ export default function AboutMe() {
             <span className="text-accent font-bold text-xs tracking-widest uppercase">
               {t("about.badge")}
             </span>
-            <h2 className="text-4xl md:text-5xl font-headline font-bold mt-3 text-on-surface">
+            <h2 id="about-heading" className="text-4xl md:text-5xl font-headline font-bold mt-3 text-on-surface">
               {t("about.title")}
             </h2>
           </div>
