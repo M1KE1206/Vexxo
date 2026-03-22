@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Bulk Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design tokens ─────────────────────────────────── */
+    :root {
+      --bg:          #0f0f0f;
+      --surface:     #1a1a1a;
+      --surface-2:   #222222;
+      --border:      #2a2a2a;
+      --border-2:    #333333;
+      --accent:      #4ade80;   /* groen — done/checked */
+      --accent-dim:  rgba(74, 222, 128, 0.12);
+      --accent-glow: rgba(74, 222, 128, 0.06);
+      --text:        #f0f0f0;
+      --muted:       #888888;
+      --faint:       #444444;
+      --danger:      #f87171;
+      --radius:      12px;
+      --radius-sm:   8px;
+      --nav-height:  64px;
+    }
+
+    /* ── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    button { cursor: pointer; font-family: inherit; border: none; }
+    a { color: inherit; }
+
+    /* ── Layout ─────────────────────────────────────────── */
+    #app { max-width: 480px; margin: 0 auto; position: relative; min-height: 100vh; }
+
+    main { padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 8px); }
+
+    /* ── Tab system ─────────────────────────────────────── */
+    .tab { display: none; padding: 16px 16px 0; }
+    .tab.active {
+      display: block;
+      animation: fadeUp 0.18s ease;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Bottom nav ─────────────────────────────────────── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      max-width: 480px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: #111111;
+      border-top: 1px solid var(--border);
+      padding-bottom: env(safe-area-inset-bottom);
+      z-index: 100;
+    }
+    .nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      min-height: var(--nav-height);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.15s;
+      border-top: 2px solid transparent;
+      padding: 0 4px;
+    }
+    .nav-btn .icon { font-size: 1.3rem; line-height: 1; }
+    .nav-btn.active {
+      color: var(--accent);
+      border-top-color: var(--accent);
+    }
+    .nav-btn:active { opacity: 0.7; }
+
+    /* ── Section headers ─────────────────────────────────── */
+    .section-header {
+      margin-bottom: 20px;
+      padding-top: 8px;
+    }
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .section-sub {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── Cards ───────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── Buttons ─────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: opacity 0.15s, transform 0.1s;
+      min-height: 44px;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border-2);
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--faint); }
+    .btn-accent {
+      background: var(--accent);
+      color: #0a0a0a;
+    }
+    .btn-accent:hover { opacity: 0.9; }
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid rgba(248, 113, 113, 0.3);
+      font-size: 0.8rem;
+    }
+
+    /* ════════════════════════════════════════════════════
+       BOODSCHAPPEN
+    ════════════════════════════════════════════════════ */
+
+    .week-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .week-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .week-label strong { color: var(--text); }
+
+    /* Progress bar */
+    .progress-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+    .progress-price {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .progress-price span { color: var(--accent); }
+    .progress-count { font-size: 0.8rem; color: var(--muted); }
+    .progress-bar-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Checklist */
+    .checklist-category { margin-bottom: 4px; }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item:active { opacity: 0.7; }
+
+    .check-box {
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      border: 2px solid var(--border-2);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .check-box svg { display: none; }
+    .checklist-item.checked .check-box {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .checklist-item.checked .check-box svg { display: block; }
+
+    .item-info { flex: 1; min-width: 0; }
+    .item-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    .checklist-item.checked .item-label {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+    .item-price {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    /* ════════════════════════════════════════════════════
+       FITNESS
+    ════════════════════════════════════════════════════ */
+
+    /* Day tabs (horizontal scroll) */
+    .day-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 20px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .day-tabs::-webkit-scrollbar { display: none; }
+
+    .day-tab-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 600;
+      white-space: nowrap;
+      min-width: 52px;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .day-tab-btn .day-abbr { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .day-tab-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+    .day-tab-btn.active .day-abbr { color: var(--accent); }
+    .day-tab-btn.today {
+      border-color: rgba(74,222,128,0.4);
+    }
+    .day-tab-btn.done-day .day-abbr::after {
+      content: ' ✓';
+      font-size: 0.7rem;
+      color: var(--accent);
+    }
+
+    /* Day content panels */
+    .day-panel { display: none; }
+    .day-panel.active { display: block; }
+
+    .day-header {
+      margin-bottom: 16px;
+    }
+    .day-name { font-size: 1.1rem; font-weight: 700; }
+    .day-type { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+    /* Rest day */
+    .rest-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 20px;
+      text-align: center;
+    }
+    .rest-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .rest-msg { font-size: 0.95rem; color: var(--muted); line-height: 1.6; }
+    .rest-msg strong { color: var(--accent); }
+
+    /* Exercise card */
+    .exercise-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 14px 12px;
+      margin-bottom: 10px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .exercise-card.complete {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+    .exercise-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+    .exercise-name { font-size: 0.9rem; font-weight: 600; line-height: 1.3; }
+    .exercise-reps {
+      font-size: 0.75rem;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    /* Set buttons */
+    .sets {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .set-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: var(--surface-2);
+      border: 1.5px solid var(--border-2);
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: all 0.15s;
+    }
+    .set-btn:active { transform: scale(0.92); }
+    .set-btn.done {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0a0a0a;
+    }
+
+    /* Session done button */
+    .session-footer {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .session-done-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #0a0a0a;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .session-done-btn:active { transform: scale(0.98); }
+    .session-done-btn:disabled {
+      background: var(--surface-2);
+      color: var(--muted);
+      cursor: default;
+      border: 1px solid var(--border);
+    }
+    .session-done-btn:disabled:active { transform: none; }
+
+    .session-celebration {
+      display: none;
+      margin-top: 12px;
+      padding: 14px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(74,222,128,0.3);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: var(--accent);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .session-celebration.visible { display: block; }
+
+    /* ════════════════════════════════════════════════════
+       VOEDING
+    ════════════════════════════════════════════════════ */
+
+    .macro-banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .macro-item { text-align: center; flex: 1; min-width: 64px; }
+    .macro-value { font-size: 1.2rem; font-weight: 700; color: var(--accent); }
+    .macro-label { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+
+    .intake-callout {
+      background: rgba(74,222,128,0.06);
+      border: 1px solid rgba(74,222,128,0.2);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .intake-callout strong { color: var(--accent); }
+
+    /* Accordion / details */
+    .meal-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .meal-card[open] { border-color: var(--border-2); }
+
+    .meal-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .meal-header::-webkit-details-marker { display: none; }
+    .meal-header::marker { display: none; }
+
+    .meal-time {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 38px;
+      flex-shrink: 0;
+    }
+    .meal-name-wrap { flex: 1; min-width: 0; }
+    .meal-name { font-size: 0.9rem; font-weight: 600; display: block; }
+    .meal-kcal { font-size: 0.72rem; color: var(--muted); }
+
+    .meal-chevron {
+      color: var(--muted);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .meal-card[open] .meal-chevron { transform: rotate(180deg); }
+
+    .meal-body {
+      padding: 0 16px 16px;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text);
+      border-top: 1px solid var(--border);
+    }
+    .meal-body p { margin-top: 12px; }
+    .meal-body .or { color: var(--muted); font-style: italic; }
+    .meal-tip {
+      margin-top: 10px !important;
+      padding: 10px 12px;
+      background: var(--surface-2);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ════════════════════════════════════════════════════
+       INFO
+    ════════════════════════════════════════════════════ */
+
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+    .profile-row:last-child { border-bottom: none; }
+    .profile-key {
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+    .profile-val {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .creatine-reminder {
+      background: var(--accent-dim);
+      border: 1px solid rgba(74,222,128,0.25);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .creatine-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .creatine-text h3 { font-size: 0.9rem; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+    .creatine-text p { font-size: 0.8rem; color: var(--muted); }
+
+    .quote-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-top: 4px;
+    }
+    .quote-text {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+    .quote-author { font-size: 0.75rem; color: var(--muted); }
+
+    /* ── Misc utils ───────────────────────────────────── */
+    .spacer-sm { height: 8px; }
+    .spacer-md { height: 16px; }
+    .text-muted { color: var(--muted); }
+    .text-accent { color: var(--accent); }
+    .fw-bold { font-weight: 700; }
+  </style>
+</head>
+<body>
+<div id="app">
+  <main>
+
+    <!-- ══════════════════════════════════════════
+         TAB 1 — BOODSCHAPPEN
+    ══════════════════════════════════════════ -->
+    <section id="tab-boodschappen" class="tab active">
+      <div class="section-header">
+        <span class="section-label">Week</span>
+        <h1 class="section-title">Boodschappen</h1>
+      </div>
+
+      <div class="week-meta">
+        <span class="week-label" id="week-display">Week van …</span>
+        <button class="btn btn-danger" id="reset-btn">↺ Reset week</button>
+      </div>
+
+      <!-- Progress + price -->
+      <div class="progress-wrap">
+        <div class="progress-row">
+          <span class="progress-price" id="price-display">
+            Afgevinkt: <span id="price-checked">€0</span> / ~€38 totaal
+          </span>
+          <span class="progress-count" id="item-count">0 / 0</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Checklist — rendered by JS -->
+      <div id="checklist-root"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         TAB 2 — FITNESS
+    ══════════════════════════════════════════ -->
+    <section id="tab-fitness" class="tab">
+      <div class="section-header">
+        <span class="section-label">Schema</span>
+        <h1 class="section-title">Fitness</h1>
+        <p class="section-sub">Push / Pull / Legs — 5 dagen</p>
+      </div>
+
+      <!-- Day selector -->
+      <div class="day-tabs" id="day-tabs"></div>
+
+      <!-- Day panels — rendered by JS -->
+      <div id="day-panels"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         TAB 3 — VOEDING
+    ══════════════════════════════════════════ -->
+    <section id="tab-voeding" class="tab">
+      <div class="section-header">
+        <span class="section-label">Dagplan</span>
+        <h1 class="section-title">Voeding</h1>
+      </div>
+
+      <!-- Macro totals -->
+      <div class="macro-banner">
+        <div class="macro-item">
+          <div class="macro-value">3100</div>
+          <div class="macro-label">kcal / dag</div>
+        </div>
+        <div class="macro-item">
+          <div class="macro-value">155g</div>
+          <div class="macro-label">eiwit / dag</div>
+        </div>
+        <div class="macro-item">
+          <div class="macro-value">5×</div>
+          <div class="macro-label">maaltijden</div>
+        </div>
+      </div>
+
+      <div class="intake-callout">
+        ⚠️ Je eet nu <strong>~1800 kcal</strong>. Doel is <strong>3100 kcal</strong>.
+        Het ontbijt is stap 1 — sla het nooit over.
+      </div>
+
+      <!-- Meals — native <details> accordion -->
+      <details class="meal-card" open>
+        <summary class="meal-header">
+          <span class="meal-time">07:30</span>
+          <span class="meal-name-wrap">
+            <span class="meal-name">Ochtend</span>
+            <span class="meal-kcal">~750 kcal · 28g eiwit</span>
+          </span>
+          <svg class="meal-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="meal-body">
+          <p><strong>Overnight oats</strong></p>
+          <p>100g havermout + 300ml volle melk + 1 banaan + 30g pindakaas</p>
+          <p class="meal-tip">💡 Avond ervoor klaar maken in een pot — 's ochtends gewoon pakken en gaan.</p>
+        </div>
+      </details>
+
+      <details class="meal-card">
+        <summary class="meal-header">
+          <span class="meal-time">12:30</span>
+          <span class="meal-name-wrap">
+            <span class="meal-name">Middag</span>
+            <span class="meal-kcal">~650 kcal · 40g eiwit</span>
+          </span>
+          <svg class="meal-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="meal-body">
+          <p>3 boterhammen met kipfilet + kaasplak + komkommer</p>
+          <p class="or">— of —</p>
+          <p>4 hardgekookte eieren + 2 boterhammen</p>
+          <p>+ 1 stuk fruit of handvol noten</p>
+          <p class="meal-tip">💡 Groot koken de avond ervoor = lunch voor morgen is meteen geregeld.</p>
+        </div>
+      </details>
+
+      <details class="meal-card">
+        <summary class="meal-header">
+          <span class="meal-time">18:00</span>
+          <span class="meal-name-wrap">
+            <span class="meal-name">Avondmaal</span>
+            <span class="meal-kcal">~900 kcal · 55g eiwit</span>
+          </span>
+          <svg class="meal-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="meal-body">
+          <p>200g rijst of pasta</p>
+          <p>+ 200g kippendijen of gehakt</p>
+          <p>+ groenten (diepvries = makkelijk)</p>
+          <p>+ scheutje olijfolie</p>
+          <p class="meal-tip">💡 Bereid een dubbele portie — lunch morgen is al gedaan.</p>
+        </div>
+      </details>
+
+      <details class="meal-card">
+        <summary class="meal-header">
+          <span class="meal-time">20:30</span>
+          <span class="meal-name-wrap">
+            <span class="meal-name">Pre-gym snack</span>
+            <span class="meal-kcal">~400 kcal · 15g eiwit</span>
+          </span>
+          <svg class="meal-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="meal-body">
+          <p>2 boterhammen pindakaas + banaan</p>
+          <p class="or">— of —</p>
+          <p>4-5 rijstwafels + pindakaas + honing</p>
+        </div>
+      </details>
+
+      <details class="meal-card">
+        <summary class="meal-header">
+          <span class="meal-time">00:00</span>
+          <span class="meal-name-wrap">
+            <span class="meal-name">Post-gym</span>
+            <span class="meal-kcal">~350 kcal · 30g eiwit</span>
+          </span>
+          <svg class="meal-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="meal-body">
+          <p>250g magere kwark + honing + granola</p>
+          <p>+ <strong class="text-accent">5g creatine</strong> — elke avond, ook op rustdagen</p>
+          <p class="meal-tip">💡 Kwark pot al klaar zetten voor je naar de gym gaat.</p>
+        </div>
+      </details>
+
+      <div class="spacer-md"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         TAB 4 — INFO
+    ══════════════════════════════════════════ -->
+    <section id="tab-info" class="tab">
+      <div class="section-header">
+        <span class="section-label">Profiel</span>
+        <h1 class="section-title">Over mij</h1>
+      </div>
+
+      <!-- Creatine reminder -->
+      <div class="creatine-reminder">
+        <div class="creatine-icon">💊</div>
+        <div class="creatine-text">
+          <h3>Creatine — elke avond</h3>
+          <p>5g bij je post-gym kwark. Ook op rustdagen niet vergeten.</p>
+        </div>
+      </div>
+
+      <!-- Profile card -->
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">Mijn gegevens</div>
+        <div class="profile-row">
+          <span class="profile-key">Leeftijd</span>
+          <span class="profile-val">19 jaar</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-key">Huidig gewicht</span>
+          <span class="profile-val">57 kg</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-key">Doelgewicht</span>
+          <span class="profile-val text-accent">65 kg</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-key">Verwachte progressie</span>
+          <span class="profile-val">~0.5–1 kg / maand</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-key">School</span>
+          <span class="profile-val">PXL (1u reis h/t)</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-key">Gym</span>
+          <span class="profile-val">23:00 – 00:00</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-key">Budget boodschappen</span>
+          <span class="profile-val">€35–40 / week</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-key">Creatine</span>
+          <span class="profile-val text-accent">5g / dag</span>
+        </div>
+      </div>
+
+      <!-- Training plan summary -->
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">Trainingsschema</div>
+        <div class="profile-row">
+          <span class="profile-key">Ma / Do</span>
+          <span class="profile-val">Push</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-key">Di / Vr</span>
+          <span class="profile-val">Pull</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-key">Wo / Za</span>
+          <span class="profile-val">Legs (of Push za)</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-key">Zo</span>
+          <span class="profile-val">Rust</span>
+        </div>
+      </div>
+
+      <!-- Quote -->
+      <div class="quote-card">
+        <div class="quote-text">"Je hoeft het niet leuk te vinden. Je moet het gewoon doen."</div>
+        <div class="quote-author">— elke avond 23:00</div>
+      </div>
+
+      <div class="spacer-md"></div>
+    </section>
+
+  </main><!-- /main -->
+
+  <!-- Bottom navigation -->
+  <nav class="bottom-nav" role="navigation" aria-label="Hoofdnavigatie">
+    <button class="nav-btn active" id="nav-boodschappen" onclick="showTab('boodschappen')" aria-label="Boodschappen">
+      <span class="icon" aria-hidden="true">🛒</span>
+      <span>Boodschappen</span>
+    </button>
+    <button class="nav-btn" id="nav-fitness" onclick="showTab('fitness')" aria-label="Fitness schema">
+      <span class="icon" aria-hidden="true">💪</span>
+      <span>Fitness</span>
+    </button>
+    <button class="nav-btn" id="nav-voeding" onclick="showTab('voeding')" aria-label="Voedingsplan">
+      <span class="icon" aria-hidden="true">🍽️</span>
+      <span>Voeding</span>
+    </button>
+    <button class="nav-btn" id="nav-info" onclick="showTab('info')" aria-label="Info">
+      <span class="icon" aria-hidden="true">ℹ️</span>
+      <span>Info</span>
+    </button>
+  </nav>
+</div><!-- /app -->
+
+<script>
+'use strict';
+
+/* ════════════════════════════════════════════════════════
+   DATA
+════════════════════════════════════════════════════════ */
+
+const BOODSCHAPPEN = [
+  {
+    cat: 'Eiwitten',
+    items: [
+      { id: 'kip',    label: 'Kippendijen 1.5kg (Lidl/Aldi)', price: 7.00 },
+      { id: 'eieren', label: 'Eieren 12 stuks (Aldi)',        price: 2.50 },
+      { id: 'kwark',  label: 'Magere kwark 2× 500g (Lidl)',   price: 3.50 },
+      { id: 'tonijn', label: 'Tonijn blik 4 stuks (Aldi)',    price: 3.00 },
+    ]
+  },
+  {
+    cat: 'Koolhydraten & energie',
+    items: [
+      { id: 'haver',   label: 'Havermout 1kg (Lidl)',          price: 1.50 },
+      { id: 'rijst',   label: 'Rijst 2kg (Aldi)',              price: 2.00 },
+      { id: 'brood',   label: 'Volkoren brood 2 broden (Lidl)',price: 3.00 },
+      { id: 'bananen', label: 'Bananen 1kg (Aldi)',            price: 1.50 },
+      { id: 'pindak',  label: 'Pindakaas 350g (Aldi)',         price: 2.00 },
+    ]
+  },
+  {
+    cat: 'Extra',
+    items: [
+      { id: 'melk',    label: 'Volle melk 2L (Lidl)',               price: 2.00 },
+      { id: 'groenten',label: 'Diepvriesgroenten 2× 1kg (Aldi)',    price: 3.00 },
+      { id: 'olijf',   label: 'Olijfolie klein flesje (Aldi)',      price: 2.50 },
+      { id: 'honing',  label: 'Honing pot (Aldi)',                  price: 2.00 },
+    ]
+  }
+];
+
+// Full exercise lists
+const PUSH_EXERCISES = [
+  { name: 'Pec fly machine',               sets: 4, reps: '12 reps' },
+  { name: 'Cable crossover',               sets: 3, reps: '15 reps' },
+  { name: 'Incline dumbbell fly',          sets: 3, reps: '12 reps' },
+  { name: 'Lateral raise',                 sets: 3, reps: '15 reps' },
+  { name: 'Overhead press (dumbbell)',     sets: 3, reps: '10 reps' },
+  { name: 'Tricep pushdown',               sets: 3, reps: '12 reps' },
+  { name: 'Overhead tricep extension',     sets: 2, reps: '12 reps' },
+];
+
+const PULL_EXERCISES = [
+  { name: 'Lat pulldown',              sets: 4, reps: '10 reps' },
+  { name: 'Cable row',                 sets: 3, reps: '10 reps' },
+  { name: 'Face pulls',                sets: 3, reps: '15 reps' },
+  { name: 'Rear delt fly (machine)',   sets: 3, reps: '15 reps' },
+  { name: 'Incline dumbbell curl',     sets: 3, reps: '12 reps' },
+  { name: 'Hammer curl',               sets: 3, reps: '12 reps' },
+];
+
+const LEGS_EXERCISES = [
+  { name: 'Leg press',           sets: 4, reps: '10 reps' },
+  { name: 'Romanian deadlift',   sets: 3, reps: '10 reps' },
+  { name: 'Leg curl (machine)',  sets: 3, reps: '12 reps' },
+  { name: 'Leg extension',       sets: 3, reps: '12 reps' },
+  { name: 'Calf raises',         sets: 4, reps: '20 reps' },
+  { name: 'Plank',               sets: 3, reps: '45 sec' },
+];
+
+const SCHEMA = [
+  { id: 'maandag',  abbr: 'Ma', label: 'Maandag',  type: 'Push (borst, schouders, triceps)', exercises: PUSH_EXERCISES },
+  { id: 'dinsdag',  abbr: 'Di', label: 'Dinsdag',  type: 'Pull (rug, biceps)',               exercises: PULL_EXERCISES },
+  { id: 'woensdag', abbr: 'Wo', label: 'Woensdag', type: 'Legs (benen, billen, core)',        exercises: LEGS_EXERCISES },
+  { id: 'donderdag',abbr: 'Do', label: 'Donderdag',type: 'Push (borst, schouders, triceps)', exercises: PUSH_EXERCISES },
+  { id: 'vrijdag',  abbr: 'Vr', label: 'Vrijdag',  type: 'Pull (rug, biceps)',               exercises: PULL_EXERCISES },
+  { id: 'zaterdag', abbr: 'Za', label: 'Zaterdag', type: 'Legs of Push (jouw keuze)',        exercises: LEGS_EXERCISES },
+  { id: 'zondag',   abbr: 'Zo', label: 'Zondag',   type: 'Rust',                             rest: true },
+];
+
+const DAY_JS_TO_ID = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
+
+
+/* ════════════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════════════ */
+
+/** Get ISO week number for a given date */
+function getISOWeek(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayOfWeek = d.getUTCDay() || 7; // Monday = 1, Sunday = 7
+  d.setUTCDate(d.getUTCDate() + 4 - dayOfWeek);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+/** Format date as "21 mrt 2026" */
+function formatDate(date) {
+  const months = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+  return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+}
+
+/** Get the Monday of the ISO week for a given date */
+function getMondayOfWeek(date) {
+  const d = new Date(date);
+  const day = d.getDay() || 7;
+  d.setDate(d.getDate() - (day - 1));
+  return d;
+}
+
+/** Safe JSON parse with fallback */
+function safeJSON(str, fallback) {
+  try { return JSON.parse(str); } catch { return fallback; }
+}
+
+/** Format price as "€7" or "€2.50" */
+function formatPrice(n) {
+  return '€' + (n % 1 === 0 ? n : n.toFixed(2));
+}
+
+
+/* ════════════════════════════════════════════════════════
+   TAB SYSTEM
+════════════════════════════════════════════════════════ */
+
+function showTab(id) {
+  // Hide all tabs
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  // Deactivate all nav buttons
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  // Show target tab
+  const tabEl = document.getElementById('tab-' + id);
+  if (tabEl) tabEl.classList.add('active');
+  // Activate nav button
+  const navEl = document.getElementById('nav-' + id);
+  if (navEl) navEl.classList.add('active');
+  // Persist
+  localStorage.setItem('active_tab', id);
+}
+
+function initTabs() {
+  const saved = localStorage.getItem('active_tab') || 'boodschappen';
+  showTab(saved);
+}
+
+
+/* ════════════════════════════════════════════════════════
+   BOODSCHAPPEN
+════════════════════════════════════════════════════════ */
+
+function initBoodschappen() {
+  const now = new Date();
+  const currentWeek = getISOWeek(now);
+  const savedWeek   = localStorage.getItem('checklist_week');
+
+  // Auto-reset on new week
+  if (savedWeek !== String(currentWeek)) {
+    localStorage.removeItem('checklist_items');
+    localStorage.setItem('checklist_week', String(currentWeek));
+  }
+
+  // Show week label
+  const monday = getMondayOfWeek(now);
+  document.getElementById('week-display').innerHTML =
+    `Week van <strong>${formatDate(monday)}</strong>`;
+
+  // Load saved checked state
+  let checked = safeJSON(localStorage.getItem('checklist_items'), {});
+
+  // Build checklist HTML
+  const root = document.getElementById('checklist-root');
+  root.innerHTML = '';
+
+  BOODSCHAPPEN.forEach(cat => {
+    const card = document.createElement('div');
+    card.className = 'card checklist-category';
+
+    const title = document.createElement('div');
+    title.className = 'card-title';
+    title.textContent = cat.cat;
+    card.appendChild(title);
+
+    cat.items.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'checklist-item' + (checked[item.id] ? ' checked' : '');
+      row.dataset.id    = item.id;
+      row.dataset.price = item.price;
+      row.setAttribute('role', 'checkbox');
+      row.setAttribute('aria-checked', checked[item.id] ? 'true' : 'false');
+      row.setAttribute('tabindex', '0');
+
+      row.innerHTML = `
+        <div class="check-box">
+          <svg width="13" height="10" viewBox="0 0 13 10" fill="none" aria-hidden="true">
+            <path d="M1 5l4 4L12 1" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="item-info">
+          <div class="item-label">${item.label}</div>
+          <div class="item-price">${formatPrice(item.price)}</div>
+        </div>`;
+
+      card.appendChild(row);
+    });
+
+    root.appendChild(card);
+  });
+
+  updateBoodschappenUI(checked);
+
+  // Event delegation on root
+  root.addEventListener('click', (e) => {
+    const row = e.target.closest('.checklist-item');
+    if (!row) return;
+    toggleItem(row);
+  });
+  root.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      const row = e.target.closest('.checklist-item');
+      if (row) { e.preventDefault(); toggleItem(row); }
+    }
+  });
+
+  // Reset button
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    if (!confirm('Week resetten? Alle vinkjes worden gewist.')) return;
+    localStorage.removeItem('checklist_items');
+    localStorage.setItem('checklist_week', String(getISOWeek(new Date())));
+    initBoodschappen(); // re-render
+  });
+}
+
+function toggleItem(row) {
+  const id = row.dataset.id;
+  let checked = safeJSON(localStorage.getItem('checklist_items'), {});
+
+  if (checked[id]) {
+    delete checked[id];
+    row.classList.remove('checked');
+    row.setAttribute('aria-checked', 'false');
+  } else {
+    checked[id] = true;
+    row.classList.add('checked');
+    row.setAttribute('aria-checked', 'true');
+  }
+
+  localStorage.setItem('checklist_items', JSON.stringify(checked));
+  updateBoodschappenUI(checked);
+}
+
+function updateBoodschappenUI(checked) {
+  // Count total items
+  const allItems = BOODSCHAPPEN.flatMap(c => c.items);
+  const total = allItems.length;
+  const doneCount = Object.keys(checked).length;
+
+  // Sum checked prices
+  let checkedPrice = 0;
+  allItems.forEach(item => {
+    if (checked[item.id]) checkedPrice += item.price;
+  });
+
+  // Update UI
+  document.getElementById('price-checked').textContent = formatPrice(checkedPrice);
+  document.getElementById('item-count').textContent = `${doneCount} / ${total}`;
+  document.getElementById('progress-fill').style.width =
+    total > 0 ? `${(doneCount / total * 100)}%` : '0%';
+}
+
+
+/* ════════════════════════════════════════════════════════
+   FITNESS
+════════════════════════════════════════════════════════ */
+
+let activeDayId = null;
+
+function initFitness() {
+  const todayId = DAY_JS_TO_ID[new Date().getDay()];
+  const tabsEl   = document.getElementById('day-tabs');
+  const panelsEl = document.getElementById('day-panels');
+
+  tabsEl.innerHTML   = '';
+  panelsEl.innerHTML = '';
+
+  SCHEMA.forEach(day => {
+    const isDone  = localStorage.getItem(`fitness_done_${day.id}`) === 'true';
+    const isToday = day.id === todayId;
+
+    // Day tab button
+    const btn = document.createElement('button');
+    btn.className = 'day-tab-btn' + (isToday ? ' today' : '') + (isDone ? ' done-day' : '');
+    btn.id = `day-btn-${day.id}`;
+    btn.innerHTML = `<span class="day-abbr">${day.abbr}</span><span>${day.rest ? '😴' : day.type.split(' ')[0]}</span>`;
+    btn.addEventListener('click', () => switchDay(day.id));
+    tabsEl.appendChild(btn);
+
+    // Day panel
+    const panel = document.createElement('div');
+    panel.className = 'day-panel';
+    panel.id = `day-panel-${day.id}`;
+
+    if (day.rest) {
+      panel.innerHTML = `
+        <div class="day-header">
+          <div class="day-name">${day.label}</div>
+          <div class="day-type">${day.type}</div>
+        </div>
+        <div class="rest-card">
+          <div class="rest-icon">😴</div>
+          <div class="rest-msg">
+            Hersteldag. Toch <strong>goed eten</strong> en<br>
+            <strong>creatine niet vergeten</strong>.
+          </div>
+        </div>`;
+    } else {
+      // Build exercise cards
+      let exercisesHTML = '';
+      day.exercises.forEach((ex, idx) => {
+        const setsData = safeJSON(
+          localStorage.getItem(`fitness_sets_${day.id}_${idx}`),
+          new Array(ex.sets).fill(false)
+        );
+        const allDone = setsData.every(Boolean);
+
+        let setBtnsHTML = '';
+        setsData.forEach((done, s) => {
+          setBtnsHTML += `<button class="set-btn${done ? ' done' : ''}"
+            data-day="${day.id}" data-idx="${idx}" data-set="${s}"
+            aria-label="Set ${s+1} ${done ? 'voltooid' : ''}">${s + 1}</button>`;
+        });
+
+        exercisesHTML += `
+          <div class="exercise-card${allDone ? ' complete' : ''}" id="ex-${day.id}-${idx}">
+            <div class="exercise-top">
+              <span class="exercise-name">${ex.name}</span>
+              <span class="exercise-reps">${ex.sets} × ${ex.reps}</span>
+            </div>
+            <div class="sets">${setBtnsHTML}</div>
+          </div>`;
+      });
+
+      const sessionDone = isDone;
+      panel.innerHTML = `
+        <div class="day-header">
+          <div class="day-name">${day.label}</div>
+          <div class="day-type">${day.type}</div>
+        </div>
+        ${exercisesHTML}
+        <div class="session-footer">
+          <button class="session-done-btn" id="session-btn-${day.id}"
+            ${sessionDone ? 'disabled' : ''}
+            data-day="${day.id}">
+            ${sessionDone ? '✓ Sessie voltooid' : 'Sessie klaar ✓'}
+          </button>
+          <div class="session-celebration${sessionDone ? ' visible' : ''}" id="celebration-${day.id}">
+            💪 Goed gedaan! Eet nu je kwark + 5g creatine. Herstel goed.
+          </div>
+        </div>`;
+    }
+
+    panelsEl.appendChild(panel);
+  });
+
+  // Set button click handler (event delegation)
+  panelsEl.addEventListener('click', (e) => {
+    const setBtn = e.target.closest('.set-btn');
+    if (setBtn) { toggleSet(setBtn); return; }
+
+    const sessionBtn = e.target.closest('.session-done-btn');
+    if (sessionBtn && !sessionBtn.disabled) { markSessionDone(sessionBtn.dataset.day); }
+  });
+
+  // Start on today, fall back to maandag
+  const startDay = SCHEMA.find(d => d.id === todayId) ? todayId : 'maandag';
+  switchDay(startDay);
+}
+
+function switchDay(dayId) {
+  activeDayId = dayId;
+
+  document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.day-tab-btn').forEach(b => b.classList.remove('active'));
+
+  const panel = document.getElementById(`day-panel-${dayId}`);
+  const btn   = document.getElementById(`day-btn-${dayId}`);
+  if (panel) panel.classList.add('active');
+  if (btn)   btn.classList.add('active');
+
+  // Scroll tab into view
+  if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function toggleSet(btn) {
+  const { day, idx, set } = btn.dataset;
+  const exIdx = parseInt(idx, 10);
+  const setIdx = parseInt(set, 10);
+
+  const day_data = SCHEMA.find(d => d.id === day);
+  if (!day_data) return;
+  const ex = day_data.exercises[exIdx];
+  if (!ex) return;
+
+  const key      = `fitness_sets_${day}_${exIdx}`;
+  const setsData = safeJSON(localStorage.getItem(key), new Array(ex.sets).fill(false));
+
+  setsData[setIdx] = !setsData[setIdx];
+  localStorage.setItem(key, JSON.stringify(setsData));
+
+  // Update button UI
+  btn.classList.toggle('done', setsData[setIdx]);
+  btn.setAttribute('aria-label', `Set ${setIdx + 1} ${setsData[setIdx] ? 'voltooid' : ''}`);
+
+  // Check if all sets done → complete card
+  const card = document.getElementById(`ex-${day}-${exIdx}`);
+  if (card) card.classList.toggle('complete', setsData.every(Boolean));
+}
+
+function markSessionDone(dayId) {
+  localStorage.setItem(`fitness_done_${dayId}`, 'true');
+
+  const btn = document.getElementById(`session-btn-${dayId}`);
+  const cel = document.getElementById(`celebration-${dayId}`);
+  const tabBtn = document.getElementById(`day-btn-${dayId}`);
+
+  if (btn) { btn.disabled = true; btn.textContent = '✓ Sessie voltooid'; }
+  if (cel) cel.classList.add('visible');
+  if (tabBtn) tabBtn.classList.add('done-day');
+}
+
+
+/* ════════════════════════════════════════════════════════
+   BOOT
+════════════════════════════════════════════════════════ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  initBoodschappen();
+  initFitness();
+  initTabs(); // restore last active tab AFTER sections are built
+});
+</script>
+</body>
+</html>
