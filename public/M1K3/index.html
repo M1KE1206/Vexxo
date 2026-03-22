@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -10,28 +11,39 @@
   <style>
     /* ── Tokens ────────────────────────────────────────── */
     :root {
-      --bg:           #0a0a0a;
-      --surface:      #111111;
-      --surface-2:    #161616;
-      --surface-3:    #1c1c1c;
-      --border:       #1e1e1e;
-      --border-2:     #2a2a2a;
-      --accent:       #4ade80;
-      --accent-dim:   rgba(74,222,128,0.08);
-      --accent-glow:  rgba(74,222,128,0.05);
-      --text:         #efefef;
-      --text-2:       #888888;
-      --text-3:       #444444;
-      --sidebar-w:    220px;
-      --topbar-h:     56px;
-      --nav-h:        62px;
-      --r:            10px;
-      --r-sm:         7px;
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface-2: #161616;
+      --surface-3: #1c1c1c;
+      --border: #1e1e1e;
+      --border-2: #2a2a2a;
+      --accent: #4ade80;
+      --accent-dim: rgba(74, 222, 128, 0.08);
+      --accent-glow: rgba(74, 222, 128, 0.05);
+      --text: #efefef;
+      --text-2: #888888;
+      --text-3: #444444;
+      --sidebar-w: 220px;
+      --topbar-h: 56px;
+      --nav-h: 62px;
+      --r: 10px;
+      --r-sm: 7px;
     }
 
     /* ── Reset ─────────────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
     body {
       font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
@@ -39,8 +51,17 @@
       -webkit-font-smoothing: antialiased;
       overscroll-behavior: none;
     }
-    button { cursor: pointer; font-family: inherit; border: none; background: none; }
-    svg { display: block; }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      background: none;
+    }
+
+    svg {
+      display: block;
+    }
 
     /* ── App shell — desktop grid ─────────────────────── */
     #app {
@@ -62,6 +83,7 @@
       grid-column: 1;
       grid-row: 1;
     }
+
     .sidebar-logo {
       padding: 18px 14px 14px;
       border-bottom: 1px solid var(--border);
@@ -70,45 +92,109 @@
       gap: 10px;
       flex-shrink: 0;
     }
+
     .logo-mark {
-      width: 28px; height: 28px;
+      width: 28px;
+      height: 28px;
       background: var(--accent);
       border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
     }
-    .logo-mark svg { width: 15px; height: 15px; color: #080808; }
-    .logo-text  { font-size: 0.9rem; font-weight: 800; letter-spacing: -0.01em; }
-    .logo-sub   { font-size: 0.6rem; color: var(--text-3); margin-top: 1px; }
 
-    .nav-section { padding: 10px 8px 4px; flex-shrink: 0; }
+    .logo-mark svg {
+      width: 15px;
+      height: 15px;
+      color: #080808;
+    }
+
+    .logo-text {
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .logo-sub {
+      font-size: 0.6rem;
+      color: var(--text-3);
+      margin-top: 1px;
+    }
+
+    .nav-section {
+      padding: 10px 8px 4px;
+      flex-shrink: 0;
+    }
+
     .nav-section-label {
-      font-size: 0.55rem; font-weight: 700; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--text-3);
-      padding: 0 8px; margin-bottom: 4px;
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      padding: 0 8px;
+      margin-bottom: 4px;
     }
+
     .nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 10px; border-radius: var(--r-sm);
-      font-size: 0.78rem; font-weight: 500; color: var(--text-3);
-      cursor: pointer; margin-bottom: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--r-sm);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-3);
+      cursor: pointer;
+      margin-bottom: 1px;
       transition: background .12s, color .12s;
-      border: none; background: none; width: 100%; text-align: left;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
     }
-    .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; color: inherit; }
-    .nav-item:hover { background: var(--surface-2); color: var(--text-2); }
-    .nav-item.active { background: var(--accent-dim); color: var(--text); }
-    .nav-item.active svg { color: var(--accent); }
-    .nav-item.active .nav-badge { background: rgba(74,222,128,.15); color: var(--accent); }
+
+    .nav-item svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: inherit;
+    }
+
+    .nav-item:hover {
+      background: var(--surface-2);
+      color: var(--text-2);
+    }
+
+    .nav-item.active {
+      background: var(--accent-dim);
+      color: var(--text);
+    }
+
+    .nav-item.active svg {
+      color: var(--accent);
+    }
+
+    .nav-item.active .nav-badge {
+      background: rgba(74, 222, 128, .15);
+      color: var(--accent);
+    }
 
     .nav-badge {
-      margin-left: auto; font-size: 0.58rem; font-weight: 700;
-      background: var(--surface-3); color: var(--text-3);
-      padding: 2px 7px; border-radius: 99px;
+      margin-left: auto;
+      font-size: 0.58rem;
+      font-weight: 700;
+      background: var(--surface-3);
+      color: var(--text-3);
+      padding: 2px 7px;
+      border-radius: 99px;
       transition: background .12s, color .12s;
     }
 
-    .sidebar-spacer { flex: 1; }
+    .sidebar-spacer {
+      flex: 1;
+    }
 
     /* ── User card ───────────────────────────────────────── */
     .user-card {
@@ -119,26 +205,63 @@
       border-radius: var(--r);
       flex-shrink: 0;
     }
+
     .user-card-row {
-      display: flex; align-items: center; gap: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
+
     .user-avatar {
-      width: 32px; height: 32px; border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       background: linear-gradient(135deg, var(--accent), #22c55e);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem; font-weight: 800; color: #080808;
-      flex-shrink: 0; letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #080808;
+      flex-shrink: 0;
+      letter-spacing: -0.02em;
     }
-    .user-name { font-size: 0.8rem; font-weight: 700; }
-    .user-meta { font-size: 0.62rem; color: var(--text-3); margin-top: 1px; }
+
+    .user-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .user-meta {
+      font-size: 0.62rem;
+      color: var(--text-3);
+      margin-top: 1px;
+    }
+
     .user-stats {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 6px; margin-top: 10px; padding-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 10px;
+      padding-top: 10px;
       border-top: 1px solid var(--border);
     }
-    .user-stat { text-align: center; }
-    .user-stat-val { font-size: 0.85rem; font-weight: 700; color: var(--accent); }
-    .user-stat-key { font-size: 0.58rem; color: var(--text-3); margin-top: 1px; }
+
+    .user-stat {
+      text-align: center;
+    }
+
+    .user-stat-val {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .user-stat-key {
+      font-size: 0.58rem;
+      color: var(--text-3);
+      margin-top: 1px;
+    }
 
     /* ── Main area ───────────────────────────────────────── */
     .main-area {
@@ -162,46 +285,124 @@
       flex-shrink: 0;
       background: var(--bg);
     }
-    .topbar-title { font-size: 1rem; font-weight: 700; }
-    .topbar-sub { font-size: 0.68rem; color: var(--text-3); margin-top: 2px; }
-    .topbar-actions { display: flex; align-items: center; gap: 8px; }
+
+    .topbar-title {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .topbar-sub {
+      font-size: 0.68rem;
+      color: var(--text-3);
+      margin-top: 2px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .topbar-btn {
-      display: flex; align-items: center; gap: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       padding: 6px 12px;
       border: 1px solid var(--border-2);
       border-radius: var(--r-sm);
-      font-size: 0.72rem; font-weight: 600;
+      font-size: 0.72rem;
+      font-weight: 600;
       color: var(--text-3);
       transition: color .12s, border-color .12s;
-      background: none; cursor: pointer;
+      background: none;
+      cursor: pointer;
     }
-    .topbar-btn svg { width: 13px; height: 13px; }
-    .topbar-btn:hover { color: var(--text-2); border-color: #3a3a3a; }
+
+    .topbar-btn svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .topbar-btn:hover {
+      color: var(--text-2);
+      border-color: #3a3a3a;
+    }
+
+    #topbar-reset-btn {
+      color: var(--accent);
+      border-color: rgba(74, 222, 128, 0.25);
+    }
+
+    #topbar-reset-btn:hover {
+      color: var(--accent);
+      border-color: rgba(74, 222, 128, 0.5);
+      background: rgba(74, 222, 128, 0.06);
+    }
 
     /* ── Stat row ────────────────────────────────────────── */
     .stat-row {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 10px; padding: 14px 20px 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 14px 20px 0;
       flex-shrink: 0;
     }
+
     .stat-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--r);
       padding: 12px 14px;
     }
+
     .stat-card-label {
-      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--text-3);
-      display: flex; align-items: center; gap: 5px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      display: flex;
+      align-items: center;
+      gap: 5px;
       margin-bottom: 7px;
     }
-    .stat-card-label svg { width: 11px; height: 11px; }
-    .stat-val { font-size: 1.3rem; font-weight: 800; line-height: 1; color: var(--accent); }
-    .stat-val.neutral { color: var(--text); }
-    .stat-meta { font-size: 0.63rem; color: var(--text-3); margin-top: 3px; }
-    .stat-bar { height: 3px; background: var(--surface-3); border-radius: 99px; overflow: hidden; margin-top: 8px; }
-    .stat-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .3s ease; }
+
+    .stat-card-label svg {
+      width: 11px;
+      height: 11px;
+    }
+
+    .stat-val {
+      font-size: 1.3rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .stat-val.neutral {
+      color: var(--text);
+    }
+
+    .stat-meta {
+      font-size: 0.63rem;
+      color: var(--text-3);
+      margin-top: 3px;
+    }
+
+    .stat-bar {
+      height: 3px;
+      background: var(--surface-3);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .stat-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width .3s ease;
+    }
 
     /* ── Content (scrollable) ────────────────────────────── */
     .content-area {
@@ -214,18 +415,36 @@
     }
 
     /* ── Tab visibility ──────────────────────────────────── */
-    .tab { display: none; }
-    .tab.active { display: block; animation: fadeUp .15s ease; }
+    .tab {
+      display: none;
+    }
+
+    .tab.active {
+      display: block;
+      animation: fadeUp .15s ease;
+    }
+
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(4px); }
-      to   { opacity: 1; transform: none; }
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
     }
 
     /* ── Section header — mobile only ───────────────────── */
-    .sh { display: none; }
+    .sh {
+      display: none;
+    }
 
     /* ── Bottom nav — mobile only ────────────────────────── */
-    .bottom-nav { display: none; }
+    .bottom-nav {
+      display: none;
+    }
 
     /* ── Responsive: mobile < 900px ─────────────────────── */
     @media (max-width: 899px) {
@@ -235,13 +454,18 @@
         min-height: 100dvh;
         overflow: visible;
       }
-      .sidebar { display: none; }
+
+      .sidebar {
+        display: none;
+      }
+
       .main-area {
         display: block;
         height: auto;
         overflow: visible;
         padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px);
       }
+
       .topbar {
         height: auto;
         padding: 14px 16px;
@@ -249,45 +473,83 @@
         top: 0;
         z-index: 10;
       }
+
       .stat-row {
         grid-template-columns: repeat(2, 1fr);
         padding: 12px 16px 0;
         gap: 8px;
       }
-      .stat-row .stat-card:last-child { grid-column: 1 / -1; }
+
+      .stat-row .stat-card:last-child {
+        grid-column: 1 / -1;
+      }
+
       .content-area {
         padding: 12px 16px 16px;
         overflow: visible;
       }
-      .sh { display: block; }
+
+      .sh {
+        display: block;
+      }
+
       .week-row,
-      .prog-card { display: flex; }
-      .prog-card { display: block; }
+      .prog-card {
+        display: flex;
+      }
+
+      .prog-card {
+        display: block;
+      }
+
       .bottom-nav {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        position: fixed; bottom: 0; left: 0; right: 0;
-        background: rgba(8,8,8,0.96);
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(8, 8, 8, 0.96);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border-top: 1px solid var(--border);
         padding-bottom: env(safe-area-inset-bottom);
         z-index: 100;
       }
+
       .nav-btn {
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        gap: 4px; min-height: var(--nav-h);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        min-height: var(--nav-h);
         color: var(--text-3);
-        font-size: 0.6rem; font-weight: 600; letter-spacing: 0.04em;
+        font-size: 0.6rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
         border-top: 2px solid transparent;
         transition: color .15s, border-color .15s;
         padding: 0 4px;
-        border-left: none; border-right: none; border-bottom: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
         background: none;
       }
-      .nav-btn svg { width: 20px; height: 20px; }
-      .nav-btn.active { color: var(--accent); border-top-color: var(--accent); }
-      .nav-btn:active { opacity: .65; }
+
+      .nav-btn svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .nav-btn.active {
+        color: var(--accent);
+        border-top-color: var(--accent);
+      }
+
+      .nav-btn:active {
+        opacity: .65;
+      }
     }
 
     /* ── Generic card ───────────────────────────────────── */
@@ -298,10 +560,15 @@
       padding: 16px;
       margin-bottom: 10px;
     }
+
     .card-label {
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--text-3);
-      margin-bottom: 12px; display: block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 12px;
+      display: block;
     }
 
     /* ════════════════════════════════════════════════════
@@ -309,19 +576,39 @@
     ════════════════════════════════════════════════════ */
 
     .week-row {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 14px; gap: 8px; flex-wrap: wrap;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
-    .week-lbl { font-size: 0.8rem; color: var(--text-2); }
-    .week-lbl strong { color: var(--text); font-weight: 600; }
+
+    .week-lbl {
+      font-size: 0.8rem;
+      color: var(--text-2);
+    }
+
+    .week-lbl strong {
+      color: var(--text);
+      font-weight: 600;
+    }
 
     .reset-btn {
-      font-size: 0.75rem; font-weight: 600; color: var(--text-3);
-      border: 1px solid var(--border-2); border-radius: var(--r-sm);
-      padding: 6px 12px; min-height: 34px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-3);
+      border: 1px solid var(--border-2);
+      border-radius: var(--r-sm);
+      padding: 6px 12px;
+      min-height: 34px;
       transition: color .15s, border-color .15s;
     }
-    .reset-btn:hover { color: var(--text-2); border-color: #444; }
+
+    .reset-btn:hover {
+      color: var(--text-2);
+      border-color: #444;
+    }
 
     /* Progress bar card */
     .prog-card {
@@ -331,238 +618,508 @@
       padding: 14px 16px;
       margin-bottom: 14px;
     }
+
     .prog-row {
-      display: flex; justify-content: space-between; align-items: baseline;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
       margin-bottom: 10px;
     }
-    .prog-price { font-size: 0.875rem; font-weight: 600; }
-    .prog-price-num { color: var(--accent); }
-    .prog-count { font-size: 0.75rem; color: var(--text-2); }
-    .prog-track {
-      height: 4px; background: var(--surface-3);
-      border-radius: 99px; overflow: hidden;
+
+    .prog-price {
+      font-size: 0.875rem;
+      font-weight: 600;
     }
+
+    .prog-price-num {
+      color: var(--accent);
+    }
+
+    .prog-count {
+      font-size: 0.75rem;
+      color: var(--text-2);
+    }
+
+    .prog-track {
+      height: 4px;
+      background: var(--surface-3);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
     .prog-fill {
-      height: 100%; background: var(--accent);
-      border-radius: 99px; width: 0%;
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      width: 0%;
       transition: width .3s ease;
     }
 
     /* Checklist */
     .cat-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); margin-bottom: 10px; overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      margin-bottom: 10px;
+      overflow: hidden;
     }
+
     .cat-header {
       padding: 10px 14px 8px;
       border-bottom: 1px solid var(--border);
-      font-size: 0.65rem; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--text-3);
     }
 
     .c-item {
-      display: flex; align-items: center; gap: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
       padding: 12px 14px;
       border-bottom: 1px solid var(--border);
-      cursor: pointer; user-select: none;
+      cursor: pointer;
+      user-select: none;
       -webkit-tap-highlight-color: transparent;
       transition: background .1s;
     }
-    .c-item:last-child { border-bottom: none; }
-    .c-item:active { background: var(--surface-2); }
+
+    .c-item:last-child {
+      border-bottom: none;
+    }
+
+    .c-item:active {
+      background: var(--surface-2);
+    }
 
     .c-box {
-      width: 20px; height: 20px; min-width: 20px;
-      border: 1.5px solid var(--border-2); border-radius: 5px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: all .15s;
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      border: 1.5px solid var(--border-2);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all .15s;
     }
-    .c-box svg { display: none; width: 11px; height: 11px; }
-    .c-item.checked .c-box {
-      background: var(--accent); border-color: var(--accent);
-    }
-    .c-item.checked .c-box svg { display: block; }
 
-    .c-info { flex: 1; min-width: 0; }
+    .c-box svg {
+      display: none;
+      width: 11px;
+      height: 11px;
+    }
+
+    .c-item.checked .c-box {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .c-item.checked .c-box svg {
+      display: block;
+    }
+
+    .c-info {
+      flex: 1;
+      min-width: 0;
+    }
+
     .c-name {
-      font-size: 0.875rem; font-weight: 500; line-height: 1.3;
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.3;
       transition: color .15s;
     }
-    .c-item.checked .c-name { text-decoration: line-through; color: var(--text-3); }
-    .c-price { font-size: 0.72rem; color: var(--text-3); margin-top: 1px; }
+
+    .c-item.checked .c-name {
+      text-decoration: line-through;
+      color: var(--text-3);
+    }
+
+    .c-price {
+      font-size: 0.72rem;
+      color: var(--text-3);
+      margin-top: 1px;
+    }
 
     /* ════════════════════════════════════════════════════
        FITNESS
     ════════════════════════════════════════════════════ */
 
     .day-scroll {
-      display: flex; gap: 6px; overflow-x: auto;
-      padding-bottom: 2px; margin-bottom: 18px;
-      scrollbar-width: none; -ms-overflow-style: none;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      margin-bottom: 18px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
-    .day-scroll::-webkit-scrollbar { display: none; }
+
+    .day-scroll::-webkit-scrollbar {
+      display: none;
+    }
 
     .day-btn {
-      display: flex; flex-direction: column; align-items: center; gap: 2px;
-      padding: 8px 10px; flex-shrink: 0; min-width: 48px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-sm); color: var(--text-2);
-      font-size: 0.65rem; font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 8px 10px;
+      flex-shrink: 0;
+      min-width: 48px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      color: var(--text-2);
+      font-size: 0.65rem;
+      font-weight: 600;
       transition: all .15s;
     }
+
     .day-btn-abbr {
-      font-size: 0.8rem; font-weight: 700; color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text);
       transition: color .15s;
     }
-    .day-btn.is-today { border-color: var(--border-2); }
+
+    .day-btn.is-today {
+      border-color: var(--border-2);
+    }
+
     .day-btn.active {
-      border-color: var(--accent); background: var(--accent-dim);
+      border-color: var(--accent);
+      background: var(--accent-dim);
       color: var(--accent);
     }
-    .day-btn.active .day-btn-abbr { color: var(--accent); }
-    .day-btn.is-done { position: relative; }
-    .day-btn.is-done .day-btn-abbr::after {
-      content: '·'; margin-left: 2px; color: var(--accent); font-size: 1rem;
+
+    .day-btn.active .day-btn-abbr {
+      color: var(--accent);
     }
 
-    .day-panel { display: none; }
-    .day-panel.active { display: block; }
+    .day-btn.is-done {
+      position: relative;
+    }
 
-    .day-hdr { margin-bottom: 16px; }
-    .day-hdr-name { font-size: 1rem; font-weight: 700; }
-    .day-hdr-type { font-size: 0.78rem; color: var(--text-2); margin-top: 2px; }
+    .day-btn.is-done .day-btn-abbr::after {
+      content: '·';
+      margin-left: 2px;
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    .day-panel {
+      display: none;
+    }
+
+    .day-panel.active {
+      display: block;
+    }
+
+    .day-hdr {
+      margin-bottom: 16px;
+    }
+
+    .day-hdr-name {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .day-hdr-type {
+      font-size: 0.78rem;
+      color: var(--text-2);
+      margin-top: 2px;
+    }
 
     /* Rest day */
     .rest-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 28px 20px; text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 28px 20px;
+      text-align: center;
     }
+
     .rest-icon {
-      width: 40px; height: 40px; margin: 0 auto 14px;
-      background: var(--surface-2); border: 1px solid var(--border);
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: var(--text-2);
     }
-    .rest-icon svg { width: 20px; height: 20px; }
-    .rest-msg { font-size: 0.9rem; color: var(--text-2); line-height: 1.6; }
-    .rest-msg strong { color: var(--accent); }
+
+    .rest-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .rest-msg {
+      font-size: 0.9rem;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    .rest-msg strong {
+      color: var(--accent);
+    }
 
     /* Exercise card */
     .ex-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 14px;
-      margin-bottom: 8px; transition: border-color .2s, background .2s;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px;
+      margin-bottom: 8px;
+      transition: border-color .2s, background .2s;
     }
+
     .ex-card.complete {
-      border-color: rgba(74,222,128,0.35);
+      border-color: rgba(74, 222, 128, 0.35);
       background: var(--accent-glow);
     }
+
     .ex-top {
-      display: flex; justify-content: space-between; align-items: baseline;
-      gap: 8px; margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 10px;
     }
-    .ex-name { font-size: 0.875rem; font-weight: 600; line-height: 1.3; }
+
+    .ex-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
     .ex-reps {
-      font-size: 0.72rem; color: var(--text-2);
-      white-space: nowrap; flex-shrink: 0;
+      font-size: 0.72rem;
+      color: var(--text-2);
+      white-space: nowrap;
+      flex-shrink: 0;
     }
-    .ex-sets { display: flex; gap: 7px; flex-wrap: wrap; }
+
+    .ex-sets {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
     .set-btn {
-      width: 38px; height: 38px; border-radius: 7px;
-      background: var(--surface-2); border: 1.5px solid var(--border-2);
-      color: var(--text-2); font-size: 0.8rem; font-weight: 700;
+      width: 38px;
+      height: 38px;
+      border-radius: 7px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border-2);
+      color: var(--text-2);
+      font-size: 0.8rem;
+      font-weight: 700;
       transition: all .13s;
     }
-    .set-btn:active { transform: scale(.9); }
+
+    .set-btn:active {
+      transform: scale(.9);
+    }
+
     .set-btn.done {
-      background: var(--accent); border-color: var(--accent); color: #0a0a0a;
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0a0a0a;
     }
 
     /* Session footer */
     .sess-footer {
-      margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border);
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
     }
+
     .sess-btn {
-      width: 100%; padding: 13px;
-      background: var(--accent); color: #0a0a0a;
-      font-size: 0.9rem; font-weight: 700; border-radius: var(--r-sm);
+      width: 100%;
+      padding: 13px;
+      background: var(--accent);
+      color: #0a0a0a;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: var(--r-sm);
       transition: opacity .15s, transform .1s;
     }
-    .sess-btn:active { transform: scale(.98); }
+
+    .sess-btn:active {
+      transform: scale(.98);
+    }
+
     .sess-btn:disabled {
-      background: var(--surface-2); color: var(--text-3);
-      border: 1px solid var(--border); cursor: default;
+      background: var(--surface-2);
+      color: var(--text-3);
+      border: 1px solid var(--border);
+      cursor: default;
     }
-    .sess-btn:disabled:active { transform: none; }
+
+    .sess-btn:disabled:active {
+      transform: none;
+    }
+
     .sess-cel {
-      display: none; margin-top: 10px; padding: 12px 14px;
-      background: var(--accent-dim); border: 1px solid rgba(74,222,128,0.2);
-      border-radius: var(--r-sm); font-size: 0.85rem; color: var(--accent);
-      text-align: center; line-height: 1.5;
+      display: none;
+      margin-top: 10px;
+      padding: 12px 14px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      border-radius: var(--r-sm);
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-align: center;
+      line-height: 1.5;
     }
-    .sess-cel.visible { display: block; }
+
+    .sess-cel.visible {
+      display: block;
+    }
 
     /* ════════════════════════════════════════════════════
        VOEDING
     ════════════════════════════════════════════════════ */
 
     .macro-row {
-      display: grid; grid-template-columns: repeat(3,1fr);
-      gap: 8px; margin-bottom: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
     }
+
     .macro-cell {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-sm); padding: 12px 10px; text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 12px 10px;
+      text-align: center;
     }
-    .macro-val { font-size: 1.1rem; font-weight: 800; color: var(--accent); }
-    .macro-lbl { font-size: 0.62rem; color: var(--text-2); margin-top: 2px; letter-spacing: 0.03em; }
+
+    .macro-val {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .macro-lbl {
+      font-size: 0.62rem;
+      color: var(--text-2);
+      margin-top: 2px;
+      letter-spacing: 0.03em;
+    }
 
     .intake-note {
-      background: var(--surface); border: 1px solid var(--border);
-      border-left: 3px solid var(--accent); border-radius: var(--r-sm);
-      padding: 11px 14px; margin-bottom: 14px;
-      font-size: 0.8rem; line-height: 1.55; color: var(--text-2);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--r-sm);
+      padding: 11px 14px;
+      margin-bottom: 14px;
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: var(--text-2);
     }
-    .intake-note strong { color: var(--text); font-weight: 600; }
+
+    .intake-note strong {
+      color: var(--text);
+      font-weight: 600;
+    }
 
     /* Accordion meals */
     .meal-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); margin-bottom: 8px; overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      margin-bottom: 8px;
+      overflow: hidden;
     }
+
     .meal-sum {
-      display: flex; align-items: center; gap: 10px;
-      padding: 13px 14px; cursor: pointer; list-style: none;
-      user-select: none; -webkit-tap-highlight-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 14px;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
-    .meal-sum::-webkit-details-marker { display: none; }
+
+    .meal-sum::-webkit-details-marker {
+      display: none;
+    }
+
     .meal-time {
-      font-size: 0.7rem; font-weight: 700; color: var(--accent);
-      min-width: 34px; flex-shrink: 0; letter-spacing: 0.02em;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 34px;
+      flex-shrink: 0;
+      letter-spacing: 0.02em;
     }
-    .meal-mid { flex: 1; min-width: 0; }
-    .meal-name { font-size: 0.875rem; font-weight: 600; display: block; }
-    .meal-kcal { font-size: 0.68rem; color: var(--text-2); margin-top: 1px; }
+
+    .meal-mid {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .meal-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: block;
+    }
+
+    .meal-kcal {
+      font-size: 0.68rem;
+      color: var(--text-2);
+      margin-top: 1px;
+    }
+
     .meal-chev {
-      color: var(--text-3); flex-shrink: 0;
+      color: var(--text-3);
+      flex-shrink: 0;
       transition: transform .2s;
     }
-    .meal-card[open] .meal-chev { transform: rotate(180deg); }
+
+    .meal-card[open] .meal-chev {
+      transform: rotate(180deg);
+    }
+
     .meal-body {
       padding: 0 14px 14px;
       border-top: 1px solid var(--border);
-      font-size: 0.85rem; line-height: 1.65; color: var(--text-2);
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: var(--text-2);
     }
-    .meal-body p { margin-top: 10px; }
-    .meal-body .or { font-style: italic; color: var(--text-3); }
+
+    .meal-body p {
+      margin-top: 10px;
+    }
+
+    .meal-body .or {
+      font-style: italic;
+      color: var(--text-3);
+    }
+
     .meal-tip {
       margin-top: 10px !important;
       padding: 9px 12px;
       background: var(--surface-2);
       border-left: 2px solid var(--accent);
       border-radius: 0 6px 6px 0;
-      font-size: 0.78rem; color: var(--text-2);
+      font-size: 0.78rem;
+      color: var(--text-2);
     }
 
     /* ════════════════════════════════════════════════════
@@ -571,716 +1128,913 @@
 
     /* Weight progress card */
     .weight-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 18px; margin-bottom: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 18px;
+      margin-bottom: 10px;
     }
+
     .weight-endpoints {
-      display: flex; align-items: flex-end; justify-content: space-between;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
       margin-bottom: 12px;
     }
-    .weight-side { }
+
+    .weight-side {}
+
     .weight-kg {
-      font-size: 1.6rem; font-weight: 800; line-height: 1;
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1;
     }
-    .weight-kg.target { color: var(--accent); }
-    .weight-kg-lbl { font-size: 0.68rem; color: var(--text-2); margin-top: 3px; }
+
+    .weight-kg.target {
+      color: var(--accent);
+    }
+
+    .weight-kg-lbl {
+      font-size: 0.68rem;
+      color: var(--text-2);
+      margin-top: 3px;
+    }
+
     .weight-arrow-wrap {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      padding: 0 8px; padding-bottom: 18px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      padding-bottom: 18px;
     }
-    .weight-arrow-wrap svg { width: 20px; height: 20px; color: var(--text-3); }
+
+    .weight-arrow-wrap svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-3);
+    }
+
     .weight-track {
-      height: 5px; background: var(--surface-3);
-      border-radius: 99px; overflow: hidden; margin-bottom: 8px;
+      height: 5px;
+      background: var(--surface-3);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 8px;
     }
+
     .weight-fill {
-      height: 100%; background: var(--accent); border-radius: 99px;
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
       transition: width .4s ease;
     }
+
     .weight-meta {
-      display: flex; justify-content: space-between;
-      font-size: 0.72rem; color: var(--text-2);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--text-2);
     }
-    .weight-meta span:last-child { color: var(--text-3); }
+
+    .weight-meta span:last-child {
+      color: var(--text-3);
+    }
 
     /* Stats grid */
     .stats-grid {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
       margin-bottom: 10px;
     }
+
     .stat-cell {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-sm); padding: 12px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 12px 10px;
     }
+
     .stat-icon-wrap {
-      width: 28px; height: 28px; margin-bottom: 8px;
-      background: var(--surface-2); border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 8px;
+      background: var(--surface-2);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: var(--text-2);
     }
-    .stat-icon-wrap svg { width: 14px; height: 14px; }
-    .stat-val { font-size: 0.95rem; font-weight: 700; line-height: 1.2; }
-    .stat-val.accent { color: var(--accent); }
-    .stat-key { font-size: 0.62rem; color: var(--text-2); margin-top: 2px; }
+
+    .stat-icon-wrap svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .stat-val {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .stat-val.accent {
+      color: var(--accent);
+    }
+
+    .stat-key {
+      font-size: 0.62rem;
+      color: var(--text-2);
+      margin-top: 2px;
+    }
 
     /* Training schedule */
     .sched-grid {
-      display: grid; grid-template-columns: repeat(7,1fr); gap: 4px;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
     }
-    .sched-day { text-align: center; }
+
+    .sched-day {
+      text-align: center;
+    }
+
     .sched-abbr {
-      font-size: 0.62rem; font-weight: 600; color: var(--text-2);
-      margin-bottom: 4px; display: block;
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--text-2);
+      margin-bottom: 4px;
+      display: block;
     }
+
     .sched-type {
-      font-size: 0.55rem; font-weight: 700; letter-spacing: 0.04em;
-      text-transform: uppercase; padding: 4px 0;
-      border-radius: 4px; display: block; line-height: 1.3;
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 0;
+      border-radius: 4px;
+      display: block;
+      line-height: 1.3;
     }
-    .sched-type.push { background: rgba(124,58,237,0.15); color: #a78bfa; }
-    .sched-type.pull { background: rgba(59,130,246,0.15); color: #7dd3fc; }
-    .sched-type.legs { background: rgba(249,115,22,0.15); color: #fdba74; }
-    .sched-type.rest { background: var(--surface-2); color: var(--text-3); }
-    .sched-day.today .sched-abbr { color: var(--accent); }
-    .sched-day.today .sched-abbr::after { content: '·'; margin-left: 2px; color: var(--accent); }
+
+    .sched-type.push {
+      background: rgba(124, 58, 237, 0.15);
+      color: #a78bfa;
+    }
+
+    .sched-type.pull {
+      background: rgba(59, 130, 246, 0.15);
+      color: #7dd3fc;
+    }
+
+    .sched-type.legs {
+      background: rgba(249, 115, 22, 0.15);
+      color: #fdba74;
+    }
+
+    .sched-type.rest {
+      background: var(--surface-2);
+      color: var(--text-3);
+    }
+
+    .sched-day.today .sched-abbr {
+      color: var(--accent);
+    }
+
+    .sched-day.today .sched-abbr::after {
+      content: '·';
+      margin-left: 2px;
+      color: var(--accent);
+    }
 
     /* Quote */
     .quote-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-left: 2px solid var(--accent); border-radius: var(--r);
-      padding: 18px; margin-top: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent);
+      border-radius: var(--r);
+      padding: 18px;
+      margin-top: 4px;
     }
-    .quote-text { font-size: 0.925rem; font-weight: 600; line-height: 1.55; }
-    .quote-by { font-size: 0.72rem; color: var(--text-3); margin-top: 6px; }
+
+    .quote-text {
+      font-size: 0.925rem;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .quote-by {
+      font-size: 0.72rem;
+      color: var(--text-3);
+      margin-top: 6px;
+    }
 
     /* ── Hide redundant section UI on desktop (info now in topbar/stat cards) ── */
     .week-row,
-    .prog-card { display: none; }
+    .prog-card {
+      display: none;
+    }
   </style>
 </head>
+
 <body>
 
-<!-- ── SVG icon sprite (hidden) ─────────────────────── -->
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
-  <!-- Cart -->
-  <symbol id="ic-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-    <path d="M1 1h4l2.68 13.39A2 2 0 009.66 16h9.72a2 2 0 001.97-1.67L23 6H6"/>
-  </symbol>
-  <!-- Activity / pulse -->
-  <symbol id="ic-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-  </symbol>
-  <!-- Utensils / fork-knife -->
-  <symbol id="ic-utensils" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><line x1="7" y1="2" x2="7" y2="22"/>
-    <path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>
-  </symbol>
-  <!-- User -->
-  <symbol id="ic-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
-  </symbol>
-  <!-- Check (for set buttons / checkboxes) -->
-  <symbol id="ic-check" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M1 4.5l3.5 3L11 1"/>
-  </symbol>
-  <!-- Arrow right -->
-  <symbol id="ic-arrow-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 12h14M12 5l7 7-7 7"/>
-  </symbol>
-  <!-- Chevron down -->
-  <symbol id="ic-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M6 9l6 6 6-6"/>
-  </symbol>
-  <!-- Moon (rest day) -->
-  <symbol id="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-  </symbol>
-  <!-- Clock -->
-  <symbol id="ic-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-  </symbol>
-  <!-- School/book -->
-  <symbol id="ic-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
-  </symbol>
-  <!-- Wallet/money -->
-  <symbol id="ic-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
-  </symbol>
-  <!-- Pill/capsule (creatine) -->
-  <symbol id="ic-pill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M10.5 20.5L3.5 13.5a5 5 0 017.07-7.07l7 7a5 5 0 01-7.07 7.07z"/><line x1="8.5" y1="11.5" x2="15.5" y2="11.5"/>
-  </symbol>
-  <!-- Zap/target (kcal) -->
-  <symbol id="ic-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-  </symbol>
-  <!-- Person (age) -->
-  <symbol id="ic-person" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/>
-  </symbol>
-  <!-- Rotate/reset -->
-  <symbol id="ic-reset" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
-  </symbol>
-</svg>
+  <!-- ── SVG icon sprite (hidden) ─────────────────────── -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <!-- Cart -->
+    <symbol id="ic-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+      stroke-linejoin="round">
+      <circle cx="9" cy="21" r="1" />
+      <circle cx="20" cy="21" r="1" />
+      <path d="M1 1h4l2.68 13.39A2 2 0 009.66 16h9.72a2 2 0 001.97-1.67L23 6H6" />
+    </symbol>
+    <!-- Activity / pulse -->
+    <symbol id="ic-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+    </symbol>
+    <!-- Utensils / fork-knife -->
+    <symbol id="ic-utensils" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2" />
+      <line x1="7" y1="2" x2="7" y2="22" />
+      <path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7" />
+    </symbol>
+    <!-- User -->
+    <symbol id="ic-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </symbol>
+    <!-- Check (for set buttons / checkboxes) -->
+    <symbol id="ic-check" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M1 4.5l3.5 3L11 1" />
+    </symbol>
+    <!-- Arrow right -->
+    <symbol id="ic-arrow-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </symbol>
+    <!-- Chevron down -->
+    <symbol id="ic-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 9l6 6 6-6" />
+    </symbol>
+    <!-- Moon (rest day) -->
+    <symbol id="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+    </symbol>
+    <!-- Clock -->
+    <symbol id="ic-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+      stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </symbol>
+    <!-- School/book -->
+    <symbol id="ic-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+    </symbol>
+    <!-- Wallet/money -->
+    <symbol id="ic-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+      stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+      <line x1="1" y1="10" x2="23" y2="10" />
+    </symbol>
+    <!-- Pill/capsule (creatine) -->
+    <symbol id="ic-pill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M10.5 20.5L3.5 13.5a5 5 0 017.07-7.07l7 7a5 5 0 01-7.07 7.07z" />
+      <line x1="8.5" y1="11.5" x2="15.5" y2="11.5" />
+    </symbol>
+    <!-- Zap/target (kcal) -->
+    <symbol id="ic-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </symbol>
+    <!-- Person (age) -->
+    <symbol id="ic-person" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+      stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" />
+    </symbol>
+    <!-- Rotate/reset -->
+    <symbol id="ic-reset" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <polyline points="1 4 1 10 7 10" />
+      <path d="M3.51 15a9 9 0 102.13-9.36L1 10" />
+    </symbol>
+  </svg>
 
-<div id="app">
+  <div id="app">
 
-  <!-- SIDEBAR (desktop only — hidden on mobile via CSS) -->
-  <aside class="sidebar" role="navigation" aria-label="Zijbalk navigatie">
-    <div class="sidebar-logo">
-      <div class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-        </svg>
-      </div>
-      <div>
-        <div class="logo-text">M1K3</div>
-        <div class="logo-sub">Bulk Tracker</div>
-      </div>
-    </div>
-
-    <div class="nav-section">
-      <div class="nav-section-label">Menu</div>
-      <button class="nav-item active" id="sidebar-boodschappen" onclick="showTab('boodschappen')" aria-label="Boodschappen">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-          <path d="M1 1h4l2.68 13.39A2 2 0 009.66 16h9.72a2 2 0 001.97-1.67L23 6H6"/>
-        </svg>
-        Boodschappen
-        <span class="nav-badge" id="sidebar-badge-boodschappen">–</span>
-      </button>
-      <button class="nav-item" id="sidebar-fitness" onclick="showTab('fitness')" aria-label="Fitness">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-        </svg>
-        Fitness
-        <span class="nav-badge" id="sidebar-badge-fitness">–</span>
-      </button>
-      <button class="nav-item" id="sidebar-voeding" onclick="showTab('voeding')" aria-label="Voeding">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><line x1="7" y1="2" x2="7" y2="22"/>
-          <path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>
-        </svg>
-        Voeding
-        <span class="nav-badge" id="sidebar-badge-voeding">3100</span>
-      </button>
-      <button class="nav-item" id="sidebar-info" onclick="showTab('info')" aria-label="Info">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
-        </svg>
-        Info
-      </button>
-    </div>
-
-    <div class="sidebar-spacer"></div>
-
-    <div class="user-card">
-      <div class="user-card-row">
-        <div class="user-avatar" aria-hidden="true">M</div>
+    <!-- SIDEBAR (desktop only — hidden on mobile via CSS) -->
+    <aside class="sidebar" role="navigation" aria-label="Zijbalk navigatie">
+      <div class="sidebar-logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+        </div>
         <div>
-          <div class="user-name">Mike</div>
-          <div class="user-meta">Bulk fase</div>
+          <div class="logo-text">M1K3</div>
+          <div class="logo-sub">Bulk Tracker</div>
         </div>
       </div>
-      <div class="user-stats">
-        <div class="user-stat">
-          <div class="user-stat-val">57 kg</div>
-          <div class="user-stat-key">huidig</div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Menu</div>
+        <button class="nav-item active" id="sidebar-boodschappen" onclick="showTab('boodschappen')"
+          aria-label="Boodschappen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39A2 2 0 009.66 16h9.72a2 2 0 001.97-1.67L23 6H6" />
+          </svg>
+          Boodschappen
+          <span class="nav-badge" id="sidebar-badge-boodschappen">–</span>
+        </button>
+        <button class="nav-item" id="sidebar-fitness" onclick="showTab('fitness')" aria-label="Fitness">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          Fitness
+          <span class="nav-badge" id="sidebar-badge-fitness">–</span>
+        </button>
+        <button class="nav-item" id="sidebar-voeding" onclick="showTab('voeding')" aria-label="Voeding">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2" />
+            <line x1="7" y1="2" x2="7" y2="22" />
+            <path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7" />
+          </svg>
+          Voeding
+          <span class="nav-badge" id="sidebar-badge-voeding">3100</span>
+        </button>
+        <button class="nav-item" id="sidebar-info" onclick="showTab('info')" aria-label="Info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Info
+        </button>
+      </div>
+
+      <div class="sidebar-spacer"></div>
+
+      <div class="user-card">
+        <div class="user-card-row">
+          <div class="user-avatar" aria-hidden="true">M</div>
+          <div>
+            <div class="user-name">Mike</div>
+            <div class="user-meta">Bulk fase</div>
+          </div>
         </div>
-        <div class="user-stat">
-          <div class="user-stat-val">65 kg</div>
-          <div class="user-stat-key">doel</div>
+        <div class="user-stats">
+          <div class="user-stat">
+            <div class="user-stat-val">57 kg</div>
+            <div class="user-stat-key">huidig</div>
+          </div>
+          <div class="user-stat">
+            <div class="user-stat-val">65 kg</div>
+            <div class="user-stat-key">doel</div>
+          </div>
         </div>
       </div>
-    </div>
-  </aside>
+    </aside>
 
-  <!-- MAIN AREA -->
-  <div class="main-area">
+    <!-- MAIN AREA -->
+    <div class="main-area">
 
-    <!-- Topbar (content updated by JS per tab) -->
-    <div class="topbar" id="topbar">
-      <div class="topbar-left">
-        <div class="topbar-title" id="topbar-title">Boodschappen</div>
-        <div class="topbar-sub" id="topbar-sub"></div>
+      <!-- Topbar (content updated by JS per tab) -->
+      <div class="topbar" id="topbar">
+        <div class="topbar-left">
+          <div class="topbar-title" id="topbar-title">Boodschappen</div>
+          <div class="topbar-sub" id="topbar-sub"></div>
+        </div>
+        <div class="topbar-actions" id="topbar-actions"></div>
       </div>
-      <div class="topbar-actions" id="topbar-actions"></div>
-    </div>
 
-    <!-- Stat cards (content updated by JS per tab) -->
-    <div class="stat-row" id="stat-row"></div>
+      <!-- Stat cards (content updated by JS per tab) -->
+      <div class="stat-row" id="stat-row"></div>
 
-    <!-- Scrollable content area -->
-    <div class="content-area">
+      <!-- Scrollable content area -->
+      <div class="content-area">
 
-      <!-- ══════════════════════════════
+        <!-- ══════════════════════════════
            BOODSCHAPPEN
       ══════════════════════════════ -->
-      <section id="tab-boodschappen" class="tab active">
-        <div class="sh">
-          <span class="sh-label">Week</span>
-          <h1 class="sh-title">Boodschappen</h1>
-        </div>
-
-        <div class="week-row">
-          <span class="week-lbl" id="week-display">Week van …</span>
-          <button class="reset-btn" id="reset-btn" aria-label="Week resetten">
-            <svg width="12" height="12" style="vertical-align:-1px;margin-right:5px"><use href="#ic-reset"/></svg>Reset
-          </button>
-        </div>
-
-        <div class="prog-card">
-          <div class="prog-row">
-            <span class="prog-price">
-              Afgevinkt: <span class="prog-price-num" id="price-checked">€0</span>
-              <span style="color:var(--text-2);font-weight:400"> / ~€38</span>
-            </span>
-            <span class="prog-count" id="item-count">0 / 0</span>
+        <section id="tab-boodschappen" class="tab active">
+          <div class="sh">
+            <span class="sh-label">Week</span>
+            <h1 class="sh-title">Boodschappen</h1>
           </div>
-          <div class="prog-track">
-            <div class="prog-fill" id="prog-fill"></div>
+
+          <div class="week-row">
+            <span class="week-lbl" id="week-display">Week van …</span>
+            <button class="reset-btn" id="reset-btn" aria-label="Week resetten">
+              <svg width="12" height="12" style="vertical-align:-1px;margin-right:5px">
+                <use href="#ic-reset" />
+              </svg>Reset
+            </button>
           </div>
-        </div>
 
-        <div id="checklist-root"></div>
-      </section>
+          <div class="prog-card">
+            <div class="prog-row">
+              <span class="prog-price">
+                Afgevinkt: <span class="prog-price-num" id="price-checked">€0</span>
+                <span style="color:var(--text-2);font-weight:400"> / ~€38</span>
+              </span>
+              <span class="prog-count" id="item-count">0 / 0</span>
+            </div>
+            <div class="prog-track">
+              <div class="prog-fill" id="prog-fill"></div>
+            </div>
+          </div>
 
-      <!-- ══════════════════════════════
+          <div id="checklist-root"></div>
+        </section>
+
+        <!-- ══════════════════════════════
            FITNESS
       ══════════════════════════════ -->
-      <section id="tab-fitness" class="tab">
-        <div class="sh">
-          <span class="sh-label">Schema</span>
-          <h1 class="sh-title">Fitness</h1>
-          <p class="sh-sub">Push · Pull · Legs</p>
-        </div>
-        <div class="day-scroll" id="day-tabs"></div>
-        <div id="day-panels"></div>
-      </section>
+        <section id="tab-fitness" class="tab">
+          <div class="sh">
+            <span class="sh-label">Schema</span>
+            <h1 class="sh-title">Fitness</h1>
+            <p class="sh-sub">Push · Pull · Legs</p>
+          </div>
+          <div class="day-scroll" id="day-tabs"></div>
+          <div id="day-panels"></div>
+        </section>
 
-      <!-- ══════════════════════════════
+        <!-- ══════════════════════════════
            VOEDING
       ══════════════════════════════ -->
-      <section id="tab-voeding" class="tab">
-        <div class="sh">
-          <span class="sh-label">Dagplan</span>
-          <h1 class="sh-title">Voeding</h1>
-        </div>
-
-        <div class="macro-row">
-          <div class="macro-cell">
-            <div class="macro-val">3100</div>
-            <div class="macro-lbl">kcal / dag</div>
+        <section id="tab-voeding" class="tab">
+          <div class="sh">
+            <span class="sh-label">Dagplan</span>
+            <h1 class="sh-title">Voeding</h1>
           </div>
-          <div class="macro-cell">
-            <div class="macro-val">155g</div>
-            <div class="macro-lbl">eiwit / dag</div>
-          </div>
-          <div class="macro-cell">
-            <div class="macro-val">5×</div>
-            <div class="macro-lbl">maaltijden</div>
-          </div>
-        </div>
 
-        <div class="intake-note">
-          Je eet nu <strong>~1800 kcal</strong> per dag. Doel is <strong>3100 kcal</strong>.
-          Sla het ontbijt nooit over — dat is de helft van het verschil.
-        </div>
-
-        <details class="meal-card" open>
-          <summary class="meal-sum">
-            <span class="meal-time">07:30</span>
-            <span class="meal-mid">
-              <span class="meal-name">Ochtend</span>
-              <span class="meal-kcal">~750 kcal · 28g eiwit</span>
-            </span>
-            <svg class="meal-chev" width="16" height="16"><use href="#ic-chevron"/></svg>
-          </summary>
-          <div class="meal-body">
-            <p><strong>Overnight oats</strong></p>
-            <p>100g havermout + 300ml volle melk + 1 banaan + 30g pindakaas</p>
-            <p class="meal-tip">Avond ervoor klaar maken in een pot — 's ochtends direct pakken.</p>
+          <div class="macro-row">
+            <div class="macro-cell">
+              <div class="macro-val">3100</div>
+              <div class="macro-lbl">kcal / dag</div>
+            </div>
+            <div class="macro-cell">
+              <div class="macro-val">155g</div>
+              <div class="macro-lbl">eiwit / dag</div>
+            </div>
+            <div class="macro-cell">
+              <div class="macro-val">5×</div>
+              <div class="macro-lbl">maaltijden</div>
+            </div>
           </div>
-        </details>
 
-        <details class="meal-card">
-          <summary class="meal-sum">
-            <span class="meal-time">12:30</span>
-            <span class="meal-mid">
-              <span class="meal-name">Middag</span>
-              <span class="meal-kcal">~650 kcal · 40g eiwit</span>
-            </span>
-            <svg class="meal-chev" width="16" height="16"><use href="#ic-chevron"/></svg>
-          </summary>
-          <div class="meal-body">
-            <p>3 boterhammen met kipfilet + kaasplak + komkommer</p>
-            <p class="or">— of —</p>
-            <p>4 hardgekookte eieren + 2 boterhammen + stuk fruit</p>
-            <p class="meal-tip">Avond ervoor groot koken = lunch voor morgen is geregeld.</p>
+          <div class="intake-note">
+            Je eet nu <strong>~2100 kcal</strong> per dag. Doel is <strong>3100 kcal</strong>.
+            Sla het ontbijt nooit over — dat is de helft van het verschil.
           </div>
-        </details>
 
-        <details class="meal-card">
-          <summary class="meal-sum">
-            <span class="meal-time">18:00</span>
-            <span class="meal-mid">
-              <span class="meal-name">Avondmaal</span>
-              <span class="meal-kcal">~900 kcal · 55g eiwit</span>
-            </span>
-            <svg class="meal-chev" width="16" height="16"><use href="#ic-chevron"/></svg>
-          </summary>
-          <div class="meal-body">
-            <p>200g rijst of pasta + 200g kippendijen of gehakt</p>
-            <p>+ diepvriesgroenten + scheutje olijfolie</p>
-            <p class="meal-tip">Dubbele portie = lunch morgen al gedaan.</p>
-          </div>
-        </details>
+          <details class="meal-card" open>
+            <summary class="meal-sum">
+              <span class="meal-time">07:30</span>
+              <span class="meal-mid">
+                <span class="meal-name">Ochtend</span>
+                <span class="meal-kcal">~750 kcal · 28g eiwit</span>
+              </span>
+              <svg class="meal-chev" width="16" height="16">
+                <use href="#ic-chevron" />
+              </svg>
+            </summary>
+            <div class="meal-body">
+              <p><strong>Overnight oats</strong></p>
+              <p>100g havermout + 300ml volle melk + 1 banaan + 30g pindakaas</p>
+              <p class="meal-tip">Avond ervoor klaar maken in een pot — 's ochtends direct pakken.</p>
+            </div>
+          </details>
 
-        <details class="meal-card">
-          <summary class="meal-sum">
-            <span class="meal-time">20:30</span>
-            <span class="meal-mid">
-              <span class="meal-name">Pre-gym</span>
-              <span class="meal-kcal">~400 kcal · 15g eiwit</span>
-            </span>
-            <svg class="meal-chev" width="16" height="16"><use href="#ic-chevron"/></svg>
-          </summary>
-          <div class="meal-body">
-            <p>2 boterhammen pindakaas + banaan</p>
-            <p class="or">— of —</p>
-            <p>4–5 rijstwafels + pindakaas + honing</p>
-          </div>
-        </details>
+          <details class="meal-card">
+            <summary class="meal-sum">
+              <span class="meal-time">12:30</span>
+              <span class="meal-mid">
+                <span class="meal-name">Middag</span>
+                <span class="meal-kcal">~650 kcal · 40g eiwit</span>
+              </span>
+              <svg class="meal-chev" width="16" height="16">
+                <use href="#ic-chevron" />
+              </svg>
+            </summary>
+            <div class="meal-body">
+              <p>3 boterhammen met kipfilet + kaasplak + komkommer</p>
+              <p class="or">— of —</p>
+              <p>4 hardgekookte eieren + 2 boterhammen + stuk fruit</p>
+              <p class="meal-tip">Avond ervoor groot koken = lunch voor morgen is geregeld.</p>
+            </div>
+          </details>
 
-        <details class="meal-card">
-          <summary class="meal-sum">
-            <span class="meal-time">00:00</span>
-            <span class="meal-mid">
-              <span class="meal-name">Post-gym</span>
-              <span class="meal-kcal">~350 kcal · 30g eiwit</span>
-            </span>
-            <svg class="meal-chev" width="16" height="16"><use href="#ic-chevron"/></svg>
-          </summary>
-          <div class="meal-body">
-            <p>250g magere kwark + honing + granola</p>
-            <p>+ <strong style="color:var(--accent)">5g creatine</strong> — elke avond, ook op rustdagen</p>
-            <p class="meal-tip">Kwark pot al klaarzetten voor je naar de gym gaat.</p>
-          </div>
-        </details>
-      </section>
+          <details class="meal-card">
+            <summary class="meal-sum">
+              <span class="meal-time">18:00</span>
+              <span class="meal-mid">
+                <span class="meal-name">Avondmaal</span>
+                <span class="meal-kcal">~900 kcal · 55g eiwit</span>
+              </span>
+              <svg class="meal-chev" width="16" height="16">
+                <use href="#ic-chevron" />
+              </svg>
+            </summary>
+            <div class="meal-body">
+              <p>200g rijst of pasta + 200g kippendijen of gehakt</p>
+              <p>+ diepvriesgroenten + scheutje olijfolie</p>
+              <p class="meal-tip">Dubbele portie = lunch morgen al gedaan.</p>
+            </div>
+          </details>
 
-      <!-- ══════════════════════════════
+          <details class="meal-card">
+            <summary class="meal-sum">
+              <span class="meal-time">20:30</span>
+              <span class="meal-mid">
+                <span class="meal-name">Pre-gym</span>
+                <span class="meal-kcal">~400 kcal · 15g eiwit</span>
+              </span>
+              <svg class="meal-chev" width="16" height="16">
+                <use href="#ic-chevron" />
+              </svg>
+            </summary>
+            <div class="meal-body">
+              <p>2 boterhammen pindakaas + banaan</p>
+              <p class="or">— of —</p>
+              <p>4–5 rijstwafels + pindakaas + honing</p>
+            </div>
+          </details>
+
+          <details class="meal-card">
+            <summary class="meal-sum">
+              <span class="meal-time">00:00</span>
+              <span class="meal-mid">
+                <span class="meal-name">Post-gym</span>
+                <span class="meal-kcal">~350 kcal · 30g eiwit</span>
+              </span>
+              <svg class="meal-chev" width="16" height="16">
+                <use href="#ic-chevron" />
+              </svg>
+            </summary>
+            <div class="meal-body">
+              <p>250g magere kwark + honing + granola</p>
+              <p>+ <strong style="color:var(--accent)">5g creatine</strong> — elke avond, ook op rustdagen</p>
+              <p class="meal-tip">Kwark pot al klaarzetten voor je naar de gym gaat.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- ══════════════════════════════
            INFO
       ══════════════════════════════ -->
-      <section id="tab-info" class="tab">
-        <div class="sh">
-          <span class="sh-label">Profiel</span>
-          <h1 class="sh-title">Mijn bulk</h1>
-        </div>
+        <section id="tab-info" class="tab">
+          <div class="sh">
+            <span class="sh-label">Profiel</span>
+            <h1 class="sh-title">Mijn bulk</h1>
+          </div>
 
-        <!-- Weight progress -->
-        <div class="weight-card">
-          <div class="weight-endpoints">
-            <div class="weight-side">
-              <div class="weight-kg">57 kg</div>
-              <div class="weight-kg-lbl">Startgewicht</div>
+          <!-- Weight progress -->
+          <div class="weight-card">
+            <div class="weight-endpoints">
+              <div class="weight-side">
+                <div class="weight-kg">57 kg</div>
+                <div class="weight-kg-lbl">Startgewicht</div>
+              </div>
+              <div class="weight-arrow-wrap">
+                <svg>
+                  <use href="#ic-arrow-r" />
+                </svg>
+              </div>
+              <div class="weight-side" style="text-align:right">
+                <div class="weight-kg target">65 kg</div>
+                <div class="weight-kg-lbl">Doel</div>
+              </div>
             </div>
-            <div class="weight-arrow-wrap">
-              <svg><use href="#ic-arrow-r"/></svg>
+            <div class="weight-track">
+              <!-- 0 kg gained so far → 0 / 8 = 0% -->
+              <div class="weight-fill" style="width:0%"></div>
             </div>
-            <div class="weight-side" style="text-align:right">
-              <div class="weight-kg target">65 kg</div>
-              <div class="weight-kg-lbl">Doel</div>
+            <div class="weight-meta">
+              <span>+8 kg te gaan</span>
+              <span>~0.5–1 kg / maand</span>
             </div>
           </div>
-          <div class="weight-track">
-            <!-- 0 kg gained so far → 0 / 8 = 0% -->
-            <div class="weight-fill" style="width:0%"></div>
-          </div>
-          <div class="weight-meta">
-            <span>+8 kg te gaan</span>
-            <span>~0.5–1 kg / maand</span>
-          </div>
-        </div>
 
-        <!-- 6-stat grid -->
-        <div class="stats-grid">
-          <div class="stat-cell">
-            <div class="stat-icon-wrap"><svg><use href="#ic-person"/></svg></div>
-            <div class="stat-val">19</div>
-            <div class="stat-key">jaar</div>
+          <!-- 6-stat grid -->
+          <div class="stats-grid">
+            <div class="stat-cell">
+              <div class="stat-icon-wrap"><svg>
+                  <use href="#ic-person" />
+                </svg></div>
+              <div class="stat-val">19</div>
+              <div class="stat-key">jaar</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-icon-wrap"><svg>
+                  <use href="#ic-book" />
+                </svg></div>
+              <div class="stat-val">PXL</div>
+              <div class="stat-key">school</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-icon-wrap"><svg>
+                  <use href="#ic-clock" />
+                </svg></div>
+              <div class="stat-val">23:00</div>
+              <div class="stat-key">gym start</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-icon-wrap"><svg>
+                  <use href="#ic-pill" />
+                </svg></div>
+              <div class="stat-val accent">5g</div>
+              <div class="stat-key">creatine</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-icon-wrap"><svg>
+                  <use href="#ic-wallet" />
+                </svg></div>
+              <div class="stat-val">€37</div>
+              <div class="stat-key">budget/week</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-icon-wrap"><svg>
+                  <use href="#ic-zap" />
+                </svg></div>
+              <div class="stat-val accent">3100</div>
+              <div class="stat-key">kcal doel</div>
+            </div>
           </div>
-          <div class="stat-cell">
-            <div class="stat-icon-wrap"><svg><use href="#ic-book"/></svg></div>
-            <div class="stat-val">PXL</div>
-            <div class="stat-key">school</div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-icon-wrap"><svg><use href="#ic-clock"/></svg></div>
-            <div class="stat-val">23:00</div>
-            <div class="stat-key">gym start</div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-icon-wrap"><svg><use href="#ic-pill"/></svg></div>
-            <div class="stat-val accent">5g</div>
-            <div class="stat-key">creatine</div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-icon-wrap"><svg><use href="#ic-wallet"/></svg></div>
-            <div class="stat-val">€37</div>
-            <div class="stat-key">budget/week</div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-icon-wrap"><svg><use href="#ic-zap"/></svg></div>
-            <div class="stat-val accent">3100</div>
-            <div class="stat-key">kcal doel</div>
-          </div>
-        </div>
 
-        <!-- Training schedule -->
-        <div class="card">
-          <span class="card-label">Trainingsschema</span>
-          <div class="sched-grid" id="sched-grid">
-            <!-- filled by JS to highlight today -->
+          <!-- Training schedule -->
+          <div class="card">
+            <span class="card-label">Trainingsschema</span>
+            <div class="sched-grid" id="sched-grid">
+              <!-- filled by JS to highlight today -->
+            </div>
           </div>
-        </div>
 
-        <!-- Quote -->
-        <div class="quote-card">
-          <div class="quote-text">"Je hoeft het niet leuk te vinden.<br>Je moet het gewoon doen."</div>
-          <div class="quote-by">elke avond 23:00</div>
-        </div>
+          <!-- Quote -->
+          <div class="quote-card">
+            <div class="quote-text">"Je hoeft het niet leuk te vinden.<br>Je moet het gewoon doen."</div>
+            <div class="quote-by">elke avond 23:00</div>
+          </div>
 
-        <div style="height:8px"></div>
-      </section>
+          <div style="height:8px"></div>
+        </section>
 
+      </div>
     </div>
+
+    <!-- Bottom nav (mobile only — shown via CSS media query) -->
+    <nav class="bottom-nav" role="navigation" aria-label="Hoofdnavigatie mobiel">
+      <button class="nav-btn active" id="nav-boodschappen" onclick="showTab('boodschappen')" aria-label="Boodschappen">
+        <svg width="20" height="20">
+          <use href="#ic-cart" />
+        </svg>
+        <span>Boodschappen</span>
+      </button>
+      <button class="nav-btn" id="nav-fitness" onclick="showTab('fitness')" aria-label="Fitness">
+        <svg width="20" height="20">
+          <use href="#ic-activity" />
+        </svg>
+        <span>Fitness</span>
+      </button>
+      <button class="nav-btn" id="nav-voeding" onclick="showTab('voeding')" aria-label="Voeding">
+        <svg width="20" height="20">
+          <use href="#ic-utensils" />
+        </svg>
+        <span>Voeding</span>
+      </button>
+      <button class="nav-btn" id="nav-info" onclick="showTab('info')" aria-label="Info">
+        <svg width="20" height="20">
+          <use href="#ic-user" />
+        </svg>
+        <span>Info</span>
+      </button>
+    </nav>
+
   </div>
 
-  <!-- Bottom nav (mobile only — shown via CSS media query) -->
-  <nav class="bottom-nav" role="navigation" aria-label="Hoofdnavigatie mobiel">
-    <button class="nav-btn active" id="nav-boodschappen" onclick="showTab('boodschappen')" aria-label="Boodschappen">
-      <svg width="20" height="20"><use href="#ic-cart"/></svg>
-      <span>Boodschappen</span>
-    </button>
-    <button class="nav-btn" id="nav-fitness" onclick="showTab('fitness')" aria-label="Fitness">
-      <svg width="20" height="20"><use href="#ic-activity"/></svg>
-      <span>Fitness</span>
-    </button>
-    <button class="nav-btn" id="nav-voeding" onclick="showTab('voeding')" aria-label="Voeding">
-      <svg width="20" height="20"><use href="#ic-utensils"/></svg>
-      <span>Voeding</span>
-    </button>
-    <button class="nav-btn" id="nav-info" onclick="showTab('info')" aria-label="Info">
-      <svg width="20" height="20"><use href="#ic-user"/></svg>
-      <span>Info</span>
-    </button>
-  </nav>
+  <script>
+    'use strict';
 
-</div>
+    /* ── Data ──────────────────────────────────────────────── */
 
-<script>
-'use strict';
+    const BOODSCHAPPEN = [
+      {
+        cat: 'Eiwitten', items: [
+          { id: 'kip', label: 'Kippendijen 1.5kg (Lidl/Aldi)', price: 7.00 },
+          { id: 'eieren', label: 'Eieren 12 stuks (Aldi)', price: 2.50 },
+          { id: 'kwark', label: 'Magere kwark 2× 500g (Lidl)', price: 3.50 },
+          { id: 'tonijn', label: 'Tonijn blik 4 stuks (Aldi)', price: 3.00 },
+        ]
+      },
+      {
+        cat: 'Koolhydraten & energie', items: [
+          { id: 'haver', label: 'Havermout 1kg (Lidl)', price: 1.50 },
+          { id: 'rijst', label: 'Rijst 2kg (Aldi)', price: 2.00 },
+          { id: 'brood', label: 'Volkoren brood 2 broden (Lidl)', price: 3.00 },
+          { id: 'bananen', label: 'Bananen 1kg (Aldi)', price: 1.50 },
+          { id: 'pindak', label: 'Pindakaas 350g (Aldi)', price: 2.00 },
+        ]
+      },
+      {
+        cat: 'Extra', items: [
+          { id: 'melk', label: 'Volle melk 2L (Lidl)', price: 2.00 },
+          { id: 'groenten', label: 'Diepvriesgroenten 2× 1kg (Aldi)', price: 3.00 },
+          { id: 'olijf', label: 'Olijfolie klein flesje (Aldi)', price: 2.50 },
+          { id: 'honing', label: 'Honing pot (Aldi)', price: 2.00 },
+        ]
+      },
+    ];
 
-/* ── Data ──────────────────────────────────────────────── */
+    const PUSH = [
+      { name: 'Pec fly machine', sets: 4, reps: '12 reps' },
+      { name: 'Cable crossover', sets: 3, reps: '15 reps' },
+      { name: 'Incline dumbbell fly', sets: 3, reps: '12 reps' },
+      { name: 'Lateral raise', sets: 3, reps: '15 reps' },
+      { name: 'Overhead press (dumbbell)', sets: 3, reps: '10 reps' },
+      { name: 'Tricep pushdown', sets: 3, reps: '12 reps' },
+      { name: 'Overhead tricep extension', sets: 2, reps: '12 reps' },
+    ];
+    const PULL = [
+      { name: 'Lat pulldown', sets: 4, reps: '10 reps' },
+      { name: 'Cable row', sets: 3, reps: '10 reps' },
+      { name: 'Face pulls', sets: 3, reps: '15 reps' },
+      { name: 'Rear delt fly (machine)', sets: 3, reps: '15 reps' },
+      { name: 'Incline dumbbell curl', sets: 3, reps: '12 reps' },
+      { name: 'Hammer curl', sets: 3, reps: '12 reps' },
+    ];
+    const LEGS = [
+      { name: 'Leg press', sets: 4, reps: '10 reps' },
+      { name: 'Romanian deadlift', sets: 3, reps: '10 reps' },
+      { name: 'Leg curl (machine)', sets: 3, reps: '12 reps' },
+      { name: 'Leg extension', sets: 3, reps: '12 reps' },
+      { name: 'Calf raises', sets: 4, reps: '20 reps' },
+      { name: 'Plank', sets: 3, reps: '45 sec' },
+    ];
 
-const BOODSCHAPPEN = [
-  { cat: 'Eiwitten', items: [
-    { id: 'kip',    label: 'Kippendijen 1.5kg (Lidl/Aldi)',  price: 7.00 },
-    { id: 'eieren', label: 'Eieren 12 stuks (Aldi)',         price: 2.50 },
-    { id: 'kwark',  label: 'Magere kwark 2× 500g (Lidl)',    price: 3.50 },
-    { id: 'tonijn', label: 'Tonijn blik 4 stuks (Aldi)',     price: 3.00 },
-  ]},
-  { cat: 'Koolhydraten & energie', items: [
-    { id: 'haver',   label: 'Havermout 1kg (Lidl)',           price: 1.50 },
-    { id: 'rijst',   label: 'Rijst 2kg (Aldi)',               price: 2.00 },
-    { id: 'brood',   label: 'Volkoren brood 2 broden (Lidl)', price: 3.00 },
-    { id: 'bananen', label: 'Bananen 1kg (Aldi)',             price: 1.50 },
-    { id: 'pindak',  label: 'Pindakaas 350g (Aldi)',          price: 2.00 },
-  ]},
-  { cat: 'Extra', items: [
-    { id: 'melk',     label: 'Volle melk 2L (Lidl)',              price: 2.00 },
-    { id: 'groenten', label: 'Diepvriesgroenten 2× 1kg (Aldi)',   price: 3.00 },
-    { id: 'olijf',    label: 'Olijfolie klein flesje (Aldi)',     price: 2.50 },
-    { id: 'honing',   label: 'Honing pot (Aldi)',                 price: 2.00 },
-  ]},
-];
+    const SCHEMA = [
+      { id: 'maandag', abbr: 'Ma', label: 'Maandag', type: 'Push', tag: 'push', exercises: PUSH },
+      { id: 'dinsdag', abbr: 'Di', label: 'Dinsdag', type: 'Pull', tag: 'pull', exercises: PULL },
+      { id: 'woensdag', abbr: 'Wo', label: 'Woensdag', type: 'Legs', tag: 'legs', exercises: LEGS },
+      { id: 'donderdag', abbr: 'Do', label: 'Donderdag', type: 'Push', tag: 'push', exercises: PUSH },
+      { id: 'vrijdag', abbr: 'Vr', label: 'Vrijdag', type: 'Pull', tag: 'pull', exercises: PULL },
+      { id: 'zaterdag', abbr: 'Za', label: 'Zaterdag', type: 'Legs of Push', tag: 'legs', exercises: LEGS },
+      { id: 'zondag', abbr: 'Zo', label: 'Zondag', type: 'Rust', tag: 'rest', rest: true },
+    ];
+    const JS_DAY = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
 
-const PUSH = [
-  { name: 'Pec fly machine',           sets: 4, reps: '12 reps' },
-  { name: 'Cable crossover',           sets: 3, reps: '15 reps' },
-  { name: 'Incline dumbbell fly',      sets: 3, reps: '12 reps' },
-  { name: 'Lateral raise',             sets: 3, reps: '15 reps' },
-  { name: 'Overhead press (dumbbell)', sets: 3, reps: '10 reps' },
-  { name: 'Tricep pushdown',           sets: 3, reps: '12 reps' },
-  { name: 'Overhead tricep extension', sets: 2, reps: '12 reps' },
-];
-const PULL = [
-  { name: 'Lat pulldown',            sets: 4, reps: '10 reps' },
-  { name: 'Cable row',               sets: 3, reps: '10 reps' },
-  { name: 'Face pulls',              sets: 3, reps: '15 reps' },
-  { name: 'Rear delt fly (machine)', sets: 3, reps: '15 reps' },
-  { name: 'Incline dumbbell curl',   sets: 3, reps: '12 reps' },
-  { name: 'Hammer curl',             sets: 3, reps: '12 reps' },
-];
-const LEGS = [
-  { name: 'Leg press',          sets: 4, reps: '10 reps' },
-  { name: 'Romanian deadlift',  sets: 3, reps: '10 reps' },
-  { name: 'Leg curl (machine)', sets: 3, reps: '12 reps' },
-  { name: 'Leg extension',      sets: 3, reps: '12 reps' },
-  { name: 'Calf raises',        sets: 4, reps: '20 reps' },
-  { name: 'Plank',              sets: 3, reps: '45 sec'  },
-];
+    /* ── Helpers ───────────────────────────────────────────── */
 
-const SCHEMA = [
-  { id:'maandag',   abbr:'Ma', label:'Maandag',   type:'Push',          tag:'push', exercises: PUSH },
-  { id:'dinsdag',   abbr:'Di', label:'Dinsdag',   type:'Pull',          tag:'pull', exercises: PULL },
-  { id:'woensdag',  abbr:'Wo', label:'Woensdag',  type:'Legs',          tag:'legs', exercises: LEGS },
-  { id:'donderdag', abbr:'Do', label:'Donderdag', type:'Push',          tag:'push', exercises: PUSH },
-  { id:'vrijdag',   abbr:'Vr', label:'Vrijdag',   type:'Pull',          tag:'pull', exercises: PULL },
-  { id:'zaterdag',  abbr:'Za', label:'Zaterdag',  type:'Legs of Push',  tag:'legs', exercises: LEGS },
-  { id:'zondag',    abbr:'Zo', label:'Zondag',    type:'Rust',          tag:'rest', rest: true },
-];
-const JS_DAY = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
+    function isoWeek(d) {
+      const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+      const day = dt.getUTCDay() || 7;
+      dt.setUTCDate(dt.getUTCDate() + 4 - day);
+      const y1 = new Date(Date.UTC(dt.getUTCFullYear(), 0, 1));
+      return Math.ceil((((dt - y1) / 86400000) + 1) / 7);
+    }
 
-/* ── Helpers ───────────────────────────────────────────── */
+    function monday(d) {
+      const r = new Date(d);
+      const day = r.getDay() || 7;
+      r.setDate(r.getDate() - (day - 1));
+      return r;
+    }
 
-function isoWeek(d) {
-  const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  const day = dt.getUTCDay() || 7;
-  dt.setUTCDate(dt.getUTCDate() + 4 - day);
-  const y1 = new Date(Date.UTC(dt.getUTCFullYear(), 0, 1));
-  return Math.ceil((((dt - y1) / 86400000) + 1) / 7);
-}
+    function fmtDate(d) {
+      const M = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+      return `${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}`;
+    }
 
-function monday(d) {
-  const r = new Date(d);
-  const day = r.getDay() || 7;
-  r.setDate(r.getDate() - (day - 1));
-  return r;
-}
+    function fmtPrice(n) {
+      return '€' + (n % 1 === 0 ? n : n.toFixed(2));
+    }
 
-function fmtDate(d) {
-  const M = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
-  return `${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}`;
-}
+    /** Parse JSON safely — never returns null when fallback is provided */
+    function safeJSON(str, fallback) {
+      if (str == null) return fallback;
+      try { const v = JSON.parse(str); return v != null ? v : fallback; }
+      catch { return fallback; }
+    }
 
-function fmtPrice(n) {
-  return '€' + (n % 1 === 0 ? n : n.toFixed(2));
-}
+    /* ── Tabs ──────────────────────────────────────────────── */
 
-/** Parse JSON safely — never returns null when fallback is provided */
-function safeJSON(str, fallback) {
-  if (str == null) return fallback;
-  try { const v = JSON.parse(str); return v != null ? v : fallback; }
-  catch { return fallback; }
-}
+    /* ── Sidebar badges ────────────────────────────────────── */
 
-/* ── Tabs ──────────────────────────────────────────────── */
+    function updateSidebarBadges() {
+      // Boodschappen badge: done/total
+      const all = BOODSCHAPPEN.flatMap(c => c.items);
+      const checked = safeJSON(localStorage.getItem('checklist_items'), {});
+      const done = Object.keys(checked).length;
+      const total = all.length;
+      const bb = document.getElementById('sidebar-badge-boodschappen');
+      if (bb) bb.textContent = done + '/' + total;
 
-/* ── Sidebar badges ────────────────────────────────────── */
+      // Fitness badge: today's training type
+      const todayId = JS_DAY[new Date().getDay()];
+      const todayDay = SCHEMA.find(d => d.id === todayId);
+      const fb = document.getElementById('sidebar-badge-fitness');
+      if (fb && todayDay) fb.textContent = todayDay.type;
+    }
 
-function updateSidebarBadges() {
-  // Boodschappen badge: done/total
-  const all     = BOODSCHAPPEN.flatMap(c => c.items);
-  const checked = safeJSON(localStorage.getItem('checklist_items'), {});
-  const done    = Object.keys(checked).length;
-  const total   = all.length;
-  const bb = document.getElementById('sidebar-badge-boodschappen');
-  if (bb) bb.textContent = done + '/' + total;
+    /* ── Topbar ────────────────────────────────────────────── */
 
-  // Fitness badge: today's training type
-  const todayId  = JS_DAY[new Date().getDay()];
-  const todayDay = SCHEMA.find(d => d.id === todayId);
-  const fb = document.getElementById('sidebar-badge-fitness');
-  if (fb && todayDay) fb.textContent = todayDay.type;
-}
-
-/* ── Topbar ────────────────────────────────────────────── */
-
-const TOPBAR_CONFIG = {
-  boodschappen: {
-    title: 'Boodschappen',
-    sub: () => {
-      const now = new Date();
-      const M   = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
-      const mon = monday(now);
-      return 'Week van ' + mon.getDate() + ' ' + M[mon.getMonth()];
-    },
-    actions: () => `
+    const TOPBAR_CONFIG = {
+      boodschappen: {
+        title: 'Boodschappen',
+        sub: () => {
+          const now = new Date();
+          const M = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+          const mon = monday(now);
+          return 'Week van ' + mon.getDate() + ' ' + M[mon.getMonth()];
+        },
+        actions: () => `
       <button class="topbar-btn" id="topbar-reset-btn" aria-label="Week resetten">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
         </svg>
         Reset week
       </button>`
-  },
-  fitness: {
-    title: 'Fitness',
-    sub: () => {
-      const todayId  = JS_DAY[new Date().getDay()];
-      const todayDay = SCHEMA.find(d => d.id === todayId);
-      return todayDay ? todayDay.label + ' \u2014 ' + todayDay.type : 'Training';
-    },
-    actions: () => ''
-  },
-  voeding: {
-    title: 'Voeding',
-    sub: () => 'Dagplan \u00b7 3100 kcal \u00b7 155g eiwit',
-    actions: () => ''
-  },
-  info: {
-    title: 'Info',
-    sub: () => 'Bulk fase \u2014 week ' + isoWeek(new Date()),
-    actions: () => ''
-  }
-};
+      },
+      fitness: {
+        title: 'Fitness',
+        sub: () => {
+          const todayId = JS_DAY[new Date().getDay()];
+          const todayDay = SCHEMA.find(d => d.id === todayId);
+          return todayDay ? todayDay.label + ' \u2014 ' + todayDay.type : 'Training';
+        },
+        actions: () => ''
+      },
+      voeding: {
+        title: 'Voeding',
+        sub: () => 'Dagplan \u00b7 3100 kcal \u00b7 155g eiwit',
+        actions: () => ''
+      },
+      info: {
+        title: 'Info',
+        sub: () => 'Bulk fase \u2014 week ' + isoWeek(new Date()),
+        actions: () => ''
+      }
+    };
 
-function renderTopbar(tabId) {
-  const cfg = TOPBAR_CONFIG[tabId];
-  if (!cfg) return;
-  const titleEl   = document.getElementById('topbar-title');
-  const subEl     = document.getElementById('topbar-sub');
-  const actionsEl = document.getElementById('topbar-actions');
-  if (titleEl)   titleEl.textContent = cfg.title;
-  if (subEl)     subEl.textContent   = cfg.sub();
-  if (actionsEl) actionsEl.innerHTML = cfg.actions();
+    function renderTopbar(tabId) {
+      const cfg = TOPBAR_CONFIG[tabId];
+      if (!cfg) return;
+      const titleEl = document.getElementById('topbar-title');
+      const subEl = document.getElementById('topbar-sub');
+      const actionsEl = document.getElementById('topbar-actions');
+      if (titleEl) titleEl.textContent = cfg.title;
+      if (subEl) subEl.textContent = cfg.sub();
+      if (actionsEl) actionsEl.innerHTML = cfg.actions();
 
-  // Wire reset button if rendered
-  const resetBtn = document.getElementById('topbar-reset-btn');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      if (!confirm('Week resetten? Alle vinkjes worden gewist.')) return;
-      localStorage.removeItem('checklist_items');
-      localStorage.setItem('checklist_week', String(isoWeek(new Date())));
-      buildBoodschappen();
-      renderStatCards('boodschappen');
-      updateSidebarBadges();
-    });
-  }
-}
+      // Wire reset button if rendered
+      const resetBtn = document.getElementById('topbar-reset-btn');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          if (!confirm('Week resetten? Alle vinkjes worden gewist.')) return;
+          localStorage.removeItem('checklist_items');
+          localStorage.setItem('checklist_week', String(isoWeek(new Date())));
+          buildBoodschappen();
+          renderStatCards('boodschappen');
+          updateSidebarBadges();
+        });
+      }
+    }
 
-/* ── Stat cards ────────────────────────────────────────── */
+    /* ── Stat cards ────────────────────────────────────────── */
 
-function renderStatCards(tabId) {
-  const row = document.getElementById('stat-row');
-  if (!row) return;
+    function renderStatCards(tabId) {
+      const row = document.getElementById('stat-row');
+      if (!row) return;
 
-  if (tabId === 'boodschappen') {
-    const all     = BOODSCHAPPEN.flatMap(c => c.items);
-    const checked = safeJSON(localStorage.getItem('checklist_items'), {});
-    const done    = Object.keys(checked).length;
-    const total   = all.length;
-    let sum = 0;
-    all.forEach(i => { if (checked[i.id]) sum += i.price; });
-    const budget = all.reduce((acc, i) => acc + i.price, 0);
-    const rest   = Math.max(0, budget - sum);
-    const pct    = total > 0 ? Math.round(done / total * 100) : 0;
+      if (tabId === 'boodschappen') {
+        const all = BOODSCHAPPEN.flatMap(c => c.items);
+        const checked = safeJSON(localStorage.getItem('checklist_items'), {});
+        const done = Object.keys(checked).length;
+        const total = all.length;
+        let sum = 0;
+        all.forEach(i => { if (checked[i.id]) sum += i.price; });
+        const budget = all.reduce((acc, i) => acc + i.price, 0);
+        const rest = Math.max(0, budget - sum);
+        const pct = total > 0 ? Math.round(done / total * 100) : 0;
 
-    row.innerHTML = `
+        row.innerHTML = `
       <div class="stat-card">
         <div class="stat-card-label">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1309,22 +2063,22 @@ function renderStatCards(tabId) {
         <div class="stat-bar"><div class="stat-bar-fill" style="width:${budget > 0 ? Math.round(rest / budget * 100) : 0}%; background:var(--surface-3);"></div></div>
       </div>`;
 
-  } else if (tabId === 'fitness') {
-    const todayId  = JS_DAY[new Date().getDay()];
-    const todayDay = SCHEMA.find(d => d.id === todayId);
-    const type     = todayDay ? todayDay.type : '\u2013';
-    const sessionsThisWeek = SCHEMA.filter(d => !d.rest && localStorage.getItem('fitness_done_' + d.id) === 'true').length;
-    const totalSessions    = SCHEMA.filter(d => !d.rest).length;
-    let setsTotal = 0, setsDone = 0;
-    if (todayDay && !todayDay.rest) {
-      todayDay.exercises.forEach((ex, idx) => {
-        const sets = safeJSON(localStorage.getItem('fitness_sets_' + todayDay.id + '_' + idx), new Array(ex.sets).fill(false));
-        setsTotal += ex.sets;
-        setsDone  += sets.filter(Boolean).length;
-      });
-    }
+      } else if (tabId === 'fitness') {
+        const todayId = JS_DAY[new Date().getDay()];
+        const todayDay = SCHEMA.find(d => d.id === todayId);
+        const type = todayDay ? todayDay.type : '\u2013';
+        const sessionsThisWeek = SCHEMA.filter(d => !d.rest && localStorage.getItem('fitness_done_' + d.id) === 'true').length;
+        const totalSessions = SCHEMA.filter(d => !d.rest).length;
+        let setsTotal = 0, setsDone = 0;
+        if (todayDay && !todayDay.rest) {
+          todayDay.exercises.forEach((ex, idx) => {
+            const sets = safeJSON(localStorage.getItem('fitness_sets_' + todayDay.id + '_' + idx), new Array(ex.sets).fill(false));
+            setsTotal += ex.sets;
+            setsDone += sets.filter(Boolean).length;
+          });
+        }
 
-    row.innerHTML = `
+        row.innerHTML = `
       <div class="stat-card">
         <div class="stat-card-label">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -1352,8 +2106,8 @@ function renderStatCards(tabId) {
         <div class="stat-bar"><div class="stat-bar-fill" style="width:${Math.round(sessionsThisWeek / totalSessions * 100)}%"></div></div>
       </div>`;
 
-  } else if (tabId === 'voeding') {
-    row.innerHTML = `
+      } else if (tabId === 'voeding') {
+        row.innerHTML = `
       <div class="stat-card">
         <div class="stat-card-label">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
@@ -1379,8 +2133,8 @@ function renderStatCards(tabId) {
         <div class="stat-meta">per dag</div>
       </div>`;
 
-  } else if (tabId === 'info') {
-    row.innerHTML = `
+      } else if (tabId === 'info') {
+        row.innerHTML = `
       <div class="stat-card">
         <div class="stat-card-label">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
@@ -1405,64 +2159,64 @@ function renderStatCards(tabId) {
         <div class="stat-val neutral">+8 kg</div>
         <div class="stat-meta">~0.5\u20131 kg / maand</div>
       </div>`;
-  }
-}
+      }
+    }
 
-function showTab(id) {
-  // Tab sections
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + id)?.classList.add('active');
+    function showTab(id) {
+      // Tab sections
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-' + id)?.classList.add('active');
 
-  // Bottom nav (mobile)
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('nav-' + id)?.classList.add('active');
+      // Bottom nav (mobile)
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('nav-' + id)?.classList.add('active');
 
-  // Sidebar nav (desktop)
-  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-  document.getElementById('sidebar-' + id)?.classList.add('active');
+      // Sidebar nav (desktop)
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.getElementById('sidebar-' + id)?.classList.add('active');
 
-  // Update topbar + stat cards + badges
-  renderTopbar(id);
-  renderStatCards(id);
-  updateSidebarBadges();
+      // Update topbar + stat cards + badges
+      renderTopbar(id);
+      renderStatCards(id);
+      updateSidebarBadges();
 
-  localStorage.setItem('active_tab', id);
-}
+      localStorage.setItem('active_tab', id);
+    }
 
-/* ── Boodschappen ──────────────────────────────────────── */
+    /* ── Boodschappen ──────────────────────────────────────── */
 
-function buildBoodschappen() {
-  const now  = new Date();
-  const week = isoWeek(now);
+    function buildBoodschappen() {
+      const now = new Date();
+      const week = isoWeek(now);
 
-  if (localStorage.getItem('checklist_week') !== String(week)) {
-    localStorage.removeItem('checklist_items');
-    localStorage.setItem('checklist_week', String(week));
-  }
+      if (localStorage.getItem('checklist_week') !== String(week)) {
+        localStorage.removeItem('checklist_items');
+        localStorage.setItem('checklist_week', String(week));
+      }
 
-  const monDate = monday(now);
-  const display = document.getElementById('week-display');
-  if (display) display.innerHTML = `Week van <strong>${fmtDate(monDate)}</strong>`;
+      const monDate = monday(now);
+      const display = document.getElementById('week-display');
+      if (display) display.innerHTML = `Week van <strong>${fmtDate(monDate)}</strong>`;
 
-  const checked = safeJSON(localStorage.getItem('checklist_items'), {});
-  const root = document.getElementById('checklist-root');
-  if (!root) return;
-  root.innerHTML = '';
+      const checked = safeJSON(localStorage.getItem('checklist_items'), {});
+      const root = document.getElementById('checklist-root');
+      if (!root) return;
+      root.innerHTML = '';
 
-  BOODSCHAPPEN.forEach(cat => {
-    const wrap = document.createElement('div');
-    wrap.className = 'cat-card';
-    wrap.innerHTML = `<div class="cat-header">${cat.cat}</div>`;
+      BOODSCHAPPEN.forEach(cat => {
+        const wrap = document.createElement('div');
+        wrap.className = 'cat-card';
+        wrap.innerHTML = `<div class="cat-header">${cat.cat}</div>`;
 
-    cat.items.forEach(item => {
-      const row = document.createElement('div');
-      row.className = 'c-item' + (checked[item.id] ? ' checked' : '');
-      row.dataset.id    = item.id;
-      row.dataset.price = String(item.price);
-      row.setAttribute('role', 'checkbox');
-      row.setAttribute('aria-checked', checked[item.id] ? 'true' : 'false');
-      row.setAttribute('tabindex', '0');
-      row.innerHTML = `
+        cat.items.forEach(item => {
+          const row = document.createElement('div');
+          row.className = 'c-item' + (checked[item.id] ? ' checked' : '');
+          row.dataset.id = item.id;
+          row.dataset.price = String(item.price);
+          row.setAttribute('role', 'checkbox');
+          row.setAttribute('aria-checked', checked[item.id] ? 'true' : 'false');
+          row.setAttribute('tabindex', '0');
+          row.innerHTML = `
         <div class="c-box">
           <svg style="color:#0a0a0a"><use href="#ic-check"/></svg>
         </div>
@@ -1470,94 +2224,94 @@ function buildBoodschappen() {
           <div class="c-name">${item.label}</div>
           <div class="c-price">~${fmtPrice(item.price)}</div>
         </div>`;
-      wrap.appendChild(row);
-    });
+          wrap.appendChild(row);
+        });
 
-    root.appendChild(wrap);
-  });
+        root.appendChild(wrap);
+      });
 
-  updateShopUI(checked);
+      updateShopUI(checked);
 
-  root.addEventListener('click', e => {
-    const row = e.target.closest('.c-item');
-    if (row) toggleShopItem(row);
-  });
-  root.addEventListener('keydown', e => {
-    if (e.key === ' ' || e.key === 'Enter') {
-      const row = e.target.closest('.c-item');
-      if (row) { e.preventDefault(); toggleShopItem(row); }
+      root.addEventListener('click', e => {
+        const row = e.target.closest('.c-item');
+        if (row) toggleShopItem(row);
+      });
+      root.addEventListener('keydown', e => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          const row = e.target.closest('.c-item');
+          if (row) { e.preventDefault(); toggleShopItem(row); }
+        }
+      });
+
+      document.getElementById('reset-btn')?.addEventListener('click', () => {
+        if (!confirm('Week resetten? Alle vinkjes worden gewist.')) return;
+        localStorage.removeItem('checklist_items');
+        localStorage.setItem('checklist_week', String(isoWeek(new Date())));
+        buildBoodschappen();
+      });
     }
-  });
 
-  document.getElementById('reset-btn')?.addEventListener('click', () => {
-    if (!confirm('Week resetten? Alle vinkjes worden gewist.')) return;
-    localStorage.removeItem('checklist_items');
-    localStorage.setItem('checklist_week', String(isoWeek(new Date())));
-    buildBoodschappen();
-  });
-}
+    function toggleShopItem(row) {
+      const id = row.dataset.id;
+      const checked = safeJSON(localStorage.getItem('checklist_items'), {});
+      if (checked[id]) { delete checked[id]; }
+      else { checked[id] = true; }
+      localStorage.setItem('checklist_items', JSON.stringify(checked));
+      row.classList.toggle('checked', !!checked[id]);
+      row.setAttribute('aria-checked', checked[id] ? 'true' : 'false');
+      updateShopUI(checked);
+    }
 
-function toggleShopItem(row) {
-  const id = row.dataset.id;
-  const checked = safeJSON(localStorage.getItem('checklist_items'), {});
-  if (checked[id]) { delete checked[id]; }
-  else { checked[id] = true; }
-  localStorage.setItem('checklist_items', JSON.stringify(checked));
-  row.classList.toggle('checked', !!checked[id]);
-  row.setAttribute('aria-checked', checked[id] ? 'true' : 'false');
-  updateShopUI(checked);
-}
+    function updateShopUI(checked) {
+      const all = BOODSCHAPPEN.flatMap(c => c.items);
+      const total = all.length;
+      const done = Object.keys(checked).length;
+      let sum = 0;
+      all.forEach(i => { if (checked[i.id]) sum += i.price; });
 
-function updateShopUI(checked) {
-  const all   = BOODSCHAPPEN.flatMap(c => c.items);
-  const total = all.length;
-  const done  = Object.keys(checked).length;
-  let sum = 0;
-  all.forEach(i => { if (checked[i.id]) sum += i.price; });
+      const el = document.getElementById('price-checked');
+      if (el) el.textContent = fmtPrice(sum);
+      const cnt = document.getElementById('item-count');
+      if (cnt) cnt.textContent = `${done} / ${total}`;
+      const fill = document.getElementById('prog-fill');
+      if (fill) fill.style.width = total > 0 ? `${done / total * 100}%` : '0%';
+      // Refresh sidebar badge and stat cards
+      updateSidebarBadges();
+      if (document.getElementById('tab-boodschappen')?.classList.contains('active')) {
+        renderStatCards('boodschappen');
+      }
+    }
 
-  const el = document.getElementById('price-checked');
-  if (el) el.textContent = fmtPrice(sum);
-  const cnt = document.getElementById('item-count');
-  if (cnt) cnt.textContent = `${done} / ${total}`;
-  const fill = document.getElementById('prog-fill');
-  if (fill) fill.style.width = total > 0 ? `${done / total * 100}%` : '0%';
-  // Refresh sidebar badge and stat cards
-  updateSidebarBadges();
-  if (document.getElementById('tab-boodschappen')?.classList.contains('active')) {
-    renderStatCards('boodschappen');
-  }
-}
+    /* ── Fitness ───────────────────────────────────────────── */
 
-/* ── Fitness ───────────────────────────────────────────── */
+    function buildFitness() {
+      const todayId = JS_DAY[new Date().getDay()];
+      const tabsEl = document.getElementById('day-tabs');
+      const pnlsEl = document.getElementById('day-panels');
+      if (!tabsEl || !pnlsEl) return;
 
-function buildFitness() {
-  const todayId = JS_DAY[new Date().getDay()];
-  const tabsEl  = document.getElementById('day-tabs');
-  const pnlsEl  = document.getElementById('day-panels');
-  if (!tabsEl || !pnlsEl) return;
+      tabsEl.innerHTML = '';
+      pnlsEl.innerHTML = '';
 
-  tabsEl.innerHTML = '';
-  pnlsEl.innerHTML = '';
+      SCHEMA.forEach(day => {
+        const done = localStorage.getItem(`fitness_done_${day.id}`) === 'true';
+        const isToday = day.id === todayId;
 
-  SCHEMA.forEach(day => {
-    const done    = localStorage.getItem(`fitness_done_${day.id}`) === 'true';
-    const isToday = day.id === todayId;
+        /* Day tab button */
+        const btn = document.createElement('button');
+        btn.id = `day-btn-${day.id}`;
+        btn.className = ['day-btn', isToday ? 'is-today' : '', done ? 'is-done' : ''].filter(Boolean).join(' ');
+        btn.innerHTML = `<span class="day-btn-abbr">${day.abbr}</span><span>${day.tag.toUpperCase()}</span>`;
+        btn.addEventListener('click', () => switchDay(day.id));
+        tabsEl.appendChild(btn);
 
-    /* Day tab button */
-    const btn = document.createElement('button');
-    btn.id = `day-btn-${day.id}`;
-    btn.className = ['day-btn', isToday ? 'is-today' : '', done ? 'is-done' : ''].filter(Boolean).join(' ');
-    btn.innerHTML = `<span class="day-btn-abbr">${day.abbr}</span><span>${day.tag.toUpperCase()}</span>`;
-    btn.addEventListener('click', () => switchDay(day.id));
-    tabsEl.appendChild(btn);
+        /* Day panel */
+        const panel = document.createElement('div');
+        panel.className = 'day-panel';
+        panel.id = `day-panel-${day.id}`;
 
-    /* Day panel */
-    const panel = document.createElement('div');
-    panel.className = 'day-panel';
-    panel.id = `day-panel-${day.id}`;
-
-    if (day.rest) {
-      panel.innerHTML = `
+        if (day.rest) {
+          panel.innerHTML = `
         <div class="day-hdr">
           <div class="day-hdr-name">${day.label}</div>
           <div class="day-hdr-type">${day.type}</div>
@@ -1566,16 +2320,16 @@ function buildFitness() {
           <div class="rest-icon"><svg><use href="#ic-moon"/></svg></div>
           <div class="rest-msg">Hersteldag. Toch <strong>goed eten</strong> en <strong>creatine niet vergeten</strong>.</div>
         </div>`;
-    } else {
-      let exHTML = '';
-      day.exercises.forEach((ex, idx) => {
-        const sets = safeJSON(localStorage.getItem(`fitness_sets_${day.id}_${idx}`), new Array(ex.sets).fill(false));
-        const allDone = sets.every(Boolean);
-        let btns = '';
-        sets.forEach((d, s) => {
-          btns += `<button class="set-btn${d ? ' done' : ''}" data-day="${day.id}" data-idx="${idx}" data-set="${s}" aria-label="Set ${s+1}">${s+1}</button>`;
-        });
-        exHTML += `
+        } else {
+          let exHTML = '';
+          day.exercises.forEach((ex, idx) => {
+            const sets = safeJSON(localStorage.getItem(`fitness_sets_${day.id}_${idx}`), new Array(ex.sets).fill(false));
+            const allDone = sets.every(Boolean);
+            let btns = '';
+            sets.forEach((d, s) => {
+              btns += `<button class="set-btn${d ? ' done' : ''}" data-day="${day.id}" data-idx="${idx}" data-set="${s}" aria-label="Set ${s + 1}">${s + 1}</button>`;
+            });
+            exHTML += `
           <div class="ex-card${allDone ? ' complete' : ''}" id="ex-${day.id}-${idx}">
             <div class="ex-top">
               <span class="ex-name">${ex.name}</span>
@@ -1583,9 +2337,9 @@ function buildFitness() {
             </div>
             <div class="ex-sets">${btns}</div>
           </div>`;
-      });
+          });
 
-      panel.innerHTML = `
+          panel.innerHTML = `
         <div class="day-hdr">
           <div class="day-hdr-name">${day.label}</div>
           <div class="day-hdr-type">${day.type}</div>
@@ -1599,76 +2353,77 @@ function buildFitness() {
             Goed gedaan. Eet nu je kwark + 5g creatine.
           </div>
         </div>`;
+        }
+
+        pnlsEl.appendChild(panel);
+      });
+
+      /* Event delegation */
+      pnlsEl.addEventListener('click', e => {
+        const s = e.target.closest('.set-btn');
+        if (s) { toggleSet(s); return; }
+        const b = e.target.closest('.sess-btn');
+        if (b && !b.disabled) doneSession(b.dataset.day);
+      });
+
+      switchDay(SCHEMA.find(d => d.id === todayId) ? todayId : 'maandag');
     }
 
-    pnlsEl.appendChild(panel);
-  });
+    function switchDay(id) {
+      document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`day-panel-${id}`)?.classList.add('active');
+      const btn = document.getElementById(`day-btn-${id}`);
+      btn?.classList.add('active');
+      btn?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
 
-  /* Event delegation */
-  pnlsEl.addEventListener('click', e => {
-    const s = e.target.closest('.set-btn');
-    if (s) { toggleSet(s); return; }
-    const b = e.target.closest('.sess-btn');
-    if (b && !b.disabled) doneSession(b.dataset.day);
-  });
+    function toggleSet(btn) {
+      const { day, idx, set } = btn.dataset;
+      const ex = SCHEMA.find(d => d.id === day)?.exercises[+idx];
+      if (!ex) return;
+      const key = `fitness_sets_${day}_${+idx}`;
+      const data = safeJSON(localStorage.getItem(key), new Array(ex.sets).fill(false));
+      data[+set] = !data[+set];
+      localStorage.setItem(key, JSON.stringify(data));
+      btn.classList.toggle('done', data[+set]);
+      const card = document.getElementById(`ex-${day}-${+idx}`);
+      if (card) card.classList.toggle('complete', data.every(Boolean));
+    }
 
-  switchDay(SCHEMA.find(d => d.id === todayId) ? todayId : 'maandag');
-}
+    function doneSession(id) {
+      localStorage.setItem(`fitness_done_${id}`, 'true');
+      const btn = document.getElementById(`sess-btn-${id}`);
+      const cel = document.getElementById(`sess-cel-${id}`);
+      const tab = document.getElementById(`day-btn-${id}`);
+      if (btn) { btn.disabled = true; btn.textContent = 'Sessie voltooid'; }
+      if (cel) cel.classList.add('visible');
+      if (tab) tab.classList.add('is-done');
+    }
 
-function switchDay(id) {
-  document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(`day-panel-${id}`)?.classList.add('active');
-  const btn = document.getElementById(`day-btn-${id}`);
-  btn?.classList.add('active');
-  btn?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-}
+    /* ── Info — training schedule ───────────────────────────── */
 
-function toggleSet(btn) {
-  const { day, idx, set } = btn.dataset;
-  const ex   = SCHEMA.find(d => d.id === day)?.exercises[+idx];
-  if (!ex) return;
-  const key  = `fitness_sets_${day}_${+idx}`;
-  const data = safeJSON(localStorage.getItem(key), new Array(ex.sets).fill(false));
-  data[+set] = !data[+set];
-  localStorage.setItem(key, JSON.stringify(data));
-  btn.classList.toggle('done', data[+set]);
-  const card = document.getElementById(`ex-${day}-${+idx}`);
-  if (card) card.classList.toggle('complete', data.every(Boolean));
-}
-
-function doneSession(id) {
-  localStorage.setItem(`fitness_done_${id}`, 'true');
-  const btn = document.getElementById(`sess-btn-${id}`);
-  const cel = document.getElementById(`sess-cel-${id}`);
-  const tab = document.getElementById(`day-btn-${id}`);
-  if (btn) { btn.disabled = true; btn.textContent = 'Sessie voltooid'; }
-  if (cel) cel.classList.add('visible');
-  if (tab) tab.classList.add('is-done');
-}
-
-/* ── Info — training schedule ───────────────────────────── */
-
-function buildSchedGrid() {
-  const grid = document.getElementById('sched-grid');
-  if (!grid) return;
-  const todayId = JS_DAY[new Date().getDay()];
-  grid.innerHTML = SCHEMA.map(d => `
+    function buildSchedGrid() {
+      const grid = document.getElementById('sched-grid');
+      if (!grid) return;
+      const todayId = JS_DAY[new Date().getDay()];
+      grid.innerHTML = SCHEMA.map(d => `
     <div class="sched-day${d.id === todayId ? ' today' : ''}">
       <span class="sched-abbr">${d.abbr}</span>
       <span class="sched-type ${d.tag}">${d.tag === 'rest' ? 'Rust' : d.tag.charAt(0).toUpperCase() + d.tag.slice(1)}</span>
     </div>`).join('');
-}
+    }
 
-/* ── Boot ──────────────────────────────────────────────── */
+    /* ── Boot ──────────────────────────────────────────────── */
 
-document.addEventListener('DOMContentLoaded', () => {
-  buildBoodschappen();
-  buildFitness();
-  buildSchedGrid();
-  // Restore last tab (must run after sections are built)
-  showTab(localStorage.getItem('active_tab') || 'boodschappen');
-});
-</script>
+    document.addEventListener('DOMContentLoaded', () => {
+      buildBoodschappen();
+      buildFitness();
+      buildSchedGrid();
+      // Restore last tab (must run after sections are built)
+      showTab(localStorage.getItem('active_tab') || 'boodschappen');
+    });
+  </script>
 </body>
+
 </html>
