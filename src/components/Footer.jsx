@@ -44,17 +44,17 @@ export default function Footer() {
         </div>
 
         {/* Links */}
-        <nav className="flex flex-wrap justify-center gap-6 text-sm font-medium">
+        <nav className="flex flex-wrap justify-center gap-6 text-sm font-semibold">
           {[
-            { key: "work",         href: "#portfolio" },
-            { key: "about",        href: "#about" },
-            { key: "pricing",      href: "#pricing" },
+            { key: "work",         href: "/#portfolio" },
+            { key: "about",        href: "/#about" },
+            { key: "pricing",      href: "/prijzen" },
             { key: "clientPortal", href: "#" },
           ].map(({ key, href }) => (
             <a
               key={key}
               href={href}
-              className="text-on-surface-variant hover:text-primary transition-colors"
+              className="text-on-surface-variant hover:text-on-surface hover:scale-[1.06] active:scale-95 transition-all duration-200 inline-block"
             >
               {t(`footer.${key}`)}
             </a>
@@ -68,7 +68,7 @@ export default function Footer() {
               key={label}
               href={href}
               aria-label={label}
-              className="w-9 h-9 rounded-full border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-primary/40 transition-all"
+              className="social-icon"
             >
               {icon}
             </a>

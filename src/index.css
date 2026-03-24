@@ -209,6 +209,30 @@ input[type="radio"] {
   to { transform: translateX(350%); }
 }
 
+/* --- Footer social icon — gradient border on hover --- */
+.social-icon {
+  position: relative;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-surface-variant);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.social-icon:hover {
+  color: var(--on-surface);
+  transform: scale(1.15);
+  background: linear-gradient(#0e0e13, #0e0e13) padding-box,
+              linear-gradient(135deg, #7C3AED, #F97316) border-box;
+  border: 1px solid transparent;
+}
+.social-icon:active {
+  transform: scale(0.92);
+}
+
 /* --- Custom cursor --- */
 .custom-cursor {
   position: fixed;
