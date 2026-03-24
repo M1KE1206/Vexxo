@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 import { useModal } from "../context/ModalContext";
+import { useAuth } from "../context/AuthContext";
 import Marquee from "./Marquee";
 import { fadeUp, scaleIn, slideRight, viewport, ease } from "../lib/animations";
 
@@ -10,6 +11,7 @@ const HeroComputer = lazy(() => import("./HeroComputer"));
 export default function Hero() {
   const { t } = useLanguage();
   const { openModal, isOpen } = useModal();
+  const { requireAuth } = useAuth();
   const reduce = useReducedMotion();
   const ini = reduce ? false : "hidden";
 
@@ -102,7 +104,7 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.6, ease }}
             >
               <button
-                onClick={() => openModal()}
+                onClick={() => requireAuth({ action: 'openServiceModal' })}
                 className="btn-primary btn-shimmer text-base group"
               >
                 {t("hero.ctaPrimary")}

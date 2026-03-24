@@ -1,8 +1,10 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import { LanguageProvider } from "./context/LanguageContext";
 import { ModalProvider } from "./context/ModalContext";
 import { useLanguage } from "./context/LanguageContext";
+import { useModal } from "./context/ModalContext";
+import { AuthProvider, _registerDispatch } from "./context/AuthContext";
 import { SEO } from "./config/seo";
 import StructuredData from "./components/StructuredData";
 import Navbar from "./components/Navbar";
@@ -15,9 +17,9 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import CustomCursor from "./components/CustomCursor";
-
 // Lazy-load the modal — it's large and only shown on demand
 const ServiceRequestModal = lazy(() => import("./components/ServiceRequestModal"));
+const AuthModal = lazy(() => import("./components/AuthModal"));
 
 /** Dynamic meta tags — language-aware, lives inside LanguageProvider */
 function SeoHead() {
@@ -58,41 +60,59 @@ function SeoHead() {
   );
 }
 
+function AppDispatcher() {
+  const { openModal } = useModal()
+
+  useEffect(() => {
+    _registerDispatch((payload) => {
+      if (payload?.action === 'openServiceModal') {
+        openModal(payload.data ?? null)
+      }
+    })
+    return () => _registerDispatch(null)
+  }, [openModal])
+
+  return null
+}
+
 export default function App() {
   return (
     <HelmetProvider>
       <LanguageProvider>
-        <ModalProvider>
-          <SeoHead />
-          <StructuredData />
+        <AuthProvider>
+          <ModalProvider>
+            <AppDispatcher />
+            <SeoHead />
+            <StructuredData />
 
-          <div className="min-h-screen bg-background text-on-surface font-body selection:bg-primary/30 dark">
-            {/* Custom cursor */}
-            <CustomCursor />
+            <div className="min-h-screen bg-background text-on-surface font-body selection:bg-primary/30 dark">
+              <CustomCursor />
 
-            <div className="page-content">
-              <Navbar />
+              <div className="page-content">
+                <Navbar />
+                <main id="main-content" className="relative z-10 pt-20">
+                  <Hero />
+                  <Portfolio />
+                  <AboutMe />
+                  <AboutCompany />
+                  <PricingCalculator />
+                  <Contact />
+                </main>
+                <Footer />
+                <ScrollToTop />
+              </div>
 
-              <main id="main-content" className="relative z-10 pt-20">
-                <Hero />
-                <Portfolio />
-                <AboutMe />
-                <AboutCompany />
-                <PricingCalculator />
-                <Contact />
-              </main>
-
-              <Footer />
-              <ScrollToTop />
+              {/* Modals — buiten page-content, AuthModal bovenaan de z-stack */}
+              <Suspense fallback={null}>
+                <ServiceRequestModal />
+              </Suspense>
+              <Suspense fallback={null}>
+                <AuthModal />
+              </Suspense>
             </div>
-
-            {/* Service request modal — rendered outside page-content so it keeps its animations */}
-            <Suspense fallback={null}>
-              <ServiceRequestModal />
-            </Suspense>
-          </div>
-        </ModalProvider>
+          </ModalProvider>
+        </AuthProvider>
       </LanguageProvider>
     </HelmetProvider>
-  );
+  )
 }

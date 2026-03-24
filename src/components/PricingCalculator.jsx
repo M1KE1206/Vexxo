@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
-import { useModal } from "../context/ModalContext";
+import { useAuth } from "../context/AuthContext";
 import { fadeUp, scaleIn, slideLeft, slideRight, stagger, viewport, ease } from "../lib/animations";
 import {
   serviceTypes,
@@ -51,7 +51,7 @@ function useCountUp(target) {
 
 export default function PricingCalculator() {
   const { t, lang } = useLanguage();
-  const { openModal } = useModal();
+  const { requireAuth } = useAuth();
   const [service,     setService]     = useState(serviceTypes[0].id);
   const [pages,       setPages]       = useState(pageRange.default);
   const [seo,         setSeo]         = useState(false);
@@ -277,7 +277,11 @@ export default function PricingCalculator() {
               </div>
 
               <ul className="space-y-2 mb-6">
-                {["Direct founder communication", "2-week delivery time", "Premium support"].map((item) => (
+                {[
+                t('pricing.vexxo.highlight1'),
+                t('pricing.vexxo.highlight2'),
+                t('pricing.vexxo.highlight3'),
+              ].map((item) => (
                   <li key={item} className="flex items-center gap-2 text-sm text-on-surface">
                     <span className="material-symbols-outlined text-secondary text-base">check_circle</span>
                     {item}
@@ -286,14 +290,17 @@ export default function PricingCalculator() {
               </ul>
 
               <button
-                onClick={() => openModal({
-                  fromCalculator: true,
-                  serviceType: service,
-                  pages,
-                  seoAddon: seo,
-                  contentAddon: content,
-                  timeline: tl,
-                  calculatedPrice: vexxoRaw,
+                onClick={() => requireAuth({
+                  action: 'openServiceModal',
+                  data: {
+                    fromCalculator: true,
+                    serviceType: service,
+                    pages,
+                    seoAddon: seo,
+                    contentAddon: content,
+                    timeline: tl,
+                    calculatedPrice: vexxoRaw,
+                  }
                 })}
                 className="block w-full py-4 bg-white text-background rounded-xl font-bold text-center hover:scale-[1.02] active:scale-95 transition-all text-sm"
               >
