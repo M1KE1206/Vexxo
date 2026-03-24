@@ -13,10 +13,13 @@ const ITEMS = [
 
 const SEP = <span style={{ color: "var(--primary)", fontSize: 8 }} aria-hidden="true">◆</span>;
 
+// Repeat enough times so one track always exceeds the widest viewport
+const REPEATED = Array(6).fill(ITEMS).flat();
+
 function MarqueeTrack() {
   return (
     <span className="flex shrink-0">
-      {ITEMS.map((item, i) => (
+      {REPEATED.map((item, i) => (
         <span key={i} className="inline-flex items-center gap-6 mr-6 text-xs font-bold uppercase tracking-widest text-on-surface">
           {item}{SEP}
         </span>
