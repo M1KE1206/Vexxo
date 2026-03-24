@@ -1,118 +1,101 @@
-import { lazy, Suspense, useEffect } from "react";
-import { HelmetProvider, Helmet } from "react-helmet-async";
-import { LanguageProvider } from "./context/LanguageContext";
-import { ModalProvider } from "./context/ModalContext";
-import { useLanguage } from "./context/LanguageContext";
-import { useModal } from "./context/ModalContext";
-import { AuthProvider, _registerDispatch } from "./context/AuthContext";
-import { SEO } from "./config/seo";
-import StructuredData from "./components/StructuredData";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Portfolio from "./components/Portfolio";
-import AboutMe from "./components/AboutMe";
-import AboutCompany from "./components/AboutCompany";
-import PricingCalculator from "./components/PricingCalculator";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import ScrollToTop from "./components/ScrollToTop";
-import CustomCursor from "./components/CustomCursor";
-// Lazy-load the modal — it's large and only shown on demand
-const ServiceRequestModal = lazy(() => import("./components/ServiceRequestModal"));
-const AuthModal = lazy(() => import("./components/AuthModal"));
+import { lazy, Suspense, useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HelmetProvider, Helmet } from 'react-helmet-async'
+import { LanguageProvider, useLanguage } from './context/LanguageContext'
+import { ModalProvider, useModal } from './context/ModalContext'
+import { AuthProvider, _registerDispatch } from './context/AuthContext'
+import { SEO } from './config/seo'
+import StructuredData from './components/StructuredData'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import ScrollToTop from './components/ScrollToTop'
+import CustomCursor from './components/CustomCursor'
+import HashScrollHandler from './components/HashScrollHandler'
+import HomePage from './pages/HomePage'
+import PricingPage from './pages/PricingPage'
 
-/** Dynamic meta tags — language-aware, lives inside LanguageProvider */
+const ServiceRequestModal = lazy(() => import('./components/ServiceRequestModal'))
+const AuthModal           = lazy(() => import('./components/AuthModal'))
+
+/** Homepage SEO — taal-aware, leeft binnen LanguageProvider */
 function SeoHead() {
-  const { lang, t } = useLanguage();
-  const isNL = lang === "nl";
-
+  const { lang, t } = useLanguage()
+  const isNL = lang === 'nl'
   return (
     <Helmet>
-      <html lang={isNL ? "nl-BE" : "en-GB"} />
-      <title>{t("seo.title")}</title>
-      <meta name="description"  content={t("seo.description")} />
+      <html lang={isNL ? 'nl-BE' : 'en-GB'} />
+      <title>{t('seo.title')}</title>
+      <meta name="description"  content={t('seo.description')} />
       <meta name="keywords"     content={SEO.keywords} />
       <meta name="author"       content={SEO.siteName} />
       <link rel="canonical"     href={SEO.siteUrl} />
       <meta name="robots"       content="index, follow" />
-
-      {/* Open Graph */}
       <meta property="og:type"        content="website" />
       <meta property="og:url"         content={SEO.siteUrl} />
-      <meta property="og:title"       content={t("seo.title")} />
-      <meta property="og:description" content={t("seo.description")} />
+      <meta property="og:title"       content={t('seo.title')} />
+      <meta property="og:description" content={t('seo.description')} />
       <meta property="og:image"       content={`${SEO.siteUrl}/og-image.png`} />
       <meta property="og:locale"      content={isNL ? SEO.locale : SEO.localeAlt} />
       <meta property="og:site_name"   content={SEO.siteName} />
-
-      {/* Twitter Card */}
       <meta name="twitter:card"        content="summary_large_image" />
       <meta name="twitter:site"        content={SEO.twitterHandle} />
-      <meta name="twitter:title"       content={t("seo.title")} />
-      <meta name="twitter:description" content={t("seo.description")} />
+      <meta name="twitter:title"       content={t('seo.title')} />
+      <meta name="twitter:description" content={t('seo.description')} />
       <meta name="twitter:image"       content={`${SEO.siteUrl}/og-image.png`} />
-
-      {/* hreflang alternates */}
       <link rel="alternate" hreflang="nl" href={`${SEO.siteUrl}/?lang=nl`} />
       <link rel="alternate" hreflang="en" href={`${SEO.siteUrl}/?lang=en`} />
       <link rel="alternate" hreflang="x-default" href={SEO.siteUrl} />
     </Helmet>
-  );
+  )
 }
 
+/**
+ * AppDispatcher: registreert de ModalContext dispatch-functie in AuthContext.
+ * Zorgt dat requireAuth() na OAuth-redirect de ServiceModal kan openen.
+ * NIET VERWIJDEREN — zonder dit werkt de pendingAction flow niet na page reload.
+ */
 function AppDispatcher() {
   const { openModal } = useModal()
-
   useEffect(() => {
     _registerDispatch((payload) => {
-      if (payload?.action === 'openServiceModal') {
-        openModal(payload.data ?? null)
-      }
+      if (payload?.action === 'openServiceModal') openModal(payload.data ?? null)
     })
     return () => _registerDispatch(null)
   }, [openModal])
-
   return null
 }
 
 export default function App() {
   return (
-    <HelmetProvider>
-      <LanguageProvider>
-        <AuthProvider>
-          <ModalProvider>
-            <AppDispatcher />
-            <SeoHead />
-            <StructuredData />
+    <BrowserRouter>
+      <HelmetProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <ModalProvider>
+              <AppDispatcher />
+              <HashScrollHandler />
+              <SeoHead />
+              <StructuredData />
 
-            <div className="min-h-screen bg-background text-on-surface font-body selection:bg-primary/30 dark">
-              <CustomCursor />
+              <div className="min-h-screen bg-background text-on-surface font-body selection:bg-primary/30 dark">
+                <CustomCursor />
+                <div className="page-content">
+                  <Navbar />
+                  <Routes>
+                    <Route path="/"        element={<HomePage />} />
+                    <Route path="/prijzen" element={<PricingPage />} />
+                  </Routes>
+                  <Footer />
+                  <ScrollToTop />
+                </div>
 
-              <div className="page-content">
-                <Navbar />
-                <main id="main-content" className="relative z-10 pt-20">
-                  <Hero />
-                  <Portfolio />
-                  <AboutMe />
-                  <AboutCompany />
-                  <PricingCalculator />
-                  <Contact />
-                </main>
-                <Footer />
-                <ScrollToTop />
+                <Suspense fallback={null}><ServiceRequestModal /></Suspense>
+                <Suspense fallback={null}><AuthModal /></Suspense>
               </div>
-
-              {/* Modals — buiten page-content, AuthModal bovenaan de z-stack */}
-              <Suspense fallback={null}>
-                <ServiceRequestModal />
-              </Suspense>
-              <Suspense fallback={null}>
-                <AuthModal />
-              </Suspense>
-            </div>
-          </ModalProvider>
-        </AuthProvider>
-      </LanguageProvider>
-    </HelmetProvider>
+            </ModalProvider>
+          </AuthProvider>
+        </LanguageProvider>
+      </HelmetProvider>
+    </BrowserRouter>
   )
 }
