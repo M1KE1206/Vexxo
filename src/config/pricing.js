@@ -12,12 +12,12 @@ export const serviceTypes = [
 
 /** Vexxo base pricing */
 export const vexxo = {
-  base: 299,  // fixed base price (€)
-  perPage: 49, // added per page (€)
+  base: 400,  // fixed base price (€)
+  perPage: 60, // added per page (€)
 };
 
 /** Minimum possible price (1 page, no add-ons, regular speed) — used in comparison card */
-export const MIN_PRICE = vexxo.base + vexxo.perPage; // 348
+export const MIN_PRICE = vexxo.base + vexxo.perPage; // 460
 
 /** Add-ons — extra cost per page */
 export const addOns = {
@@ -26,27 +26,22 @@ export const addOns = {
     labelEN: "Advanced SEO Optimization",
     labelNL: "Geavanceerde SEO Optimalisatie",
   },
-  content: {
-    perPage: 30,
-    labelEN: "Custom Content Strategy",
-    labelNL: "Contentstrategieondersteuning",
-  },
 };
 
 /** Timeline options — extra cost per page */
 export const timeline = {
-  "7days":  { perPage: 50, labelEN: "Within 7 days",  labelNL: "Binnen 7 dagen" },
-  "14days": { perPage: 15, labelEN: "Within 14 days", labelNL: "Binnen 14 dagen" },
+  rush:  { perPage: 40, labelEN: "Within 7 days",  labelNL: "Binnen 7 dagen" },
+  fast: { perPage: 15, labelEN: "Within 14 days", labelNL: "Binnen 14 dagen" },
   regular:  { perPage: 0,  labelEN: "Regular speed",  labelNL: "Normale snelheid" },
 };
 
 /**
  * Competitor comparison pricing (static).
  *
- * Verification — worst case (30 pages + SEO + Content + 7 days):
- *   Vexxo:      299 + (49 + 30 + 30 + 50) × 30 = €4,769  ✓
- *   Freelancer: 1000 + 200 × 30               = €7,000  ✓ (Vexxo ~32% cheaper)
- *   Agency:     2000 + 400 × 30               = €14,000 ✓
+ * Verification — worst case (30 pages + SEO + rush):
+ *   Vexxo:      400 + (60 + 30 + 40) × 30 = €4,300  ✓
+ *   Freelancer: 1000 + 200 × 30           = €7,000  ✓ (Vexxo ~39% cheaper)
+ *   Agency:     2000 + 400 × 30           = €14,000 ✓
  */
 export const comparison = {
   agency:     { base: 2000, perPage: 400, labelEN: "Typical Agency",     labelNL: "Typisch Bureau" },
