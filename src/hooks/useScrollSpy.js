@@ -8,6 +8,8 @@ export function useScrollSpy(ids) {
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
+    if (!ids.length) { setActiveId(null); return; }
+
     const update = () => {
       const scrollY = window.scrollY + window.innerHeight * 0.25;
       let active = null;
@@ -21,7 +23,7 @@ export function useScrollSpy(ids) {
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
-  }, []); // ids are stable strings — safe to omit
+  }, [ids.join(",")]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return activeId;
 }
