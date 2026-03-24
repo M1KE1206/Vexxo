@@ -27,16 +27,14 @@ export default function PricingTeaser({ scrollLock = true, ctaTarget = '/prijzen
 
   // ── Scroll-lock reveal (desktop, homepage only) ──
   useEffect(() => {
-    if (!doLock) {
-      setStep(3) // alles direct zichtbaar op touch of /prijzen
-      stepRef.current = 3
-      return
-    }
+    if (!doLock) return // !doLock uses whileInView in JSX
 
     let locked = false
     let savedY = 0
     let delta = 0
-    const THRESHOLD = 80 // px scroll per stap
+    const THRESHOLD = 80    // px scroll per stap
+    const COOLDOWN = 500    // ms minimum tussen stappen (voorkomt rapid-fire bij momentum scroll)
+    let lastAdvanceTime = 0
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -57,6 +55,7 @@ export default function PricingTeaser({ scrollLock = true, ctaTarget = '/prijzen
       delta = 0
       stepRef.current = 1
       setStep(1)
+      lastAdvanceTime = Date.now()
       window.addEventListener('wheel', onWheel, { passive: false })
     }
 
@@ -70,6 +69,9 @@ export default function PricingTeaser({ scrollLock = true, ctaTarget = '/prijzen
     }
 
     function advance() {
+      const now = Date.now()
+      if (now - lastAdvanceTime < COOLDOWN) return
+      lastAdvanceTime = now
       stepRef.current += 1
       setStep(stepRef.current)
       delta = 0
@@ -124,6 +126,48 @@ export default function PricingTeaser({ scrollLock = true, ctaTarget = '/prijzen
   const divider = { width: '24px', height: '1px', background: 'rgba(255,255,255,0.08)', margin: '0 0 20px' }
   const featureStyle = { fontSize: '12px', color: '#acaab1' }
 
+  const ease = [0.25, 0.46, 0.45, 0.94]
+
+  // Motion props: scroll-lock (doLock) vs whileInView (!doLock)
+  const freelancerMotion = doLock
+    ? {
+        initial: { opacity: 0, x: -60 },
+        animate: step >= 2 ? { opacity: 1, x: 0 } : { opacity: 0, x: -60 },
+        transition: { duration: 0.5, ease },
+      }
+    : {
+        initial: { opacity: 0, x: -60 },
+        whileInView: { opacity: 1, x: 0 },
+        viewport: { once: true },
+        transition: { duration: 0.5, ease, delay: 0.15 },
+      }
+
+  const vexxoMotion = doLock
+    ? {
+        initial: { opacity: 0, y: 40 },
+        animate: step >= 1 ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 },
+        transition: { duration: 0.5, ease },
+      }
+    : {
+        initial: { opacity: 0, y: 40 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { duration: 0.5, ease },
+      }
+
+  const agencyMotion = doLock
+    ? {
+        initial: { opacity: 0, x: 60 },
+        animate: step >= 3 ? { opacity: 1, x: 0 } : { opacity: 0, x: 60 },
+        transition: { duration: 0.5, ease },
+      }
+    : {
+        initial: { opacity: 0, x: 60 },
+        whileInView: { opacity: 1, x: 0 },
+        viewport: { once: true },
+        transition: { duration: 0.5, ease, delay: 0.3 },
+      }
+
   return (
     <section ref={sectionRef} id="pricing-teaser" className="py-24 px-8">
       <div className="max-w-7xl mx-auto text-center mb-16">
@@ -138,9 +182,7 @@ export default function PricingTeaser({ scrollLock = true, ctaTarget = '/prijzen
 
         {/* Freelancer — links, tilt -5deg */}
         <motion.div
-          initial={{ opacity: 0, x: -60 }}
-          animate={step >= 2 ? { opacity: 1, x: 0 } : { opacity: 0, x: -60 }}
-          transition={{ duration: 0.5, ease: [0.25,0.46,0.45,0.94] }}
+          {...freelancerMotion}
           style={{ ...cardBase, transform: 'rotate(-5deg)', flexShrink: 0, width: '200px' }}
         >
           <span style={{ ...labelStyle, color: '#55545b' }}>
@@ -158,9 +200,7 @@ export default function PricingTeaser({ scrollLock = true, ctaTarget = '/prijzen
 
         {/* Vexxo — midden, recht, gradient border */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={step >= 1 ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ duration: 0.5, ease: [0.25,0.46,0.45,0.94] }}
+          {...vexxoMotion}
           style={{ ...gradientBorder, flexShrink: 0, width: '220px', position: 'relative', zIndex: 2 }}
         >
           <span style={{ ...labelStyle, color: '#7C3AED' }}>Vexxo Studio</span>
@@ -172,20 +212,20 @@ export default function PricingTeaser({ scrollLock = true, ctaTarget = '/prijzen
             <div style={featureStyle}>{t('pricing.teaser.fullSeo')}</div>
             <div style={featureStyle}>{t('pricing.teaser.weeks1to2')}</div>
           </div>
+          {/* CTA knop — geen btn-primary om hover-scale te vermijden */}
           <button
             onClick={handleCta}
-            className="w-full btn-primary text-sm py-2.5 group flex items-center justify-center"
+            className="w-full text-sm py-2.5 group flex items-center justify-center gap-0 rounded-full font-bold tracking-wide transition-opacity duration-150 hover:opacity-90 active:opacity-75"
+            style={{ background: 'linear-gradient(to right, #7C3AED, #F97316)', color: 'white' }}
           >
             <span>{t('pricing.teaser.cta')}</span>
-            <span className="opacity-0 translate-x-[-4px] translate-y-[4px] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-200 ml-0 group-hover:ml-1.5 text-xs">↗</span>
+            <span className="opacity-0 translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0 group-hover:ml-1.5 transition-all duration-200 ml-0 text-xs">↗</span>
           </button>
         </motion.div>
 
         {/* Agency — rechts, tilt +5deg */}
         <motion.div
-          initial={{ opacity: 0, x: 60 }}
-          animate={step >= 3 ? { opacity: 1, x: 0 } : { opacity: 0, x: 60 }}
-          transition={{ duration: 0.5, ease: [0.25,0.46,0.45,0.94] }}
+          {...agencyMotion}
           style={{ ...cardBase, transform: 'rotate(5deg)', flexShrink: 0, width: '200px' }}
         >
           <span style={{ ...labelStyle, color: '#55545b' }}>
