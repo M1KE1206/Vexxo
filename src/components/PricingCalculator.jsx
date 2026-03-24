@@ -55,12 +55,11 @@ export default function PricingCalculator() {
   const [service,     setService]     = useState(serviceTypes[0].id);
   const [pages,       setPages]       = useState(pageRange.default);
   const [seo,         setSeo]         = useState(false);
-  const [content,     setContent]     = useState(false);
   const [tl,          setTl]          = useState("regular");
 
   // Computed prices
   const tlExtra      = timeline[tl].perPage;
-  const addonExtra   = (seo ? addOns.seo.perPage : 0) + (content ? addOns.content.perPage : 0);
+  const addonExtra   = (seo ? addOns.seo.perPage : 0);
   const effectivePPP = vexxo.perPage + tlExtra + addonExtra;
 
   const vexxoRaw      = vexxo.base + effectivePPP * pages;
@@ -98,7 +97,11 @@ export default function PricingCalculator() {
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* ── Controls ── */}
         <motion.div
-          className="lg:col-span-7 glass-card p-6 md:p-8 rounded-3xl space-y-10"
+          className="lg:col-span-7 p-6 md:p-8 rounded-3xl space-y-10"
+          style={{
+            background: "linear-gradient(var(--color-surface-2,#131319), var(--color-surface-2,#131319)) padding-box, linear-gradient(135deg,#7C3AED,#F97316) border-box",
+            border: "1px solid transparent",
+          }}
           variants={slideLeft}
           initial={ini}
           whileInView="visible"
@@ -116,11 +119,15 @@ export default function PricingCalculator() {
                 <button
                   key={s.id}
                   onClick={() => setService(s.id)}
-                  className={`p-3 rounded-xl text-sm font-bold transition-all border ${
+                  className={`p-3 rounded-xl text-sm font-bold transition-all ${
                     service === s.id
-                      ? "border-primary/60 bg-primary/10 text-primary"
-                      : "border-outline-variant/30 bg-white/[0.03] text-on-surface-variant hover:border-outline-variant/60"
+                      ? "text-primary scale-[1.03]"
+                      : "border border-outline-variant/30 bg-white/[0.03] text-on-surface-variant hover:border-outline-variant/60 hover:scale-[1.02]"
                   }`}
+                  style={service === s.id ? {
+                    background: "linear-gradient(#0e0e13,#0e0e13) padding-box, linear-gradient(135deg,#7C3AED,#F97316) border-box",
+                    border: "1px solid transparent",
+                  } : {}}
                 >
                   {s.label}
                 </button>
@@ -159,10 +166,9 @@ export default function PricingCalculator() {
             </label>
             <div className="space-y-3">
               {[
-                { checked: seo,     set: setSeo,     obj: addOns.seo },
-                { checked: content, set: setContent, obj: addOns.content },
+                { checked: seo, set: setSeo, obj: addOns.seo },
               ].map(({ checked, set, obj }) => (
-                <label key={obj.labelEN} className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] cursor-pointer hover:bg-white/[0.06] transition-all border border-transparent hover:border-outline-variant/20">
+                <label key={obj.labelEN} className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] cursor-pointer hover:bg-white/[0.06] transition-all border border-transparent hover:border-outline-variant/20 hover:scale-[1.01] transition-transform">
                   <input
                     type="checkbox"
                     checked={checked}
@@ -185,9 +191,17 @@ export default function PricingCalculator() {
             </label>
             <div className="grid grid-cols-3 gap-3">
               {Object.entries(timeline).map(([key, val]) => (
-                <label key={key} className={`flex flex-col gap-1 p-3 rounded-xl cursor-pointer border transition-all ${
-                  tl === key ? "border-primary/60 bg-primary/8 text-primary" : "border-outline-variant/30 bg-white/[0.03] text-on-surface-variant hover:border-outline-variant/60"
-                }`}>
+                <label
+                  key={key}
+                  className={`flex flex-col gap-1 p-3 rounded-xl cursor-pointer transition-all ${
+                    tl === key ? "text-primary" : "border border-outline-variant/30 bg-white/[0.03] text-on-surface-variant hover:border-outline-variant/60 hover:scale-[1.02]"
+                  }`}
+                  style={tl === key ? {
+                    background: "linear-gradient(#0e0e13,#0e0e13) padding-box, linear-gradient(135deg,#7C3AED,#F97316) border-box",
+                    border: "1px solid transparent",
+                    transform: "scale(1.03)",
+                  } : {}}
+                >
                   <input type="radio" className="sr-only" checked={tl === key} onChange={() => setTl(key)} />
                   <span className="text-xs font-bold text-on-surface">{tlabel(val)}</span>
                   <span className="text-[11px]">
@@ -249,12 +263,10 @@ export default function PricingCalculator() {
           <motion.div variants={scaleIn} transition={{ duration: 0.4, ease }}
             className="relative p-8 rounded-3xl overflow-hidden"
             style={{
-              background: "linear-gradient(135deg, rgba(124,58,237,0.18) 0%, rgba(8,8,16,0.95) 50%, rgba(249,115,22,0.12) 100%)",
-              border: "1px solid rgba(124,58,237,0.35)",
-              boxShadow: "0 0 50px rgba(124,58,237,0.1), 0 0 100px rgba(249,115,22,0.05)",
+              background: "linear-gradient(#0c0c14,#0c0c14) padding-box, linear-gradient(135deg,#7C3AED,#F97316) border-box",
+              border: "1px solid transparent",
             }}
           >
-            <div className="absolute -top-8 -right-8 w-32 h-32 bg-secondary/15 blur-[50px] rounded-full" />
             <div className="relative z-10">
               <div className="flex justify-between items-start mb-6">
                 <div>
@@ -297,7 +309,6 @@ export default function PricingCalculator() {
                     serviceType: service,
                     pages,
                     seoAddon: seo,
-                    contentAddon: content,
                     timeline: tl,
                     calculatedPrice: vexxoRaw,
                   }
