@@ -184,7 +184,7 @@ input[type="radio"] {
   100% { transform: translateX(-50%); }
 }
 .animate-marquee {
-  animation: marquee 28s linear infinite;
+  animation: marquee 56s linear infinite;
   display: inline-flex;
 }
 
