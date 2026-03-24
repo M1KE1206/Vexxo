@@ -10,7 +10,7 @@ import { createContext, useContext, useState, useCallback } from "react";
  *   pages: number,
  *   seoAddon: boolean,
  *   contentAddon: boolean,
- *   timeline: "7days" | "14days" | "regular",
+ *   timeline: "rush" | "fast" | "regular",
  *   calculatedPrice: number,
  * }
  */
