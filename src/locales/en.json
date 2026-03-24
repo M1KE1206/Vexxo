@@ -215,5 +215,40 @@
     "title": "Ready to start?",
     "subtitle": "Tell us briefly what you need and we'll schedule a free intake call.",
     "button": "Go to the client portal"
+  },
+  "auth": {
+    "tab": {
+      "login": "Log in",
+      "register": "Register"
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Log in to submit your request.",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Log in",
+      "google": "Continue with Google",
+      "switchPrompt": "No account yet?"
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Register once — your details will be filled in automatically.",
+      "name": "Full name",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Create account",
+      "google": "Continue with Google",
+      "switchPrompt": "Already have an account?"
+    },
+    "error": {
+      "invalidCredentials": "Email or password is incorrect.",
+      "emailInUse": "This email address is already in use.",
+      "weakPassword": "Password must be at least 8 characters.",
+      "network": "Connection error. Please try again.",
+      "oauthCancelled": "Google sign-in was cancelled.",
+      "unknown": "Something went wrong. Please try again."
+    },
+    "close": "Close",
+    "divider": "or"
   }
 }

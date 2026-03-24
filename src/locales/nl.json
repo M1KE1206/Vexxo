@@ -215,5 +215,40 @@
     "title": "Klaar om te starten?",
     "subtitle": "Vertel kort wat je nodig hebt en we plannen een gratis intakegesprek in.",
     "button": "Naar het clientportaal"
+  },
+  "auth": {
+    "tab": {
+      "login": "Inloggen",
+      "register": "Registreren"
+    },
+    "login": {
+      "title": "Welkom terug",
+      "subtitle": "Log in om je aanvraag in te dienen.",
+      "email": "E-mailadres",
+      "password": "Wachtwoord",
+      "submit": "Inloggen",
+      "google": "Doorgaan met Google",
+      "switchPrompt": "Nog geen account?"
+    },
+    "register": {
+      "title": "Account aanmaken",
+      "subtitle": "Eenmalig registreren — je gegevens worden daarna automatisch ingevuld.",
+      "name": "Volledige naam",
+      "email": "E-mailadres",
+      "password": "Wachtwoord",
+      "submit": "Account aanmaken",
+      "google": "Doorgaan met Google",
+      "switchPrompt": "Al een account?"
+    },
+    "error": {
+      "invalidCredentials": "E-mail of wachtwoord is onjuist.",
+      "emailInUse": "Dit e-mailadres is al in gebruik.",
+      "weakPassword": "Wachtwoord moet minimaal 8 tekens bevatten.",
+      "network": "Verbindingsfout. Probeer opnieuw.",
+      "oauthCancelled": "Inloggen met Google geannuleerd.",
+      "unknown": "Er is iets misgegaan. Probeer opnieuw."
+    },
+    "close": "Sluiten",
+    "divider": "of"
   }
 }
