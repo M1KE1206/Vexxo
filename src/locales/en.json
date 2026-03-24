@@ -6,7 +6,8 @@
     "pricing": "Pricing",
     "contact": "Contact",
     "getStarted": "Get Started →",
-    "clientPortal": "Client portal"
+    "clientPortal": "Client portal",
+    "signOut": "Sign out"
   },
   "hero": {
     "badge": "Digital Craftsman",
@@ -134,6 +135,19 @@
       "highlight1": "Direct founder communication",
       "highlight2": "2-week delivery time",
       "highlight3": "Premium support"
+    },
+    "teaser": {
+      "cta": "Get started",
+      "viewAll": "View all packages and calculate your price",
+      "standardDesign": "Standard design",
+      "basicSeo": "Basic SEO",
+      "weeks4to6": "4–6 weeks",
+      "premiumDesign": "Premium design",
+      "fullSeo": "Full SEO",
+      "weeks1to2": "1–2 weeks",
+      "enterpriseDesign": "Enterprise design",
+      "dedicatedTeam": "Dedicated team",
+      "weeks8to12": "8–12 weeks"
     }
   },
   "modal": {
@@ -220,6 +234,26 @@
     "title": "Ready to start?",
     "subtitle": "Tell us briefly what you need and we'll schedule a free intake call.",
     "button": "Go to the client portal"
+  },
+  "faq": {
+    "badge": "FAQ",
+    "title": "Frequently asked questions",
+    "subtitle": "Everything you need to know about our pricing and process.",
+    "q1": "What's included in the base price?",
+    "a1": "The base price covers design, development and delivery of your website. Includes 1 revision round, responsive layout and basic SEO structure.",
+    "q2": "How long does a typical project take?",
+    "a2": "A standard 5-page website is delivered in 1–2 weeks. More pages or rush factor may affect timing.",
+    "q3": "How many revisions are included?",
+    "a3": "1 revision round is included by default. Additional revisions can be added on.",
+    "q4": "What if I need more pages later?",
+    "a4": "No problem — we add pages at €60 each. You only pay for what you need.",
+    "q5": "How does payment work?",
+    "a5": "50% upfront, 50% on delivery. Payment by bank transfer."
+  },
+  "pricingPage": {
+    "seoTitle": "Pricing — Vexxo Studio",
+    "seoDescription": "Transparent pricing for premium web design. View our packages and calculate your price.",
+    "seoCanonical": "https://vexxo.be/prijzen"
   },
   "auth": {
     "tab": {

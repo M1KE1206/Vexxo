@@ -6,7 +6,8 @@
     "pricing": "Prijzen",
     "contact": "Contact",
     "getStarted": "Aan de slag →",
-    "clientPortal": "Clientportaal"
+    "clientPortal": "Clientportaal",
+    "signOut": "Uitloggen"
   },
   "hero": {
     "badge": "Digitale Vakman",
@@ -134,6 +135,19 @@
       "highlight1": "Directe communicatie met oprichter",
       "highlight2": "Gem. 2 weken oplevering",
       "highlight3": "Premium support inbegrepen"
+    },
+    "teaser": {
+      "cta": "Aan de slag",
+      "viewAll": "Bekijk alle pakketten en bereken je prijs",
+      "standardDesign": "Standaard design",
+      "basicSeo": "Basis SEO",
+      "weeks4to6": "4–6 weken",
+      "premiumDesign": "Premium design",
+      "fullSeo": "Volledige SEO",
+      "weeks1to2": "1–2 weken",
+      "enterpriseDesign": "Enterprise design",
+      "dedicatedTeam": "Dedicated team",
+      "weeks8to12": "8–12 weken"
     }
   },
   "modal": {
@@ -220,6 +234,26 @@
     "title": "Klaar om te starten?",
     "subtitle": "Vertel kort wat je nodig hebt en we plannen een gratis intakegesprek in.",
     "button": "Naar het clientportaal"
+  },
+  "faq": {
+    "badge": "FAQ",
+    "title": "Veelgestelde vragen",
+    "subtitle": "Alles wat je wil weten over onze prijzen en werkwijze.",
+    "q1": "Wat is inbegrepen in de basisprijs?",
+    "a1": "De basisprijs omvat het design, de ontwikkeling en de oplevering van je website. Inclusief 1 revisieronde, responsive layout en basis SEO-structuur.",
+    "q2": "Hoe lang duurt een gemiddeld project?",
+    "a2": "Een standaard website van 5 pagina's is klaar in 1–2 weken. Bij extra pagina's of spoedfactor kan dit variëren.",
+    "q3": "Hoeveel revisies zijn inbegrepen?",
+    "a3": "1 revisieronde is standaard inbegrepen. Extra revisies kunnen worden bijgeboekt.",
+    "q4": "Wat als ik later meer pagina's nodig heb?",
+    "a4": "Geen probleem — we voegen extra pagina's toe aan €60 per pagina. Je betaalt enkel voor wat je nodig hebt.",
+    "q5": "Hoe verloopt de betaling?",
+    "a5": "50% bij opstart, 50% bij oplevering. Betaling via bankoverschrijving."
+  },
+  "pricingPage": {
+    "seoTitle": "Prijzen — Vexxo Studio",
+    "seoDescription": "Transparante prijzen voor premium webdesign. Bekijk onze pakketten en bereken jouw prijs.",
+    "seoCanonical": "https://vexxo.be/prijzen"
   },
   "auth": {
     "tab": {
