@@ -229,7 +229,7 @@ export default function ServiceRequestModal() {
     } else {
       setVisible(false);
     }
-  }, [isOpen, prefillData]);
+  }, [isOpen, prefillData, user]);
 
   // Escape key
   useEffect(() => {
