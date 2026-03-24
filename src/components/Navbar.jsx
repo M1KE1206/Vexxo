@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { useScrollSpy } from "../hooks/useScrollSpy";
 
 const NAV_LINKS = [
+  { key: "home",      href: "/",           isPage: false },
   { key: "portfolio", href: "/#portfolio", isPage: false },
   { key: "about",     href: "/#about",     isPage: false },
   { key: "pricing",   href: "/prijzen",    isPage: true  },
@@ -17,8 +18,15 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
-  const sections = pathname === "/" ? ["portfolio", "about", "contact"] : [];
+  const sections = pathname === "/" ? ["portfolio", "pricing-teaser", "about", "contact"] : [];
   const activeSection = useScrollSpy(sections);
+
+  // Map pricing-teaser section → "pricing" nav key; also active on /prijzen route
+  const getIsActive = (key) => {
+    if (key === "pricing") return activeSection === "pricing-teaser" || pathname === "/prijzen";
+    if (key === "home")    return pathname === "/" && !activeSection;
+    return activeSection === key;
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -43,7 +51,7 @@ export default function Navbar() {
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8 font-headline font-bold tracking-tight text-sm">
           {NAV_LINKS.map(({ key, href, isPage }) => {
-            const isActive = activeSection === key;
+            const isActive = getIsActive(key);
             return (
               <div key={key} className="relative group">
                 <Link
