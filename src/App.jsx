@@ -17,10 +17,9 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import CustomCursor from "./components/CustomCursor";
-import AuthModal from "./components/AuthModal";
-
 // Lazy-load the modal — it's large and only shown on demand
 const ServiceRequestModal = lazy(() => import("./components/ServiceRequestModal"));
+const AuthModal = lazy(() => import("./components/AuthModal"));
 
 /** Dynamic meta tags — language-aware, lives inside LanguageProvider */
 function SeoHead() {
@@ -107,7 +106,9 @@ export default function App() {
               <Suspense fallback={null}>
                 <ServiceRequestModal />
               </Suspense>
-              <AuthModal />
+              <Suspense fallback={null}>
+                <AuthModal />
+              </Suspense>
             </div>
           </ModalProvider>
         </AuthProvider>

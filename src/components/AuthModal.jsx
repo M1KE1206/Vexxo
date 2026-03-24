@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
-import { useAuth } from '../context/AuthContext'
+import { useAuth, _dispatch } from '../context/AuthContext'
 import { useModal } from '../context/ModalContext'
 import { useLanguage } from '../context/LanguageContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -126,6 +126,15 @@ export default function AuthModal() {
       if (result.error) {
         setError(t(mapError(result.error)))
       } else {
+        // Consume pendingAction now, before the dismiss-cleanup effect clears sessionStorage
+        const raw = sessionStorage.getItem('pendingAction')
+        if (raw) {
+          sessionStorage.removeItem('pendingAction')
+          try {
+            const payload = JSON.parse(raw)
+            setTimeout(() => _dispatch(payload), 0)
+          } catch { /* invalid JSON, ignore */ }
+        }
         handleClose()
       }
     } catch {

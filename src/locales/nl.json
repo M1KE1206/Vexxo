@@ -129,7 +129,12 @@
     "selectPlan": "Kies dit plan",
     "noSurcharge": "Geen extra toeslag",
     "baseLabel": "Basis",
-    "perPageLabel": "per pagina"
+    "perPageLabel": "per pagina",
+    "vexxo": {
+      "highlight1": "Directe communicatie met oprichter",
+      "highlight2": "Gem. 2 weken oplevering",
+      "highlight3": "Premium support inbegrepen"
+    }
   },
   "modal": {
     "title": "Service Aanvragen",

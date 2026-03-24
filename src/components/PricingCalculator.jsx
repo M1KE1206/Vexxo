@@ -277,7 +277,11 @@ export default function PricingCalculator() {
               </div>
 
               <ul className="space-y-2 mb-6">
-                {["Direct founder communication", "2-week delivery time", "Premium support"].map((item) => (
+                {[
+                t('pricing.vexxo.highlight1'),
+                t('pricing.vexxo.highlight2'),
+                t('pricing.vexxo.highlight3'),
+              ].map((item) => (
                   <li key={item} className="flex items-center gap-2 text-sm text-on-surface">
                     <span className="material-symbols-outlined text-secondary text-base">check_circle</span>
                     {item}

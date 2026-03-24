@@ -11,6 +11,14 @@ export function _registerDispatch(fn) {
   if (typeof fn === 'function' || fn === null) _dispatchFn = fn
 }
 
+export function _dispatch(payload) {
+  if (_dispatchFn) {
+    _dispatchFn(payload)
+  } else if (import.meta.env.DEV) {
+    console.warn('[AuthContext] _dispatch called but _dispatchFn not registered yet.')
+  }
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser]         = useState(null)
   const [session, setSession]   = useState(null)

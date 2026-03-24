@@ -129,7 +129,12 @@
     "selectPlan": "Select this plan",
     "noSurcharge": "No extra charge",
     "baseLabel": "Base",
-    "perPageLabel": "per page"
+    "perPageLabel": "per page",
+    "vexxo": {
+      "highlight1": "Direct founder communication",
+      "highlight2": "2-week delivery time",
+      "highlight3": "Premium support"
+    }
   },
   "modal": {
     "title": "Request a Service",
