@@ -228,7 +228,8 @@
       "password": "Password",
       "submit": "Log in",
       "google": "Continue with Google",
-      "switchPrompt": "No account yet?"
+      "switchPrompt": "No account yet?",
+      "emailPlaceholder": "name@company.com"
     },
     "register": {
       "title": "Create account",
@@ -238,14 +239,17 @@
       "password": "Password",
       "submit": "Create account",
       "google": "Continue with Google",
-      "switchPrompt": "Already have an account?"
+      "switchPrompt": "Already have an account?",
+      "namePlaceholder": "John Smith",
+      "emailPlaceholder": "name@company.com"
     },
     "error": {
       "invalidCredentials": "Email or password is incorrect.",
       "emailInUse": "This email address is already in use.",
       "weakPassword": "Password must be at least 8 characters.",
       "network": "Connection error. Please try again.",
-      "unknown": "Something went wrong. Please try again."
+      "unknown": "Something went wrong. Please try again.",
+      "oauthCancelled": "Google sign-in was cancelled."
     },
     "close": "Close",
     "divider": "or"

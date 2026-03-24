@@ -15,6 +15,8 @@ function mapError(err) {
       msg.includes('already been registered'))                        return 'auth.error.emailInUse'
   if (msg.includes('password should be at least'))                   return 'auth.error.weakPassword'
   if (msg.includes('fetch') || msg.includes('network'))              return 'auth.error.network'
+  if (msg.includes('cancelled') || msg.includes('canceled') ||
+      msg.includes('oauth') || msg.includes('popup_closed'))         return 'auth.error.oauthCancelled'
   return 'auth.error.unknown'
 }
 
@@ -176,7 +178,7 @@ export default function AuthModal() {
             onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-[380px] rounded-[1.25rem] p-7"
             style={{
-              background: 'rgba(19,19,25,0.92)',
+              background: 'rgba(19,19,25,0.75)',
               backdropFilter: 'blur(24px) saturate(180%)',
               WebkitBackdropFilter: 'blur(24px) saturate(180%)',
               border: '1px solid rgba(255,255,255,0.12)',
@@ -221,115 +223,127 @@ export default function AuthModal() {
               ))}
             </div>
 
-            {/* Title + subtitle */}
-            <h2
-              id="auth-modal-title"
-              className="mb-[0.3rem] text-[1.2rem] font-bold"
-              style={{ fontFamily: 'Manrope, sans-serif' }}
-            >
-              {t(`auth.${activeTab}.title`)}
-            </h2>
-            <p
-              className="mb-5 text-[0.75rem] leading-relaxed"
-              style={{ color: '#acaab1' }}
-            >
-              {t(`auth.${activeTab}.subtitle`)}
-            </p>
-
-            {/* Form */}
-            <form onSubmit={handleEmailAuth}>
-              {activeTab === 'register' && (
-                <div className="mb-3">
-                  <label
-                    className="mb-[0.3rem] block text-[0.7rem] font-medium"
-                    style={{ color: '#acaab1' }}
-                  >
-                    {t('auth.register.name')}
-                  </label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    placeholder="Jan Janssen"
-                    className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none"
-                    style={{
-                      background: 'rgba(255,255,255,0.05)',
-                      border: '1px solid rgba(255,255,255,0.09)',
-                      color: '#f9f5fd',
-                      fontFamily: 'inherit',
-                    }}
-                  />
-                </div>
-              )}
-
-              <div className="mb-3">
-                <label
-                  className="mb-[0.3rem] block text-[0.7rem] font-medium"
-                  style={{ color: '#acaab1' }}
-                >
-                  {t(`auth.${activeTab}.email`)}
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="naam@bedrijf.be"
-                  className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none"
-                  style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.09)',
-                    color: '#f9f5fd',
-                    fontFamily: 'inherit',
-                  }}
-                />
-              </div>
-
-              <div className="mb-3">
-                <label
-                  className="mb-[0.3rem] block text-[0.7rem] font-medium"
-                  style={{ color: '#acaab1' }}
-                >
-                  {t(`auth.${activeTab}.password`)}
-                </label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPass(e.target.value)}
-                  required
-                  minLength={8}
-                  placeholder="••••••••"
-                  className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none"
-                  style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.09)',
-                    color: '#f9f5fd',
-                    fontFamily: 'inherit',
-                  }}
-                />
-              </div>
-
-              {error && (
-                <p className="mb-3 text-[0.75rem] text-[#f87171]" role="alert">
-                  {error}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="mb-[0.85rem] w-full rounded-[0.6rem] py-[0.7rem] text-[0.82rem] font-bold text-white transition-opacity duration-150 disabled:cursor-not-allowed"
-                style={{
-                  background: loading ? 'rgba(124,58,237,0.4)' : 'linear-gradient(135deg, #7C3AED, #F97316)',
-                  border: 'none',
-                  boxShadow: '0 0 20px rgba(124,58,237,0.3)',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                }}
+            {/* Title + subtitle + form — animated on tab switch */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                {...(reduced ? {} : {
+                  initial: { opacity: 0, y: 8 },
+                  animate: { opacity: 1, y: 0 },
+                  exit:    { opacity: 0, y: -8 },
+                  transition: { duration: 0.25, ease: 'easeOut' },
+                })}
               >
-                {loading ? '…' : t(`auth.${activeTab}.submit`)}
-              </button>
-            </form>
+                <h2
+                  id="auth-modal-title"
+                  className="mb-[0.3rem] text-[1.2rem] font-bold"
+                  style={{ fontFamily: 'Manrope, sans-serif' }}
+                >
+                  {t(`auth.${activeTab}.title`)}
+                </h2>
+                <p
+                  className="mb-5 text-[0.75rem] leading-relaxed"
+                  style={{ color: '#acaab1' }}
+                >
+                  {t(`auth.${activeTab}.subtitle`)}
+                </p>
+
+                {/* Form */}
+                <form onSubmit={handleEmailAuth}>
+                  {activeTab === 'register' && (
+                    <div className="mb-3">
+                      <label
+                        className="mb-[0.3rem] block text-[0.7rem] font-medium"
+                        style={{ color: '#acaab1' }}
+                      >
+                        {t('auth.register.name')}
+                      </label>
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        placeholder={t('auth.register.namePlaceholder')}
+                        className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#7C3AED]"
+                        style={{
+                          background: 'rgba(255,255,255,0.05)',
+                          border: '1px solid rgba(255,255,255,0.09)',
+                          color: '#f9f5fd',
+                          fontFamily: 'inherit',
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  <div className="mb-3">
+                    <label
+                      className="mb-[0.3rem] block text-[0.7rem] font-medium"
+                      style={{ color: '#acaab1' }}
+                    >
+                      {t(`auth.${activeTab}.email`)}
+                    </label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      placeholder={t(`auth.${activeTab}.emailPlaceholder`)}
+                      className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#7C3AED]"
+                      style={{
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.09)',
+                        color: '#f9f5fd',
+                        fontFamily: 'inherit',
+                      }}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label
+                      className="mb-[0.3rem] block text-[0.7rem] font-medium"
+                      style={{ color: '#acaab1' }}
+                    >
+                      {t(`auth.${activeTab}.password`)}
+                    </label>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPass(e.target.value)}
+                      required
+                      minLength={8}
+                      placeholder="••••••••"
+                      className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#7C3AED]"
+                      style={{
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.09)',
+                        color: '#f9f5fd',
+                        fontFamily: 'inherit',
+                      }}
+                    />
+                  </div>
+
+                  {error && (
+                    <p className="mb-3 text-[0.75rem] text-[#f87171]" role="alert">
+                      {error}
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="mb-[0.85rem] w-full rounded-[0.6rem] py-[0.7rem] text-[0.82rem] font-bold text-white transition-opacity duration-150 disabled:cursor-not-allowed"
+                    style={{
+                      background: loading ? 'rgba(124,58,237,0.4)' : 'linear-gradient(135deg, #7C3AED, #F97316)',
+                      border: 'none',
+                      boxShadow: '0 0 20px rgba(124,58,237,0.3)',
+                      cursor: loading ? 'not-allowed' : 'pointer',
+                    }}
+                  >
+                    {loading ? '…' : t(`auth.${activeTab}.submit`)}
+                  </button>
+                </form>
+              </motion.div>
+            </AnimatePresence>
 
             {/* Divider */}
             <div

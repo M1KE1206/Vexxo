@@ -228,7 +228,8 @@
       "password": "Wachtwoord",
       "submit": "Inloggen",
       "google": "Doorgaan met Google",
-      "switchPrompt": "Nog geen account?"
+      "switchPrompt": "Nog geen account?",
+      "emailPlaceholder": "naam@bedrijf.be"
     },
     "register": {
       "title": "Account aanmaken",
@@ -238,14 +239,17 @@
       "password": "Wachtwoord",
       "submit": "Account aanmaken",
       "google": "Doorgaan met Google",
-      "switchPrompt": "Al een account?"
+      "switchPrompt": "Al een account?",
+      "namePlaceholder": "Jan Janssen",
+      "emailPlaceholder": "naam@bedrijf.be"
     },
     "error": {
       "invalidCredentials": "E-mail of wachtwoord is onjuist.",
       "emailInUse": "Dit e-mailadres is al in gebruik.",
       "weakPassword": "Wachtwoord moet minimaal 8 tekens bevatten.",
       "network": "Verbindingsfout. Probeer opnieuw.",
-      "unknown": "Er is iets misgegaan. Probeer opnieuw."
+      "unknown": "Er is iets misgegaan. Probeer opnieuw.",
+      "oauthCancelled": "Inloggen met Google geannuleerd."
     },
     "close": "Sluiten",
     "divider": "of"
