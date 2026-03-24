@@ -6,7 +6,7 @@
 
 export const SEO = {
   siteName:      "Vexxo Studio",
-  siteUrl:       "https://vexxo.studio",
+  siteUrl:       "https://vexxo.be",
   keywords:      "web design, web development, freelance, Belgium, portfolio website, webshop, logo design, SEO, student agency, Vexxo Studio, webdesign België",
   locale:        "nl_BE",   // primary
   localeAlt:     "en_GB",   // alternate

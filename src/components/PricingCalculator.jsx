@@ -75,7 +75,7 @@ export default function PricingCalculator() {
   const ini = reduce ? false : "hidden";
 
   return (
-    <section id="pricing" aria-labelledby="pricing-heading" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
+    <section id="calculator" aria-labelledby="pricing-heading" className="py-24 px-6 md:px-8 max-w-7xl mx-auto">
       {/* Header */}
       <motion.div
         className="text-center mb-16 space-y-3"
