@@ -7,7 +7,9 @@ const AuthContext = createContext(null)
 // AppDispatcher in App.jsx registreert de echte functie na mount.
 // Bij HMR in dev kan de fn even null zijn — dit is een bekende edge case.
 let _dispatchFn = null
-export function _registerDispatch(fn) { _dispatchFn = fn }
+export function _registerDispatch(fn) {
+  if (typeof fn === 'function' || fn === null) _dispatchFn = fn
+}
 
 export function AuthProvider({ children }) {
   const [user, setUser]         = useState(null)
@@ -52,7 +54,11 @@ export function AuthProvider({ children }) {
    */
   const requireAuth = useCallback((payload) => {
     if (session) {
-      _dispatchFn?.(payload)
+      if (_dispatchFn) {
+        _dispatchFn(payload)
+      } else if (import.meta.env.DEV) {
+        console.warn('[AuthContext] requireAuth called but _dispatchFn not registered yet.')
+      }
     } else {
       sessionStorage.setItem('pendingAction', JSON.stringify(payload))
       setAuthOpen(true)
@@ -61,8 +67,7 @@ export function AuthProvider({ children }) {
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut()
-    setUser(null)
-    setSession(null)
+    // State is cleared by onAuthStateChange (SIGNED_OUT event)
   }, [])
 
   return (
