@@ -36,15 +36,15 @@
     },
     "projects": {
       "kapperszaak": {
-        "title": "Demo — Barbershop",
+        "title": "Barbershop",
         "description": "Clean one-pager with online booking module for a modern barbershop."
       },
       "loodgieter": {
-        "title": "Demo — Plumber",
+        "title": "Plumber",
         "description": "Practical website with price estimates, emergency button and clear call-to-actions."
       },
       "horeca": {
-        "title": "Demo — Hospitality",
+        "title": "Hospitality",
         "description": "Digital menu, reservations and event page for a busy hospitality venue."
       }
     }

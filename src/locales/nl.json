@@ -36,15 +36,15 @@
     },
     "projects": {
       "kapperszaak": {
-        "title": "Demo — Kapperszaak",
+        "title": "Kapperszaak",
         "description": "Strakke one-pager met online afspraakmodule voor een moderne kapsalon."
       },
       "loodgieter": {
-        "title": "Demo — Loodgieter",
+        "title": "Loodgieter",
         "description": "Praktische website met prijsindicaties, spoedknop en duidelijke call-to-actions."
       },
       "horeca": {
-        "title": "Demo — Horeca",
+        "title": "Horeca",
         "description": "Digitale menukaart, reservaties en eventpagina voor een druk bezocht horecazaak."
       }
     }
