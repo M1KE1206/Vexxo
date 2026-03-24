@@ -1,21 +1,24 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { useScrollSpy } from "../hooks/useScrollSpy";
 
 const NAV_LINKS = [
-  { key: "portfolio", href: "#portfolio" },
-  { key: "about",     href: "#about" },
-  { key: "pricing",   href: "#pricing" },
-  { key: "contact",   href: "#contact" },
+  { key: "portfolio", href: "/#portfolio", isPage: false },
+  { key: "about",     href: "/#about",     isPage: false },
+  { key: "pricing",   href: "/prijzen",    isPage: true  },
+  { key: "contact",   href: "/#contact",   isPage: false },
 ];
 
 export default function Navbar() {
   const { t, lang, setLang } = useLanguage();
-  const { requireAuth } = useAuth();
+  const { user, signOut } = useAuth();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const activeSection = useScrollSpy(["portfolio", "about", "pricing", "contact"]);
+  const { pathname } = useLocation();
+  const sections = pathname === "/" ? ["portfolio", "about", "contact"] : [];
+  const activeSection = useScrollSpy(sections);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -33,34 +36,40 @@ export default function Navbar() {
     >
       <nav aria-label="Main navigation" className="flex justify-between items-center px-6 md:px-8 py-4 max-w-7xl mx-auto">
         {/* Logo */}
-        <a href="#hero" className="text-xl md:text-2xl font-extrabold gradient-text font-headline">
+        <Link to="/" className="text-xl md:text-2xl font-extrabold gradient-text font-headline">
           Vexxo Studio
-        </a>
+        </Link>
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8 font-headline font-bold tracking-tight text-sm">
-          {NAV_LINKS.map(({ key, href }) => {
+          {NAV_LINKS.map(({ key, href, isPage }) => {
             const isActive = activeSection === key;
             return (
-              <a
-                key={key}
-                href={href}
-                className={`relative transition-colors ${isActive ? "text-primary" : "text-on-surface-variant hover:text-on-surface"}`}
-              >
-                {t(`nav.${key}`)}
+              <div key={key} className="relative group">
+                <Link
+                  to={href}
+                  className={`flex items-center transition-all duration-200 group-hover:scale-[1.06] ${
+                    isActive ? "text-primary" : "text-on-surface-variant group-hover:text-on-surface"
+                  }`}
+                >
+                  {t(`nav.${key}`)}
+                  {isPage && (
+                    <span className="opacity-0 translate-x-[-4px] translate-y-[4px] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-200 ml-0 group-hover:ml-1 text-[10px]">
+                      ↗
+                    </span>
+                  )}
+                </Link>
                 {isActive && (
                   <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
                 )}
-              </a>
+              </div>
             );
           })}
         </div>
 
-        {/* Right side: CTA + language toggle */}
+        {/* Right side: language toggle → CTA → Logout */}
         <div className="hidden md:flex items-center gap-4">
-          <button onClick={() => requireAuth({ action: 'openServiceModal' })} className="btn-primary text-sm px-6 py-2.5">
-            {t("nav.getStarted")}
-          </button>
+          {/* Language switcher — left of CTA */}
           <button
             onClick={() => setLang(lang === "nl" ? "en" : "nl")}
             aria-label={lang === "nl" ? "Switch to English" : "Schakel naar Nederlands"}
@@ -70,6 +79,33 @@ export default function Navbar() {
             <span className="text-on-surface-variant/30" aria-hidden="true">|</span>
             <span lang="en" className={lang === "en" ? "text-on-surface" : "text-on-surface-variant/40"}>EN</span>
           </button>
+
+          {/* CTA — always visible, navigates to /prijzen */}
+          <Link
+            to="/prijzen"
+            className="btn-primary text-sm px-6 py-2.5 group flex items-center hover:scale-[1.05] transition-transform duration-200"
+          >
+            <span>{t("nav.getStarted")}</span>
+            <span className="opacity-0 translate-x-[-4px] translate-y-[4px] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-200 ml-0 group-hover:ml-1.5 text-xs">↗</span>
+          </Link>
+
+          {/* Logout — only visible when logged in */}
+          {user && (
+            <button
+              onClick={signOut}
+              aria-label={t("nav.signOut")}
+              className="flex items-center text-[#55545b] hover:text-[#ef4444] hover:scale-110 hover:bg-red-500/8 px-2 py-1.5 rounded-lg transition-all duration-[250ms] group"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+              <span className="max-w-0 overflow-hidden opacity-0 group-hover:max-w-[80px] group-hover:opacity-100 group-hover:ml-1.5 text-[11px] font-bold transition-all duration-[250ms] whitespace-nowrap">
+                {t("nav.signOut")}
+              </span>
+            </button>
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -102,19 +138,23 @@ export default function Navbar() {
         <div className="md:hidden border-t border-white/10 bg-zinc-950/90 backdrop-blur-xl">
           <div className="flex flex-col gap-1 px-6 py-4">
             {NAV_LINKS.map(({ key, href }) => (
-              <a
+              <Link
                 key={key}
-                href={href}
+                to={href}
                 onClick={() => setOpen(false)}
                 className="py-3 text-sm font-semibold text-on-surface-variant hover:text-on-surface border-b border-white/5 transition-colors"
               >
                 {t(`nav.${key}`)}
-              </a>
+              </Link>
             ))}
             <div className="flex items-center gap-4 pt-4">
-              <button onClick={() => { requireAuth({ action: 'openServiceModal' }); setOpen(false); }} className="btn-primary text-sm px-6 py-2.5">
+              <Link
+                to="/prijzen"
+                onClick={() => setOpen(false)}
+                className="btn-primary text-sm px-6 py-2.5"
+              >
                 {t("nav.getStarted")}
-              </button>
+              </Link>
               <button
                 onClick={() => { setLang(lang === "nl" ? "en" : "nl"); setOpen(false); }}
                 aria-label={lang === "nl" ? "Switch to English" : "Schakel naar Nederlands"}
@@ -125,6 +165,14 @@ export default function Navbar() {
                 <span lang="en" className={lang === "en" ? "text-on-surface" : "text-on-surface-variant/40"}>EN</span>
               </button>
             </div>
+            {user && (
+              <button
+                onClick={() => { signOut(); setOpen(false); }}
+                className="py-3 text-sm font-semibold text-red-400 hover:text-red-300 border-b border-white/5 transition-colors"
+              >
+                {t("nav.signOut")}
+              </button>
+            )}
           </div>
         </div>
       )}
