@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback, memo } from "react";
 import { useModal } from "../context/ModalContext";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 import { serviceCategories, packages } from "../config/services";
 import { vexxo, addOns, timeline as timelineConfig } from "../config/pricing";
 
@@ -193,6 +194,7 @@ const OrderSummary = memo(function OrderSummary({ pkg, prefill, lang, onSend, lo
 export default function ServiceRequestModal() {
   const { isOpen, closeModal, prefillData } = useModal();
   const { t, lang }  = useLanguage();
+  const { user } = useAuth();
   const [visible,    setVisible]    = useState(false);
   const [activeTab,  setActiveTab]  = useState("design");
   const [selectedPkg, setSelectedPkg] = useState(null);
@@ -209,7 +211,15 @@ export default function ServiceRequestModal() {
       setSelectedPkg(null);
       setSent(false);
       setLoading(false);
-      setForm({ fullName: "", company: "", email: "", phone: "", preferredContact: "email", deadline: "", notes: "" });
+      setForm({
+        fullName: user?.user_metadata?.full_name ?? "",
+        company: "",
+        email: user?.email ?? "",
+        phone: "",
+        preferredContact: "email",
+        deadline: "",
+        notes: "",
+      });
       if (prefillData?.fromCalculator && prefillData.serviceType) {
         setActiveTab(prefillData.serviceType);
       } else {
