@@ -245,7 +245,6 @@
       "emailInUse": "This email address is already in use.",
       "weakPassword": "Password must be at least 8 characters.",
       "network": "Connection error. Please try again.",
-      "oauthCancelled": "Google sign-in was cancelled.",
       "unknown": "Something went wrong. Please try again."
     },
     "close": "Close",

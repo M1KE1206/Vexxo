@@ -245,7 +245,6 @@
       "emailInUse": "Dit e-mailadres is al in gebruik.",
       "weakPassword": "Wachtwoord moet minimaal 8 tekens bevatten.",
       "network": "Verbindingsfout. Probeer opnieuw.",
-      "oauthCancelled": "Inloggen met Google geannuleerd.",
       "unknown": "Er is iets misgegaan. Probeer opnieuw."
     },
     "close": "Sluiten",

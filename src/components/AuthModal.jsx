@@ -18,18 +18,6 @@ function mapError(err) {
   return 'auth.error.unknown'
 }
 
-const inputStyle = {
-  width: '100%',
-  background: 'rgba(255,255,255,0.05)',
-  border: '1px solid rgba(255,255,255,0.09)',
-  borderRadius: '0.55rem',
-  padding: '0.55rem 0.8rem',
-  fontSize: '0.8rem',
-  color: '#f9f5fd',
-  outline: 'none',
-  fontFamily: 'inherit',
-}
-
 function GoogleIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
@@ -57,16 +45,24 @@ export default function AuthModal() {
   const firstFocusRef = useRef(null)
   const modalRef      = useRef(null)
 
+  // Note: when authOpen becomes true and serviceOpen is also true, this effect calls closeModal()
+  // which updates serviceOpen → triggers one re-run → serviceOpen is now false, no further loop.
+  // Intentional single-cycle re-render.
   // Scroll lock + dual-modal handling
   useEffect(() => {
     if (authOpen) {
       if (serviceOpen) closeModal()
       document.body.style.overflow = 'hidden'
+      document.body.classList.add('modal-open')
       setTimeout(() => firstFocusRef.current?.focus(), 50)
     } else {
       document.body.style.overflow = ''
+      document.body.classList.remove('modal-open')
     }
-    return () => { document.body.style.overflow = '' }
+    return () => {
+      document.body.style.overflow = ''
+      document.body.classList.remove('modal-open')
+    }
   }, [authOpen, serviceOpen, closeModal])
 
   // Clear stale pendingAction when modal is dismissed without signing in
@@ -85,7 +81,7 @@ export default function AuthModal() {
       if (e.key !== 'Tab') return
 
       const focusable = modalRef.current?.querySelectorAll(
-        'button, input, [tabindex]:not([tabindex="-1"])'
+        'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
       )
       if (!focusable?.length) return
       const first = focusable[0]
@@ -164,12 +160,10 @@ export default function AuthModal() {
           {...overlayAnim}
           transition={transition}
           onClick={handleClose}
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
           style={{
-            position: 'fixed', inset: 0, zIndex: 9999,
             background: 'rgba(10,10,15,0.55)',
             backdropFilter: 'blur(2px)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: '1rem',
           }}
         >
           <motion.div
@@ -180,56 +174,46 @@ export default function AuthModal() {
             aria-modal="true"
             aria-labelledby="auth-modal-title"
             onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-[380px] rounded-[1.25rem] p-7"
             style={{
               background: 'rgba(19,19,25,0.92)',
               backdropFilter: 'blur(24px) saturate(180%)',
               WebkitBackdropFilter: 'blur(24px) saturate(180%)',
               border: '1px solid rgba(255,255,255,0.12)',
-              borderRadius: '1.25rem',
               boxShadow: '0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,58,237,0.1), inset 0 1px 0 rgba(255,255,255,0.06)',
-              padding: '1.75rem',
-              width: '100%',
-              maxWidth: '380px',
-              position: 'relative',
             }}
           >
             {/* Close button */}
             <button
               onClick={handleClose}
               aria-label={t('auth.close')}
+              className="absolute top-4 right-4 flex h-7 w-7 items-center justify-center rounded-full text-[0.7rem] cursor-pointer"
               style={{
-                position: 'absolute', top: '1rem', right: '1rem',
-                width: 28, height: 28,
                 background: 'rgba(255,255,255,0.06)',
                 border: '1px solid rgba(255,255,255,0.1)',
-                borderRadius: '50%',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', fontSize: '0.7rem', color: '#acaab1',
+                color: '#acaab1',
               }}
             >✕</button>
 
             {/* Tab toggle */}
-            <div style={{
-              display: 'flex',
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.07)',
-              borderRadius: '0.55rem', padding: '3px', gap: '3px',
-              marginBottom: '1.5rem',
-            }}>
+            <div
+              className="flex gap-[3px] rounded-[0.55rem] p-[3px] mb-6"
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.07)',
+              }}
+            >
               {(['login', 'register']).map((tabKey) => (
                 <button
                   key={tabKey}
                   ref={tabKey === 'login' ? firstFocusRef : null}
                   onClick={() => switchTab(tabKey)}
+                  className="flex-1 text-center text-[0.78rem] rounded-[0.4rem] py-[0.42rem] cursor-pointer transition-all duration-200"
                   style={{
-                    flex: 1, textAlign: 'center',
-                    fontSize: '0.78rem',
                     fontWeight: activeTab === tabKey ? 600 : 400,
-                    padding: '0.42rem', borderRadius: '0.4rem', cursor: 'pointer',
                     color: activeTab === tabKey ? '#f9f5fd' : '#acaab1',
                     background: activeTab === tabKey ? 'rgba(124,58,237,0.22)' : 'transparent',
                     border: activeTab === tabKey ? '1px solid rgba(124,58,237,0.35)' : '1px solid transparent',
-                    transition: 'all 0.2s',
                   }}
                 >
                   {t(`auth.tab.${tabKey}`)}
@@ -238,21 +222,28 @@ export default function AuthModal() {
             </div>
 
             {/* Title + subtitle */}
-            <p
+            <h2
               id="auth-modal-title"
-              style={{ fontFamily: 'Manrope, sans-serif', fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.3rem' }}
+              className="mb-[0.3rem] text-[1.2rem] font-bold"
+              style={{ fontFamily: 'Manrope, sans-serif' }}
             >
               {t(`auth.${activeTab}.title`)}
-            </p>
-            <p style={{ fontSize: '0.75rem', color: '#acaab1', marginBottom: '1.25rem', lineHeight: 1.5 }}>
+            </h2>
+            <p
+              className="mb-5 text-[0.75rem] leading-relaxed"
+              style={{ color: '#acaab1' }}
+            >
               {t(`auth.${activeTab}.subtitle`)}
             </p>
 
             {/* Form */}
             <form onSubmit={handleEmailAuth}>
               {activeTab === 'register' && (
-                <div style={{ marginBottom: '0.75rem' }}>
-                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 500, color: '#acaab1', marginBottom: '0.3rem' }}>
+                <div className="mb-3">
+                  <label
+                    className="mb-[0.3rem] block text-[0.7rem] font-medium"
+                    style={{ color: '#acaab1' }}
+                  >
                     {t('auth.register.name')}
                   </label>
                   <input
@@ -261,13 +252,22 @@ export default function AuthModal() {
                     onChange={(e) => setName(e.target.value)}
                     required
                     placeholder="Jan Janssen"
-                    style={inputStyle}
+                    className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none"
+                    style={{
+                      background: 'rgba(255,255,255,0.05)',
+                      border: '1px solid rgba(255,255,255,0.09)',
+                      color: '#f9f5fd',
+                      fontFamily: 'inherit',
+                    }}
                   />
                 </div>
               )}
 
-              <div style={{ marginBottom: '0.75rem' }}>
-                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 500, color: '#acaab1', marginBottom: '0.3rem' }}>
+              <div className="mb-3">
+                <label
+                  className="mb-[0.3rem] block text-[0.7rem] font-medium"
+                  style={{ color: '#acaab1' }}
+                >
                   {t(`auth.${activeTab}.email`)}
                 </label>
                 <input
@@ -276,12 +276,21 @@ export default function AuthModal() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="naam@bedrijf.be"
-                  style={inputStyle}
+                  className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none"
+                  style={{
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.09)',
+                    color: '#f9f5fd',
+                    fontFamily: 'inherit',
+                  }}
                 />
               </div>
 
-              <div style={{ marginBottom: '0.75rem' }}>
-                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 500, color: '#acaab1', marginBottom: '0.3rem' }}>
+              <div className="mb-3">
+                <label
+                  className="mb-[0.3rem] block text-[0.7rem] font-medium"
+                  style={{ color: '#acaab1' }}
+                >
                   {t(`auth.${activeTab}.password`)}
                 </label>
                 <input
@@ -291,12 +300,18 @@ export default function AuthModal() {
                   required
                   minLength={8}
                   placeholder="••••••••"
-                  style={inputStyle}
+                  className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none"
+                  style={{
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.09)',
+                    color: '#f9f5fd',
+                    fontFamily: 'inherit',
+                  }}
                 />
               </div>
 
               {error && (
-                <p style={{ fontSize: '0.75rem', color: '#f87171', marginBottom: '0.75rem' }} role="alert">
+                <p className="mb-3 text-[0.75rem] text-[#f87171]" role="alert">
                   {error}
                 </p>
               )}
@@ -304,15 +319,12 @@ export default function AuthModal() {
               <button
                 type="submit"
                 disabled={loading}
+                className="mb-[0.85rem] w-full rounded-[0.6rem] py-[0.7rem] text-[0.82rem] font-bold text-white transition-opacity duration-150 disabled:cursor-not-allowed"
                 style={{
-                  width: '100%',
                   background: loading ? 'rgba(124,58,237,0.4)' : 'linear-gradient(135deg, #7C3AED, #F97316)',
-                  color: 'white', border: 'none', borderRadius: '0.6rem',
-                  padding: '0.7rem', fontSize: '0.82rem', fontWeight: 700,
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  marginBottom: '0.85rem',
+                  border: 'none',
                   boxShadow: '0 0 20px rgba(124,58,237,0.3)',
-                  transition: 'opacity 0.15s',
+                  cursor: loading ? 'not-allowed' : 'pointer',
                 }}
               >
                 {loading ? '…' : t(`auth.${activeTab}.submit`)}
@@ -320,21 +332,30 @@ export default function AuthModal() {
             </form>
 
             {/* Divider */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.85rem', fontSize: '0.68rem', color: '#55545b' }}>
-              <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.07)' }} />
+            <div
+              className="mb-[0.85rem] flex items-center gap-[0.65rem] text-[0.68rem]"
+              style={{ color: '#55545b' }}
+            >
+              <div
+                className="h-px flex-1"
+                style={{ background: 'rgba(255,255,255,0.07)' }}
+              />
               {t('auth.divider')}
-              <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.07)' }} />
+              <div
+                className="h-px flex-1"
+                style={{ background: 'rgba(255,255,255,0.07)' }}
+              />
             </div>
 
             {/* Google */}
             <button
               onClick={handleGoogle}
               disabled={loading}
+              className="flex w-full items-center justify-center gap-[0.55rem] rounded-[0.6rem] py-[0.62rem] text-[0.78rem] font-semibold cursor-pointer"
               style={{
-                width: '100%', background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.6rem',
-                padding: '0.62rem', fontSize: '0.78rem', fontWeight: 600, color: '#f9f5fd',
-                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.55rem',
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: '#f9f5fd',
               }}
             >
               <GoogleIcon />
@@ -342,11 +363,15 @@ export default function AuthModal() {
             </button>
 
             {/* Switch tab */}
-            <p style={{ textAlign: 'center', fontSize: '0.72rem', color: '#acaab1', marginTop: '0.85rem' }}>
+            <p
+              className="mt-[0.85rem] text-center text-[0.72rem]"
+              style={{ color: '#acaab1' }}
+            >
               {t(`auth.${activeTab}.switchPrompt`)}{' '}
               <button
                 onClick={() => switchTab(activeTab === 'login' ? 'register' : 'login')}
-                style={{ color: '#C084FC', fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit' }}
+                className="cursor-pointer border-none bg-transparent text-[inherit] font-semibold"
+                style={{ color: '#C084FC' }}
               >
                 {t(`auth.tab.${activeTab === 'login' ? 'register' : 'login'}`)}
               </button>
