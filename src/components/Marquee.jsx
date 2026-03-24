@@ -13,16 +13,15 @@ const ITEMS = [
 
 const SEP = <span style={{ color: "var(--primary)", fontSize: 8 }} aria-hidden="true">◆</span>;
 
-function MarqueeRow() {
-  const items = [...ITEMS, ...ITEMS]; // doubled for seamless loop
+function MarqueeTrack() {
   return (
-    <>
-      {items.map((item, i) => (
+    <span className="flex shrink-0">
+      {ITEMS.map((item, i) => (
         <span key={i} className="inline-flex items-center gap-6 mr-6 text-xs font-bold uppercase tracking-widest text-on-surface">
           {item}{SEP}
         </span>
       ))}
-    </>
+    </span>
   );
 }
 
@@ -39,7 +38,8 @@ export default function Marquee() {
         className={reduce ? "flex" : "flex animate-marquee"}
         style={{ whiteSpace: "nowrap" }}
       >
-        <MarqueeRow />
+        <MarqueeTrack />
+        <MarqueeTrack />
       </div>
     </div>
   );
