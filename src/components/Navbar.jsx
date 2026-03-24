@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
-import { useModal } from "../context/ModalContext";
+import { useAuth } from "../context/AuthContext";
 import { useScrollSpy } from "../hooks/useScrollSpy";
 
 const NAV_LINKS = [
@@ -12,7 +12,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const { t, lang, setLang } = useLanguage();
-  const { openModal } = useModal();
+  const { requireAuth } = useAuth();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const activeSection = useScrollSpy(["portfolio", "about", "pricing", "contact"]);
@@ -58,7 +58,7 @@ export default function Navbar() {
 
         {/* Right side: CTA + language toggle */}
         <div className="hidden md:flex items-center gap-4">
-          <button onClick={() => openModal()} className="btn-primary text-sm px-6 py-2.5">
+          <button onClick={() => requireAuth({ action: 'openServiceModal' })} className="btn-primary text-sm px-6 py-2.5">
             {t("nav.getStarted")}
           </button>
           <button
@@ -112,7 +112,7 @@ export default function Navbar() {
               </a>
             ))}
             <div className="flex items-center gap-4 pt-4">
-              <button onClick={() => { openModal(); setOpen(false); }} className="btn-primary text-sm px-6 py-2.5">
+              <button onClick={() => { requireAuth({ action: 'openServiceModal' }); setOpen(false); }} className="btn-primary text-sm px-6 py-2.5">
                 {t("nav.getStarted")}
               </button>
               <button

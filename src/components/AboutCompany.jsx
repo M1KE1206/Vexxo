@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
-import { useModal } from "../context/ModalContext";
+import { useAuth } from "../context/AuthContext";
 import { MIN_PRICE } from "../config/pricing";
 import { fadeUp, scaleIn, stagger, viewport, ease } from "../lib/animations";
 
@@ -79,7 +79,7 @@ function VexxoCard({ label, price, note, checks, features, badgeLabel, onCta, ct
 
 export default function AboutCompany() {
   const { t } = useLanguage();
-  const { openModal } = useModal();
+  const { requireAuth } = useAuth();
   const reduce = useReducedMotion();
   const ini = reduce ? false : "hidden";
 
@@ -247,7 +247,7 @@ export default function AboutCompany() {
               checks={Array.isArray(vexxoChecks) ? vexxoChecks : []}
               features={Array.isArray(features) ? features : []}
               badgeLabel={t("company.comparison.bestChoice")}
-              onCta={openModal}
+              onCta={() => requireAuth({ action: 'openServiceModal' })}
               ctaLabel={t("company.comparison.startProject")}
             />
           </motion.div>
