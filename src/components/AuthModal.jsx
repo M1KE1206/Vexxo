@@ -47,6 +47,20 @@ export default function AuthModal() {
   const firstFocusRef = useRef(null)
   const modalRef      = useRef(null)
 
+  const handleClose = useCallback(() => {
+    setAuthOpen(false)
+    setError(null)
+    setEmail('')
+    setPass('')
+    setName('')
+    setActiveTab('login')
+  }, [setAuthOpen])
+
+  const switchTab = useCallback((tab) => {
+    setActiveTab(tab)
+    setError(null)
+  }, [])
+
   // Note: when authOpen becomes true and serviceOpen is also true, this effect calls closeModal()
   // which updates serviceOpen → triggers one re-run → serviceOpen is now false, no further loop.
   // Intentional single-cycle re-render.
@@ -99,20 +113,6 @@ export default function AuthModal() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [authOpen, handleClose])
-
-  const handleClose = useCallback(() => {
-    setAuthOpen(false)
-    setError(null)
-    setEmail('')
-    setPass('')
-    setName('')
-    setActiveTab('login')
-  }, [setAuthOpen])
-
-  const switchTab = useCallback((tab) => {
-    setActiveTab(tab)
-    setError(null)
-  }, [])
 
   async function handleEmailAuth(e) {
     e.preventDefault()
