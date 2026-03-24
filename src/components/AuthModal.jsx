@@ -16,7 +16,7 @@ function mapError(err) {
   if (msg.includes('password should be at least'))                   return 'auth.error.weakPassword'
   if (msg.includes('fetch') || msg.includes('network'))              return 'auth.error.network'
   if (msg.includes('cancelled') || msg.includes('canceled') ||
-      msg.includes('oauth') || msg.includes('popup_closed'))         return 'auth.error.oauthCancelled'
+      msg.includes('popup_closed'))                                   return 'auth.error.oauthCancelled'
   return 'auth.error.unknown'
 }
 
@@ -56,7 +56,7 @@ export default function AuthModal() {
       if (serviceOpen) closeModal()
       document.body.style.overflow = 'hidden'
       document.body.classList.add('modal-open')
-      setTimeout(() => firstFocusRef.current?.focus(), 50)
+      requestAnimationFrame(() => firstFocusRef.current?.focus())
     } else {
       document.body.style.overflow = ''
       document.body.classList.remove('modal-open')
@@ -98,7 +98,7 @@ export default function AuthModal() {
 
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [authOpen])
+  }, [authOpen, handleClose])
 
   const handleClose = useCallback(() => {
     setAuthOpen(false)
@@ -236,6 +236,7 @@ export default function AuthModal() {
               >
                 <h2
                   id="auth-modal-title"
+                  aria-live="polite"
                   className="mb-[0.3rem] text-[1.2rem] font-bold"
                   style={{ fontFamily: 'Manrope, sans-serif' }}
                 >
@@ -263,6 +264,7 @@ export default function AuthModal() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
+                        autoComplete="name"
                         placeholder={t('auth.register.namePlaceholder')}
                         className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#7C3AED]"
                         style={{
@@ -287,6 +289,7 @@ export default function AuthModal() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
+                      autoComplete="email"
                       placeholder={t(`auth.${activeTab}.emailPlaceholder`)}
                       className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#7C3AED]"
                       style={{
@@ -311,6 +314,7 @@ export default function AuthModal() {
                       onChange={(e) => setPass(e.target.value)}
                       required
                       minLength={8}
+                      autoComplete={activeTab === 'login' ? 'current-password' : 'new-password'}
                       placeholder="••••••••"
                       className="w-full rounded-[0.55rem] px-[0.8rem] py-[0.55rem] text-[0.8rem] outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#7C3AED]"
                       style={{
