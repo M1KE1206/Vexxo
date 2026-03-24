@@ -85,8 +85,7 @@ export default function Navbar() {
             to="/prijzen"
             className="btn-primary text-sm px-6 py-2.5 group flex items-center hover:scale-[1.05] transition-transform duration-200"
           >
-            <span>{t("nav.getStarted")}</span>
-            <span className="opacity-0 translate-x-[-4px] translate-y-[4px] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-200 ml-0 group-hover:ml-1.5 text-xs">↗</span>
+            {t("nav.getStarted")}
           </Link>
 
           {/* Logout — only visible when logged in */}

@@ -121,7 +121,7 @@ export default function PricingCalculator() {
                   onClick={() => setService(s.id)}
                   className={`p-3 rounded-xl text-sm font-bold transition-all ${
                     service === s.id
-                      ? "text-primary scale-[1.03]"
+                      ? "text-on-surface scale-[1.03]"
                       : "border border-outline-variant/30 bg-white/[0.03] text-on-surface-variant hover:border-outline-variant/60 hover:scale-[1.02]"
                   }`}
                   style={service === s.id ? {
