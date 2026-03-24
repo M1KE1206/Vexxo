@@ -75,7 +75,7 @@ const OrderSummary = memo(function OrderSummary({ pkg, prefill, lang, onSend, lo
   const hasCalc   = prefill?.fromCalculator;
   const tlExtra   = hasCalc ? (timelineConfig[prefill.timeline]?.perPage ?? 0) : 0;
   const addonCost = hasCalc
-    ? (prefill.seoAddon ? addOns.seo.perPage : 0) + (prefill.contentAddon ? addOns.content.perPage : 0)
+    ? (prefill.seoAddon ? addOns.seo.perPage : 0)
     : 0;
   const calcPrice = hasCalc
     ? Math.round(vexxo.base + (vexxo.perPage + tlExtra + addonCost) * prefill.pages)
@@ -108,11 +108,6 @@ const OrderSummary = memo(function OrderSummary({ pkg, prefill, lang, onSend, lo
           {prefill.seoAddon && (
             <div className="flex justify-between text-xs text-on-surface-variant">
               <span>SEO</span><span>+€{addOns.seo.perPage}/{lang === "nl" ? "pag." : "pg."}</span>
-            </div>
-          )}
-          {prefill.contentAddon && (
-            <div className="flex justify-between text-xs text-on-surface-variant">
-              <span>Content</span><span>+€{addOns.content.perPage}/{lang === "nl" ? "pag." : "pg."}</span>
             </div>
           )}
           <div className="flex justify-between text-xs text-on-surface-variant">
