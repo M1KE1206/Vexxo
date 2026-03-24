@@ -12,7 +12,7 @@ import ScrollToTop from './components/ScrollToTop'
 import CustomCursor from './components/CustomCursor'
 import HashScrollHandler from './components/HashScrollHandler'
 import HomePage from './pages/HomePage'
-import PricingPage from './pages/PricingPage'
+const PricingPage = lazy(() => import('./pages/PricingPage'))
 
 const ServiceRequestModal = lazy(() => import('./components/ServiceRequestModal'))
 const AuthModal           = lazy(() => import('./components/AuthModal'))
@@ -83,7 +83,7 @@ export default function App() {
                   <Navbar />
                   <Routes>
                     <Route path="/"        element={<HomePage />} />
-                    <Route path="/prijzen" element={<PricingPage />} />
+                    <Route path="/prijzen" element={<Suspense fallback={null}><PricingPage /></Suspense>} />
                   </Routes>
                   <Footer />
                   <ScrollToTop />
