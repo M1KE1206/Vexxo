@@ -38,17 +38,13 @@ function MutedCard({ label, price, note, checks, features }) {
 function VexxoCard({ label, price, note, checks, features, badgeLabel, onCta, ctaLabel }) {
   return (
     <div
-      className="relative order-first md:order-none"
-      style={{ boxShadow: "0 0 24px rgba(124,58,237,0.25)" }}
+      className="order-first md:order-none rounded-2xl p-10 flex flex-col"
+      style={{
+        background: "linear-gradient(#19191f, #19191f) padding-box, linear-gradient(135deg, #7C3AED, #F97316) border-box",
+        border: "1px solid transparent",
+        boxShadow: "0 0 24px rgba(124,58,237,0.15)",
+      }}
     >
-      <div
-        className="absolute -inset-[1.5px] rounded-[1.1rem] z-0"
-        style={{ background: "linear-gradient(135deg, #7C3AED, #F97316)" }}
-      />
-      <div
-        className="relative z-10 rounded-2xl p-10 flex flex-col"
-        style={{ background: "rgba(25,25,31,0.95)" }}
-      >
         <div className="text-center mb-5">
           <span
             className="inline-block text-[10px] font-bold px-3 py-1 rounded-full text-on-primary-fixed mb-3"
@@ -72,7 +68,6 @@ function VexxoCard({ label, price, note, checks, features, badgeLabel, onCta, ct
         <button onClick={onCta} className="mt-6 btn-primary w-full justify-center text-sm">
           {ctaLabel}
         </button>
-      </div>
     </div>
   );
 }
