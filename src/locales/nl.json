@@ -7,6 +7,7 @@
     "contact": "Contact",
     "getStarted": "Aan de slag",
     "clientPortal": "Clientportaal",
+    "profile": "Mijn profiel",
     "signOut": "Uitloggen"
   },
   "hero": {
@@ -292,5 +293,44 @@
     },
     "close": "Sluiten",
     "divider": "of"
+  },
+  "profile": {
+    "pageTitle": "Mijn profiel",
+    "hero": {
+      "memberSince": "Lid sinds",
+      "editAvatar": "Foto wijzigen"
+    },
+    "personalInfo": {
+      "title": "Persoonlijke gegevens",
+      "name": "Naam",
+      "phone": "Telefoonnummer"
+    },
+    "address": {
+      "title": "Adres",
+      "street": "Straat + huisnummer",
+      "city": "Stad",
+      "zip": "Postcode",
+      "country": "Land"
+    },
+    "account": {
+      "title": "Accountgegevens",
+      "email": "E-mailadres",
+      "provider": "Inlogmethode",
+      "providerGoogle": "Google",
+      "providerEmail": "Email",
+      "createdAt": "Aangemaakt op",
+      "lastLogin": "Laatste login"
+    },
+    "avatar": {
+      "upload": "Foto uploaden",
+      "errorSize": "Bestand mag maximaal 2 MB zijn",
+      "errorType": "Alleen JPEG, PNG of WebP toegestaan"
+    },
+    "edit": {
+      "save": "Opslaan",
+      "cancel": "Annuleren",
+      "success": "Opgeslagen",
+      "error": "Opslaan mislukt, probeer opnieuw"
+    }
   }
 }

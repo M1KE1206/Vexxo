@@ -7,6 +7,7 @@
     "contact": "Contact",
     "getStarted": "Get Started",
     "clientPortal": "Client portal",
+    "profile": "My profile",
     "signOut": "Sign out"
   },
   "hero": {
@@ -292,5 +293,44 @@
     },
     "close": "Close",
     "divider": "or"
+  },
+  "profile": {
+    "pageTitle": "My profile",
+    "hero": {
+      "memberSince": "Member since",
+      "editAvatar": "Change photo"
+    },
+    "personalInfo": {
+      "title": "Personal information",
+      "name": "Name",
+      "phone": "Phone number"
+    },
+    "address": {
+      "title": "Address",
+      "street": "Street + number",
+      "city": "City",
+      "zip": "Postal code",
+      "country": "Country"
+    },
+    "account": {
+      "title": "Account details",
+      "email": "Email address",
+      "provider": "Sign-in method",
+      "providerGoogle": "Google",
+      "providerEmail": "Email",
+      "createdAt": "Created on",
+      "lastLogin": "Last login"
+    },
+    "avatar": {
+      "upload": "Upload photo",
+      "errorSize": "File must be 2 MB or less",
+      "errorType": "Only JPEG, PNG or WebP allowed"
+    },
+    "edit": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "success": "Saved",
+      "error": "Save failed, please try again"
+    }
   }
 }
