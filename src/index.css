@@ -117,11 +117,15 @@ body::before {
   font-weight: 700;
   border-radius: 9999px;
   padding: 0.875rem 2rem;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s ease;
 }
 .btn-outline:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(124, 58, 237, 0.5);
+  transform: scale(1.03);
+}
+.btn-outline:active {
+  transform: scale(0.97);
 }
 
 /* --- Legacy card (used in some components) --- */
@@ -207,6 +211,20 @@ input[type="radio"] {
 }
 @keyframes shimmer-sweep {
   to { transform: translateX(350%); }
+}
+
+/* --- Global interactable scale feedback --- */
+/* :where() heeft 0 specificiteit — bestaande hover-stijlen (btn-primary, social-icon, …) winnen altijd */
+@media (hover: hover) {
+  :where(button, a[href], [role="button"]) {
+    transition: transform 0.15s ease;
+  }
+  :where(button, a[href], [role="button"]):hover {
+    transform: scale(1.04);
+  }
+  :where(button, a[href], [role="button"]):active {
+    transform: scale(0.96);
+  }
 }
 
 /* --- Footer social icon — gradient border on hover --- */
