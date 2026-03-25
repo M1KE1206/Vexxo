@@ -5,9 +5,11 @@ import { useEffect, useRef } from 'react'
 const isMobile = () =>
   typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
 
-export default function IcosahedronScene({ className = '', style = {} }) {
+export default function IcosahedronScene({ className = '', style = {}, paused = false }) {
   const canvasRef  = useRef(null)
   const cleanupRef = useRef(null)
+  const pausedRef  = useRef(paused)
+  pausedRef.current = paused
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -113,7 +115,7 @@ export default function IcosahedronScene({ className = '', style = {} }) {
       let time = 0
       function animate() {
         animId = requestAnimationFrame(animate)
-        if (!visible || disposed) return
+        if (!visible || disposed || pausedRef.current) return
 
         time += 0.005
 

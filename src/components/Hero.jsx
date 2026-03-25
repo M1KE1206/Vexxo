@@ -7,7 +7,7 @@ import { fadeUp, scaleIn, slideRight, viewport, ease } from "../lib/animations";
 
 export default function Hero() {
   const { t } = useLanguage();
-  const { requireAuth } = useAuth();
+  const { requireAuth, authOpen } = useAuth();
   const reduce = useReducedMotion();
   const ini = reduce ? false : "hidden";
 
@@ -125,7 +125,7 @@ export default function Hero() {
               className="absolute inset-[-20%] pointer-events-none"
               style={{ background: "radial-gradient(ellipse at center, rgba(124,58,237,0.18) 0%, transparent 70%)" }}
             />
-            <IcosahedronScene className="w-full h-[300px] md:h-[520px] relative z-10" />
+            <IcosahedronScene className="w-full h-[300px] md:h-[520px] relative z-10" paused={authOpen} />
           </motion.div>
         </div>
       </section>

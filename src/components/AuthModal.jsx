@@ -173,8 +173,7 @@ export default function AuthModal() {
           onClick={handleClose}
           className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
           style={{
-            background: 'rgba(10,10,15,0.55)',
-            backdropFilter: 'blur(2px)',
+            background: 'rgba(5,5,10,0.82)',
           }}
         >
           <motion.div
@@ -187,11 +186,9 @@ export default function AuthModal() {
             onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-[380px] md:max-w-[680px] rounded-[1.25rem] overflow-hidden flex"
             style={{
-              background: 'rgba(19,19,25,0.75)',
-              backdropFilter: 'blur(24px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              boxShadow: '0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,58,237,0.1), inset 0 1px 0 rgba(255,255,255,0.06)',
+              background: 'rgb(14,14,20)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              boxShadow: '0 24px 64px rgba(0,0,0,0.7), 0 0 0 1px rgba(124,58,237,0.12)',
             }}
           >
             {/* Left panel — Vexxo logo outline (desktop only) */}
