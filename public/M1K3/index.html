@@ -263,6 +263,22 @@
       margin-top: 1px;
     }
 
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      color: var(--text-3);
+      transition: background .12s, color .12s;
+    }
+
+    .logout-btn svg { width: 13px; height: 13px; }
+    .logout-btn:hover { background: rgba(255,80,80,0.08); color: #f87171; }
+
     /* ── Main area ───────────────────────────────────────── */
     .main-area {
       grid-column: 2;
@@ -1332,9 +1348,11 @@
     }
 
     /* ── Hide redundant section UI on desktop (info now in topbar/stat cards) ── */
-    .week-row,
-    .prog-card {
-      display: none;
+    @media (min-width: 900px) {
+      .week-row,
+      .prog-card {
+        display: none;
+      }
     }
 /* ── Login overlay ───────────────────────────────────── */
 #login-overlay {
@@ -1581,6 +1599,11 @@
             <div class="user-name">Mike</div>
             <div class="user-meta">Bulk fase</div>
           </div>
+          <button class="logout-btn" id="logout-btn" aria-label="Uitloggen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+          </button>
         </div>
         <div class="user-stats">
           <div class="user-stat">
@@ -1927,6 +1950,150 @@
     let currentUserId = null
     let checkedItemIds = new Set()      // Set of item UUIDs (presence = checked)
     let fitnessState   = new Map()      // Map<dayId, {id, session_done, sets_data}>
+
+    /* ── Supabase functies ──────────────────────────────────── */
+
+    async function seedIfNeeded() {
+      const { data } = await sb.from('user_settings').select('id').maybeSingle()
+      if (data) return
+
+      const biRows = BOODSCHAPPEN.flatMap((cat, ci) =>
+        cat.items.map((item, ii) => ({
+          user_id: currentUserId,
+          cat: cat.cat,
+          label: item.label,
+          price: item.price,
+          sort_order: ci * 100 + ii
+        }))
+      )
+      await sb.from('boodschappen_items').insert(biRows)
+
+      const exRows = [
+        ...PUSH.map((ex, i) => ({ user_id: currentUserId, type: 'push', name: ex.name, sets_count: ex.sets, reps_label: ex.reps, sort_order: i })),
+        ...PULL.map((ex, i) => ({ user_id: currentUserId, type: 'pull', name: ex.name, sets_count: ex.sets, reps_label: ex.reps, sort_order: i })),
+        ...LEGS.map((ex, i) => ({ user_id: currentUserId, type: 'legs', name: ex.name, sets_count: ex.sets, reps_label: ex.reps, sort_order: i })),
+      ]
+      await sb.from('exercises').insert(exRows)
+
+      await sb.from('user_settings').insert({ user_id: currentUserId, seeded_at: new Date().toISOString() })
+    }
+
+    async function loadBoodschappenItems() {
+      const { data } = await sb.from('boodschappen_items')
+        .select('*').eq('user_id', currentUserId).order('sort_order')
+      if (!data?.length) return
+
+      const catMap = new Map()
+      data.forEach(row => {
+        if (!catMap.has(row.cat)) catMap.set(row.cat, [])
+        catMap.get(row.cat).push({ id: row.id, label: row.label, price: Number(row.price) })
+      })
+
+      BOODSCHAPPEN.length = 0
+      catMap.forEach((items, cat) => BOODSCHAPPEN.push({ cat, items }))
+    }
+
+    async function loadExercises() {
+      const { data } = await sb.from('exercises')
+        .select('*').eq('user_id', currentUserId).order('sort_order')
+      if (!data?.length) return
+
+      PUSH.length = 0; PULL.length = 0; LEGS.length = 0
+      data.forEach(row => {
+        const ex = { id: row.id, name: row.name, sets: row.sets_count, reps: row.reps_label }
+        if (row.type === 'push') PUSH.push(ex)
+        else if (row.type === 'pull') PULL.push(ex)
+        else if (row.type === 'legs') LEGS.push(ex)
+      })
+    }
+
+    async function loadChecklistState() {
+      const week = isoWeek(new Date())
+      const { data } = await sb.from('checklist_state')
+        .select('item_id').eq('user_id', currentUserId).eq('week_year', week)
+
+      checkedItemIds = new Set(data?.map(r => r.item_id) ?? [])
+      const obj = {}
+      checkedItemIds.forEach(id => { obj[id] = true })
+      localStorage.setItem('checklist_items', JSON.stringify(obj))
+      localStorage.setItem('checklist_week', String(week))
+    }
+
+    async function loadFitnessState() {
+      const week = isoWeek(new Date())
+      const { data } = await sb.from('fitness_day_state')
+        .select('*').eq('user_id', currentUserId).eq('week_year', week)
+
+      fitnessState = new Map()
+      data?.forEach(row => {
+        fitnessState.set(row.day_id, { id: row.id, session_done: row.session_done, sets_data: row.sets_data ?? {} })
+        if (row.session_done) localStorage.setItem(`fitness_done_${row.day_id}`, 'true')
+        const exercises = SCHEMA.find(d => d.id === row.day_id)?.exercises ?? []
+        exercises.forEach((_, idx) => {
+          const sets = row.sets_data?.[String(idx)]
+          if (sets) localStorage.setItem(`fitness_sets_${row.day_id}_${idx}`, JSON.stringify(sets))
+        })
+      })
+    }
+
+    function patchSCHEMA() {
+      // SCHEMA.exercises references PUSH/PULL/LEGS directly — no patch needed
+    }
+
+    function setupRealtime() {
+      sb.channel('checklist')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'checklist_state',
+            filter: `user_id=eq.${currentUserId}` }, payload => {
+          if (payload.eventType === 'INSERT') checkedItemIds.add(payload.new.item_id)
+          else if (payload.eventType === 'DELETE') checkedItemIds.delete(payload.old.item_id)
+          const obj = {}
+          checkedItemIds.forEach(id => { obj[id] = true })
+          localStorage.setItem('checklist_items', JSON.stringify(obj))
+          updateShopUI(obj)
+        })
+        .subscribe()
+
+      sb.channel('fitness')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'fitness_day_state',
+            filter: `user_id=eq.${currentUserId}` }, payload => {
+          if (!payload.new) return
+          fitnessState.set(payload.new.day_id, {
+            id: payload.new.id, session_done: payload.new.session_done, sets_data: payload.new.sets_data ?? {}
+          })
+          if (payload.new.session_done) localStorage.setItem(`fitness_done_${payload.new.day_id}`, 'true')
+        })
+        .subscribe()
+    }
+
+    async function syncChecklistToSupabase(itemId, isChecked) {
+      const week = isoWeek(new Date())
+      if (isChecked) {
+        await sb.from('checklist_state').upsert(
+          { user_id: currentUserId, item_id: itemId, week_year: week },
+          { onConflict: 'user_id,item_id,week_year' }
+        )
+        checkedItemIds.add(itemId)
+      } else {
+        await sb.from('checklist_state').delete()
+          .eq('user_id', currentUserId).eq('item_id', itemId).eq('week_year', week)
+        checkedItemIds.delete(itemId)
+      }
+    }
+
+    async function syncFitnessToSupabase(dayId) {
+      const week = isoWeek(new Date())
+      const session_done = localStorage.getItem(`fitness_done_${dayId}`) === 'true'
+      const exercises = SCHEMA.find(d => d.id === dayId)?.exercises ?? []
+      const sets_data = {}
+      exercises.forEach((_, idx) => {
+        const raw = localStorage.getItem(`fitness_sets_${dayId}_${idx}`)
+        if (raw) sets_data[String(idx)] = safeJSON(raw, [])
+      })
+      await sb.from('fitness_day_state').upsert(
+        { user_id: currentUserId, week_year: week, day_id: dayId, session_done, sets_data },
+        { onConflict: 'user_id,day_id,week_year' }
+      )
+    }
 
     /* ── Data ──────────────────────────────────────────────── */
 
@@ -2355,6 +2522,7 @@
       row.classList.toggle('checked', !!checked[id]);
       row.setAttribute('aria-checked', checked[id] ? 'true' : 'false');
       updateShopUI(checked);
+      if (currentUserId) syncChecklistToSupabase(id, !!checked[id])
     }
 
     function updateShopUI(checked) {
@@ -2484,6 +2652,7 @@
       btn.classList.toggle('done', data[+set]);
       const card = document.getElementById(`ex-${day}-${+idx}`);
       if (card) card.classList.toggle('complete', data.every(Boolean));
+      if (currentUserId) syncFitnessToSupabase(day)
     }
 
     function doneSession(id) {
@@ -2494,6 +2663,7 @@
       if (btn) { btn.disabled = true; btn.textContent = 'Sessie voltooid'; }
       if (cel) cel.classList.add('visible');
       if (tab) tab.classList.add('is-done');
+      if (currentUserId) syncFitnessToSupabase(id)
     }
 
     /* ── Info — training schedule ───────────────────────────── */
@@ -2517,7 +2687,7 @@
       document.getElementById('login-btn').addEventListener('click', () => {
         sb.auth.signInWithOAuth({
           provider: 'google',
-          options: { redirectTo: window.location.href }
+          options: { redirectTo: window.location.origin + '/M1K3/index.html' }
         })
       }, { once: true })
     }
@@ -2543,6 +2713,12 @@
       buildSchedGrid()
       setupRealtime()
       showTab(localStorage.getItem('active_tab') || 'boodschappen')
+
+      document.getElementById('logout-btn')?.addEventListener('click', async () => {
+        await sb.auth.signOut()
+        localStorage.clear()
+        showLoginOverlay()
+      }, { once: true })
     }
 
     document.addEventListener('DOMContentLoaded', () => {

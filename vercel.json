@@ -3,6 +3,7 @@
   "outputDirectory": "dist",
   "framework": null,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/M1K3/:path*", "destination": "/M1K3/:path*" },
+    { "source": "/((?!M1K3).*)", "destination": "/index.html" }
   ]
 }
