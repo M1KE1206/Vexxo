@@ -331,6 +331,13 @@
       "cancel": "Cancel",
       "success": "Saved",
       "error": "Save failed, please try again"
+    },
+    "validation": {
+      "noHtml": "HTML tags are not allowed",
+      "max100": "Maximum 100 characters",
+      "max200": "Maximum 200 characters",
+      "max20": "Maximum 20 characters",
+      "invalidPhone": "Invalid phone number (e.g. +32 470 12 34 56)"
     }
   }
 }

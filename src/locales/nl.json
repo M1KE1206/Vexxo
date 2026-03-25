@@ -331,6 +331,13 @@
       "cancel": "Annuleren",
       "success": "Opgeslagen",
       "error": "Opslaan mislukt, probeer opnieuw"
+    },
+    "validation": {
+      "noHtml": "HTML-tags zijn niet toegestaan",
+      "max100": "Maximaal 100 tekens",
+      "max200": "Maximaal 200 tekens",
+      "max20": "Maximaal 20 tekens",
+      "invalidPhone": "Ongeldig telefoonnummer (bijv. +32 470 12 34 56)"
     }
   }
 }

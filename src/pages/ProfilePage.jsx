@@ -8,9 +8,10 @@ import { useLanguage } from '../context/LanguageContext'
 import { useProfile } from '../hooks/useProfile'
 import ProfileAvatar from '../components/ProfileAvatar'
 import { fadeUp, staggerContainer } from '../lib/animations'
+import { profileValidators } from '../lib/profileValidation'
 
 // ─── Per-veld inline editing component ───────────────────────────────────────
-function ProfileField({ label, fieldKey, value, activeField, setActiveField, onSave, placeholder = '—' }) {
+function ProfileField({ label, fieldKey, value, activeField, setActiveField, onSave, validate, placeholder = '—' }) {
   const { t } = useLanguage()
   const mountedRef            = useRef(true)
   useEffect(() => () => { mountedRef.current = false }, [])
@@ -50,6 +51,11 @@ function ProfileField({ label, fieldKey, value, activeField, setActiveField, onS
   async function save() {
     if (status !== 'editing') return
     if (draft.trim() === (value ?? '').trim()) { cancel(); return }
+    // Client-side validatie vóór opslaan
+    if (validate) {
+      const errKey = validate(draft.trim())
+      if (errKey) { setErrMsg(t(errKey)); setStatus('error'); setTimeout(() => setStatus('editing'), 2000); return }
+    }
     setStatus('saving')
     try {
       await onSave(fieldKey, draft.trim())
@@ -298,6 +304,7 @@ export default function ProfilePage() {
                 activeField={activeField}
                 setActiveField={setActiveField}
                 onSave={updateField}
+                validate={profileValidators.full_name}
               />
               <ProfileField
                 label={t('profile.personalInfo.phone')}
@@ -306,6 +313,7 @@ export default function ProfilePage() {
                 activeField={activeField}
                 setActiveField={setActiveField}
                 onSave={updateField}
+                validate={profileValidators.phone}
               />
             </Card>
 
@@ -328,6 +336,7 @@ export default function ProfilePage() {
                   activeField={activeField}
                   setActiveField={setActiveField}
                   onSave={updateField}
+                  validate={profileValidators[key]}
                 />
               ))}
             </Card>

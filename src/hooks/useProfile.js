@@ -53,15 +53,18 @@ export function useProfile() {
     if (!user) throw new Error('Not authenticated')
     if (!profile) throw new Error('Profile not loaded')
 
+    // Strip HTML-tags als extra safety net (client-side validatie is de eerste lijn)
+    const sanitized = typeof value === 'string' ? value.replace(/<[^>]*>/g, '') : value
+
     let prev
     setProfile(p => {
       prev = p?.[key] ?? null
-      return { ...p, [key]: value }
+      return { ...p, [key]: sanitized }
     })
 
     const { error } = await supabase
       .from('profiles')
-      .update({ [key]: value })
+      .update({ [key]: sanitized })
       .eq('id', user.id)
 
     if (error) {
