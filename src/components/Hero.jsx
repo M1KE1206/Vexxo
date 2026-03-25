@@ -1,16 +1,12 @@
-import { lazy, Suspense } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
-import { useModal } from "../context/ModalContext";
 import { useAuth } from "../context/AuthContext";
 import Marquee from "./Marquee";
+import IcosahedronScene from "./IcosahedronScene";
 import { fadeUp, scaleIn, slideRight, viewport, ease } from "../lib/animations";
-
-const HeroComputer = lazy(() => import("./HeroComputer"));
 
 export default function Hero() {
   const { t } = useLanguage();
-  const { openModal, isOpen } = useModal();
   const { requireAuth } = useAuth();
   const reduce = useReducedMotion();
   const ini = reduce ? false : "hidden";
@@ -116,7 +112,7 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Right — HeroComputer */}
+          {/* Right — Icosahedron */}
           <motion.div
             className="md:col-span-5 flex justify-center md:justify-end relative"
             aria-hidden="true"
@@ -125,18 +121,11 @@ export default function Hero() {
             animate="visible"
             transition={{ duration: 0.7, delay: 0.25, ease }}
           >
-            {/* Stronger radial glow behind the computer */}
             <div
               className="absolute inset-[-20%] pointer-events-none"
-              style={{ background: "radial-gradient(ellipse at center, rgba(124,58,237,0.15) 0%, transparent 70%)", filter: "blur(0px)" }}
+              style={{ background: "radial-gradient(ellipse at center, rgba(124,58,237,0.18) 0%, transparent 70%)" }}
             />
-            <div className={`w-full scale-[0.8] sm:scale-90 md:scale-100 origin-center relative z-10 ${reduce ? "" : "animate-float"}`}>
-              {!isOpen && (
-                <Suspense fallback={null}>
-                  <HeroComputer />
-                </Suspense>
-              )}
-            </div>
+            <IcosahedronScene className="w-full h-[300px] md:h-[520px] relative z-10" />
           </motion.div>
         </div>
       </section>

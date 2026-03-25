@@ -5,6 +5,7 @@ import { useAuth, _dispatch } from '../context/AuthContext'
 import { useModal } from '../context/ModalContext'
 import { useLanguage } from '../context/LanguageContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+import IcosahedronScene from './IcosahedronScene'
 
 // Supabase error message → i18n key
 function mapError(err) {
@@ -185,7 +186,7 @@ export default function AuthModal() {
             aria-modal="true"
             aria-labelledby="auth-modal-title"
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-[380px] rounded-[1.25rem] p-7"
+            className="relative w-full max-w-[380px] md:max-w-[680px] rounded-[1.25rem] overflow-hidden flex"
             style={{
               background: 'rgba(19,19,25,0.75)',
               backdropFilter: 'blur(24px) saturate(180%)',
@@ -194,6 +195,17 @@ export default function AuthModal() {
               boxShadow: '0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,58,237,0.1), inset 0 1px 0 rgba(255,255,255,0.06)',
             }}
           >
+            {/* Left panel — icosahedron (desktop only) */}
+            <div
+              className="hidden md:block relative w-[280px] shrink-0"
+              style={{ background: '#08080d' }}
+            >
+              <IcosahedronScene className="absolute inset-0 w-full h-full" />
+            </div>
+
+            {/* Right panel — form */}
+            <div className="flex-1 p-7 relative">
+
             {/* Close button */}
             <button
               onClick={handleClose}
@@ -403,6 +415,7 @@ export default function AuthModal() {
                 {t(`auth.tab.${activeTab === 'login' ? 'register' : 'login'}`)}
               </button>
             </p>
+            </div>{/* end right panel */}
           </motion.div>
         </motion.div>
       )}
