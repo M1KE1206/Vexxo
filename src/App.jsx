@@ -13,6 +13,7 @@ import CustomCursor from './components/CustomCursor'
 import HashScrollHandler from './components/HashScrollHandler'
 import HomePage from './pages/HomePage'
 const PricingPage = lazy(() => import('./pages/PricingPage'))
+const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 
 const ServiceRequestModal = lazy(() => import('./components/ServiceRequestModal'))
 const AuthModal           = lazy(() => import('./components/AuthModal'))
@@ -84,6 +85,7 @@ export default function App() {
                   <Routes>
                     <Route path="/"        element={<HomePage />} />
                     <Route path="/prijzen" element={<Suspense fallback={null}><PricingPage /></Suspense>} />
+                    <Route path="/profiel" element={<Suspense fallback={<div className="min-h-screen bg-background" />}><ProfilePage /></Suspense>} />
                   </Routes>
                   <Footer />
                   <ScrollToTop />
