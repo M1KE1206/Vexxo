@@ -26,7 +26,20 @@ export function useProfile() {
       .single()
       .then(({ data, error }) => {
         if (cancelled) return
-        if (!error && data) setProfile(data)
+        if (error) {
+          // 401/403 van Supabase RLS — sessie verlopen of ongeautoriseerd
+          if (error.code === 'PGRST301' || error.message?.includes('JWT')) {
+            supabase.auth.signOut()
+          }
+          // Profile bestaat nog niet (nieuwe gebruiker vóór trigger) — maak een lege aan
+          if (error.code === 'PGRST116') {
+            supabase.from('profiles').insert({ id: user.id }).then(() => {
+              if (!cancelled) setProfile({ id: user.id })
+            })
+          }
+        } else if (data) {
+          setProfile(data)
+        }
         setLoading(false)
       })
     return () => { cancelled = true }
