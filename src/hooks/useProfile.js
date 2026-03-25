@@ -17,6 +17,7 @@ export function useProfile() {
       setLoading(false)
       return
     }
+    let cancelled = false
     setLoading(true)
     supabase
       .from('profiles')
@@ -24,9 +25,11 @@ export function useProfile() {
       .eq('id', user.id)
       .single()
       .then(({ data, error }) => {
+        if (cancelled) return
         if (!error && data) setProfile(data)
         setLoading(false)
       })
+    return () => { cancelled = true }
   }, [user])
 
   /**
@@ -35,9 +38,13 @@ export function useProfile() {
    */
   const updateField = useCallback(async (key, value) => {
     if (!user) throw new Error('Not authenticated')
+    if (!profile) throw new Error('Profile not loaded')
 
-    const prev = profile?.[key] ?? null
-    setProfile(p => ({ ...p, [key]: value }))
+    let prev
+    setProfile(p => {
+      prev = p?.[key] ?? null
+      return { ...p, [key]: value }
+    })
 
     const { error } = await supabase
       .from('profiles')
