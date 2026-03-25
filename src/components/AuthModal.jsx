@@ -197,7 +197,7 @@ export default function AuthModal() {
           >
             {/* Left panel — icosahedron (desktop only) */}
             <div
-              className="hidden md:block relative w-[280px] shrink-0"
+              className="hidden md:block relative w-[260px] shrink-0 min-h-[420px]"
               style={{ background: '#08080d' }}
             >
               <IcosahedronScene className="absolute inset-0 w-full h-full" />
