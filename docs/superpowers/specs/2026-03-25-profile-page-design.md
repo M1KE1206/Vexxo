@@ -52,7 +52,7 @@ BEGIN
   ON CONFLICT (id) DO NOTHING;
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
@@ -99,8 +99,8 @@ const { profile, loading, updateField, uploadAvatar } = useProfile()
 **Avatar upload validatie in `uploadAvatar`:**
 - Max bestandsgrootte: 2 MB (`file.size > 2 * 1024 * 1024` → gooit fout)
 - Toegestane MIME types: `['image/jpeg', 'image/png', 'image/webp']`
-- Verwijder oude avatar vóór upload: `supabase.storage.from('avatars').remove(['{user_id}/avatar'])`
-- Upload: `supabase.storage.from('avatars').upload('{user_id}/avatar', file, { contentType: file.type, upsert: true })`
+- Upload via upsert (overschrijft automatisch): `supabase.storage.from('avatars').upload('{user_id}/avatar', file, { contentType: file.type, upsert: true })`
+- Geen aparte `remove()` nodig — upsert alleen is voldoende en vermijdt race conditions bij trage verbindingen
 - Na upload: haal publieke URL op en sla op in `profiles.avatar_url`
 
 ### `src/components/ProfileAvatar.jsx`
