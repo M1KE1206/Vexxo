@@ -5,7 +5,6 @@ import { useAuth, _dispatch } from '../context/AuthContext'
 import { useModal } from '../context/ModalContext'
 import { useLanguage } from '../context/LanguageContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
-import IcosahedronScene from './IcosahedronScene'
 
 // Supabase error message → i18n key
 function mapError(err) {
@@ -195,12 +194,53 @@ export default function AuthModal() {
               boxShadow: '0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,58,237,0.1), inset 0 1px 0 rgba(255,255,255,0.06)',
             }}
           >
-            {/* Left panel — icosahedron (desktop only) */}
+            {/* Left panel — Vexxo logo outline (desktop only) */}
             <div
-              className="hidden md:block relative w-[260px] shrink-0 min-h-[420px]"
-              style={{ background: '#08080d' }}
+              className="hidden md:flex flex-col items-center justify-center w-[260px] shrink-0 relative"
+              style={{ background: '#07070c', borderRight: '1px solid rgba(255,255,255,0.06)' }}
             >
-              <IcosahedronScene className="absolute inset-0 w-full h-full" />
+              {/* Subtle radial glow */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at center, rgba(124,58,237,0.13) 0%, transparent 68%)' }}
+              />
+              <svg
+                viewBox="560 432 800 220"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-[84%] relative z-10"
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient id="auth-logo-grad" x1="560" y1="542" x2="1360" y2="542" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stopColor="#7C3AED"/>
+                    <stop offset="0.5" stopColor="#a855f7"/>
+                    <stop offset="1" stopColor="#F97316"/>
+                  </linearGradient>
+                  <filter id="auth-logo-glow" x="-20%" y="-40%" width="140%" height="180%">
+                    <feGaussianBlur stdDeviation="5" result="blur"/>
+                    <feMerge>
+                      <feMergeNode in="blur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+                <path
+                  fill="none"
+                  stroke="url(#auth-logo-grad)"
+                  strokeWidth="10"
+                  strokeLinejoin="round"
+                  filter="url(#auth-logo-glow)"
+                  d="M743.41,462.58h-27.44l-29.47,92.83h19.7l-17.66,60.24,50.05-76.53h-21.59l26.41-76.54ZM638.52,464.35h-30.05l52.59,151.3h27.48l-50.02-151.3ZM1305.54,509.03c-4-9.47-9.58-17.74-16.75-24.77-7.18-7.04-15.57-12.53-25.19-16.46-9.61-3.92-20.03-5.88-31.28-5.88s-21.66,1.96-31.26,5.88c-9.62,3.93-18.01,9.38-25.19,16.35-7.18,6.98-12.76,15.23-16.75,24.77-4,9.56-6,19.88-6,30.97s2.03,21.43,6.1,30.97c4.05,9.56,9.68,17.85,16.85,24.88,7.18,7.04,15.54,12.53,25.08,16.46,9.55,3.92,19.94,5.88,31.17,5.88s21.63-1.96,31.18-5.88c9.55-3.93,17.91-9.42,25.08-16.46,7.18-7.03,12.79-15.32,16.86-24.88,4.06-9.54,6.09-19.86,6.09-30.97s-2-21.38-5.99-30.86ZM1279.85,561.02c-2.57,6.5-6.19,12.12-10.87,16.86-4.67,4.73-10.11,8.43-16.35,11.06-6.23,2.65-12.99,3.97-20.31,3.97s-14.07-1.32-20.3-3.97c-6.23-2.63-11.68-6.33-16.35-11.06-4.67-4.74-8.29-10.36-10.86-16.86-2.58-6.5-3.86-13.54-3.86-21.13s1.28-14.58,3.86-21.01c2.57-6.43,6.19-12.05,10.86-16.85,4.67-4.81,10.12-8.5,16.35-11.08,6.23-2.56,13-3.86,20.3-3.86s14.08,1.3,20.31,3.86c6.24,2.58,11.68,6.27,16.35,11.08,4.68,4.8,8.3,10.42,10.87,16.85s3.86,13.44,3.86,21.01-1.29,14.63-3.86,21.13ZM1094.64,539.49l48.94-75.14h-31.68l-32.71,50.32-32.89-50.32h-31.68l49.14,75.14-49.54,76.16h31.68l33.34-51.01,33.06,51.01h31.68l-49.34-76.16ZM865.97,488.72v-24.37h-100.73v151.3h100.73v-24.37h-72.9v-39.2h68.83v-24.57h-68.83v-38.79h72.9Z"
+                />
+                <polygon
+                  fill="none"
+                  stroke="url(#auth-logo-grad)"
+                  strokeWidth="10"
+                  strokeLinejoin="round"
+                  filter="url(#auth-logo-glow)"
+                  points="1006.98 615.59 975.3 615.59 942.24 564.58 908.9 615.59 877.21 615.59 926.77 539.43 877.62 464.29 909.3 464.29 942.19 514.61 974.9 464.29 1006.58 464.29 957.64 539.43 1006.98 615.59"
+                />
+              </svg>
             </div>
 
             {/* Right panel — form */}
