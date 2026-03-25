@@ -257,7 +257,7 @@ export default function AuthModal() {
 
             {/* Tab toggle */}
             <div
-              className="flex gap-[3px] rounded-[0.55rem] p-[3px] mb-6"
+              className="flex gap-[3px] rounded-[0.6rem] p-[3px] mb-6"
               style={{
                 background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(255,255,255,0.07)',

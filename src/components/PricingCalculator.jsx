@@ -97,7 +97,7 @@ export default function PricingCalculator() {
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* ── Controls ── */}
         <motion.div
-          className="lg:col-span-7 p-6 md:p-8 rounded-3xl space-y-10"
+          className="lg:col-span-7 p-6 md:p-8 rounded-[2.25rem] space-y-10"
           style={{
             background: "linear-gradient(var(--color-surface-2,#131319), var(--color-surface-2,#131319)) padding-box, linear-gradient(135deg,#7C3AED,#F97316) border-box",
             border: "1px solid transparent",

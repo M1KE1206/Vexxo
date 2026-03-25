@@ -337,7 +337,7 @@ export default function ServiceRequestModal() {
             {/* ── Section 2: Project brief ── */}
             <div id="brief-section">
               <h3 className="font-headline font-bold text-on-surface mb-4">{t("modal.projectBrief")}</h3>
-              <div className="rounded-xl border border-outline-variant/20 bg-surface-container p-5 space-y-4">
+              <div className="rounded-[2rem] border border-outline-variant/20 bg-surface-container p-5 space-y-4">
                 {/* Name + Company */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
