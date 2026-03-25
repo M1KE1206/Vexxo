@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { useScrollSpy } from "../hooks/useScrollSpy";
+import ProfileAvatar from "./ProfileAvatar";
 
 const NAV_LINKS = [
   { key: "home",      href: "/",           isPage: false },
@@ -17,6 +18,10 @@ export default function Navbar() {
   const { user, signOut } = useAuth();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const avatarBtnRef = useRef(null);
+  const dropdownRef  = useRef(null);
+  const navigate     = useNavigate();
   const { pathname } = useLocation();
   const sections = pathname === "/" ? ["portfolio", "pricing-teaser", "about", "contact"] : [];
   const activeSection = useScrollSpy(sections);
@@ -33,6 +38,28 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!profileOpen) return;
+    function handleOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target) &&
+          avatarBtnRef.current && !avatarBtnRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    }
+    function handleKey(e) {
+      if (e.key === 'Escape') {
+        setProfileOpen(false);
+        avatarBtnRef.current?.focus();
+      }
+    }
+    document.addEventListener('mousedown', handleOutside);
+    window.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('mousedown', handleOutside);
+      window.removeEventListener('keydown', handleKey);
+    };
+  }, [profileOpen]);
 
   return (
     <header
@@ -97,22 +124,57 @@ export default function Navbar() {
             <span className="opacity-0 translate-y-[4px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ml-0 group-hover:ml-1.5 text-xs">↗</span>
           </Link>
 
-          {/* Logout — only visible when logged in */}
+          {/* Desktop: avatar + dropdown (alleen ingelogd) */}
           {user && (
-            <button
-              onClick={signOut}
-              aria-label={t("nav.signOut")}
-              className="flex items-center text-[#55545b] hover:text-[#ef4444] hover:scale-110 hover:bg-red-500/8 px-2 py-1.5 rounded-lg transition-all duration-[250ms] group"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                <polyline points="16 17 21 12 16 7"/>
-                <line x1="21" y1="12" x2="9" y2="12"/>
-              </svg>
-              <span className="max-w-0 overflow-hidden opacity-0 group-hover:max-w-[80px] group-hover:opacity-100 group-hover:ml-1.5 text-[11px] font-bold transition-all duration-[250ms] whitespace-nowrap">
-                {t("nav.signOut")}
-              </span>
-            </button>
+            <div className="relative">
+              <button
+                ref={avatarBtnRef}
+                onClick={() => setProfileOpen(p => !p)}
+                aria-haspopup="menu"
+                aria-expanded={profileOpen}
+                aria-label={t('nav.profile')}
+                className="flex items-center"
+              >
+                <ProfileAvatar size="sm" />
+              </button>
+
+              {profileOpen && (
+                <div
+                  ref={dropdownRef}
+                  role="menu"
+                  className="absolute right-0 top-[calc(100%+8px)] min-w-[160px] rounded-[0.75rem] py-1 z-50"
+                  style={{
+                    background: 'rgb(14,14,20)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
+                  }}
+                >
+                  <Link
+                    to="/profiel"
+                    role="menuitem"
+                    onClick={() => setProfileOpen(false)}
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-[0.82rem] font-medium hover:bg-white/5 transition-colors"
+                    style={{ color: '#f9f5fd' }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    {t('nav.profile')}
+                  </Link>
+                  <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', margin: '2px 0' }} />
+                  <button
+                    role="menuitem"
+                    onClick={() => { signOut(); setProfileOpen(false); }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Tab' && !e.shiftKey) { e.preventDefault(); setProfileOpen(false); avatarBtnRef.current?.focus(); }
+                    }}
+                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-[0.82rem] font-medium hover:bg-white/5 transition-colors text-left"
+                    style={{ color: '#ef4444' }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    {t('nav.signOut')}
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </div>
 
@@ -174,12 +236,21 @@ export default function Navbar() {
               </button>
             </div>
             {user && (
-              <button
-                onClick={() => { signOut(); setOpen(false); }}
-                className="py-3 text-sm font-semibold text-red-400 hover:text-red-300 border-b border-white/5 transition-colors"
-              >
-                {t("nav.signOut")}
-              </button>
+              <>
+                <Link
+                  to="/profiel"
+                  onClick={() => setOpen(false)}
+                  className="py-3 text-sm font-semibold text-on-surface-variant hover:text-on-surface border-b border-white/5 transition-colors"
+                >
+                  {t('nav.profile')}
+                </Link>
+                <button
+                  onClick={() => { signOut(); setOpen(false); }}
+                  className="py-3 text-sm font-semibold text-red-400 hover:text-red-300 border-b border-white/5 transition-colors text-left"
+                >
+                  {t('nav.signOut')}
+                </button>
+              </>
             )}
           </div>
         </div>
