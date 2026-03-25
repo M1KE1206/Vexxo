@@ -305,7 +305,7 @@ export default function ServiceRequestModal() {
             <div>
               <h3 className="font-headline font-bold text-on-surface mb-4">{t("modal.selectPackage")}</h3>
               {/* Category tabs */}
-              <div className="flex gap-2 mb-5 p-1 rounded-xl bg-surface-container w-fit">
+              <div className="flex gap-2 mb-5 p-1 rounded-xl bg-surface-container max-w-full overflow-x-auto">
                 {serviceCategories.map((cat) => (
                   <button
                     key={cat.id}
