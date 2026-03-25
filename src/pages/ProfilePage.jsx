@@ -11,6 +11,9 @@ import { fadeUp, staggerContainer } from '../lib/animations'
 
 // ─── Per-veld inline editing component ───────────────────────────────────────
 function ProfileField({ label, fieldKey, value, activeField, setActiveField, onSave, placeholder = '—' }) {
+  const { t } = useLanguage()
+  const mountedRef            = useRef(true)
+  useEffect(() => () => { mountedRef.current = false }, [])
   const [draft, setDraft]     = useState(value ?? '')
   const [status, setStatus]   = useState('idle') // idle | editing | saving | error
   const [errMsg, setErrMsg]   = useState('')
@@ -29,7 +32,7 @@ function ProfileField({ label, fieldKey, value, activeField, setActiveField, onS
       setStatus('idle')
       setDraft(value ?? '')
     }
-  }, [isActive]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isActive, value, status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function startEdit() {
     setActiveField(fieldKey)
@@ -45,6 +48,7 @@ function ProfileField({ label, fieldKey, value, activeField, setActiveField, onS
   }
 
   async function save() {
+    if (status !== 'editing') return
     if (draft.trim() === (value ?? '').trim()) { cancel(); return }
     setStatus('saving')
     try {
@@ -53,9 +57,13 @@ function ProfileField({ label, fieldKey, value, activeField, setActiveField, onS
       setActiveField(null)
     } catch {
       setStatus('error')
-      setErrMsg('Opslaan mislukt')
+      setErrMsg(t('profile.edit.error'))
       setDraft(value ?? '')
-      setTimeout(() => { setStatus('idle'); setActiveField(null) }, 1500)
+      setTimeout(() => {
+        if (!mountedRef.current) return
+        setStatus('idle')
+        setActiveField(null)
+      }, 1500)
     }
   }
 
