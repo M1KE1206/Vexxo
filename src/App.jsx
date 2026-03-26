@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider, Helmet } from 'react-helmet-async'
 import { LanguageProvider, useLanguage } from './context/LanguageContext'
+import { ThemeProvider } from './context/ThemeContext'
 import { ModalProvider, useModal } from './context/ModalContext'
 import { AuthProvider, _registerDispatch } from './context/AuthContext'
 import { SEO } from './config/seo'
@@ -70,33 +71,35 @@ export default function App() {
   return (
     <BrowserRouter>
       <HelmetProvider>
-        <LanguageProvider>
-          <AuthProvider>
-            <ModalProvider>
-              <AppDispatcher />
-              <HashScrollHandler />
-              <SeoHead />
-              <StructuredData />
+        <ThemeProvider>
+          <LanguageProvider>
+            <AuthProvider>
+              <ModalProvider>
+                <AppDispatcher />
+                <HashScrollHandler />
+                <SeoHead />
+                <StructuredData />
 
-              <div className="min-h-screen bg-background text-on-surface font-body selection:bg-primary/30 dark">
-                <CustomCursor />
-                <div className="page-content">
-                  <Navbar />
-                  <Routes>
-                    <Route path="/"        element={<HomePage />} />
-                    <Route path="/prijzen" element={<Suspense fallback={null}><PricingPage /></Suspense>} />
-                    <Route path="/profiel" element={<Suspense fallback={<div className="min-h-screen bg-background" />}><ProfilePage /></Suspense>} />
-                  </Routes>
-                  <Footer />
-                  <ScrollToTop />
+                <div className="min-h-screen bg-background text-on-surface font-body selection:bg-primary/30">
+                  <CustomCursor />
+                  <div className="page-content">
+                    <Navbar />
+                    <Routes>
+                      <Route path="/"        element={<HomePage />} />
+                      <Route path="/prijzen" element={<Suspense fallback={null}><PricingPage /></Suspense>} />
+                      <Route path="/profiel" element={<Suspense fallback={<div className="min-h-screen bg-background" />}><ProfilePage /></Suspense>} />
+                    </Routes>
+                    <Footer />
+                    <ScrollToTop />
+                  </div>
+
+                  <Suspense fallback={null}><ServiceRequestModal /></Suspense>
+                  <Suspense fallback={null}><AuthModal /></Suspense>
                 </div>
-
-                <Suspense fallback={null}><ServiceRequestModal /></Suspense>
-                <Suspense fallback={null}><AuthModal /></Suspense>
-              </div>
-            </ModalProvider>
-          </AuthProvider>
-        </LanguageProvider>
+              </ModalProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </ThemeProvider>
       </HelmetProvider>
     </BrowserRouter>
   )
