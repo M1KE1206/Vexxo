@@ -53,7 +53,7 @@ export default function Contact() {
     }, 1200);
   };
 
-  const inputCls = "w-full rounded-xl border border-outline-variant/30 bg-surface-container-high px-4 py-3 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40";
+  const inputCls = "w-full rounded-xl border border-on-surface-variant/20 bg-surface-2 px-4 py-3 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40";
 
   const reduce = useReducedMotion();
   const ini = reduce ? false : "hidden";
