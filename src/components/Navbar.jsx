@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useScrollSpy } from "../hooks/useScrollSpy";
 import ProfileAvatar from "./ProfileAvatar";
 
@@ -16,6 +19,8 @@ const NAV_LINKS = [
 export default function Navbar() {
   const { t, lang, setLang } = useLanguage();
   const { user, signOut } = useAuth();
+  const { theme, toggle } = useTheme();
+  const prefersReduced = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -65,7 +70,7 @@ export default function Navbar() {
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-zinc-950/60 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_32px_0_rgba(124,58,237,0.08)]"
+          ? "bg-background/60 backdrop-blur-xl border-b border-on-surface-variant/10 shadow-[0_8px_32px_0_rgba(124,58,237,0.08)]"
           : "bg-transparent"
       }`}
     >
@@ -102,8 +107,28 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Right side: language toggle → CTA → Logout */}
+        {/* Right side: theme toggle → language toggle → CTA → avatar */}
         <div className="hidden md:flex items-center gap-4">
+          {/* Theme toggle — per D-05, D-06, D-07 */}
+          <button
+            onClick={toggle}
+            aria-label={theme === 'dark' ? t('nav.toggleThemeLight') : t('nav.toggleThemeDark')}
+            className="flex items-center justify-center w-9 h-9 rounded-full
+                       text-on-surface-variant hover:text-primary
+                       hover:bg-primary/[0.08] transition-colors duration-200
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            <motion.span
+              key={theme}
+              animate={prefersReduced ? {} : { rotate: 360 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className="material-symbols-outlined"
+              style={{ fontSize: '20px', display: 'inline-block' }}
+            >
+              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </motion.span>
+          </button>
+
           {/* Language switcher — left of CTA */}
           <button
             onClick={() => setLang(lang === "nl" ? "en" : "nl")}
@@ -142,25 +167,25 @@ export default function Navbar() {
                 <div
                   ref={dropdownRef}
                   role="menu"
-                  className="absolute right-0 top-[calc(100%+8px)] min-w-[160px] rounded-[0.75rem] py-1 z-50 bg-[#0e0e13] border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.5)]"
+                  className="absolute right-0 top-[calc(100%+8px)] min-w-[160px] rounded-[0.75rem] py-1 z-50 bg-background border border-on-surface-variant/10 shadow-[0_12px_40px_rgba(0,0,0,0.5)]"
                 >
                   <Link
                     to="/profiel"
                     role="menuitem"
                     onClick={() => setProfileOpen(false)}
-                    className="flex items-center gap-2.5 px-4 py-2.5 text-[0.82rem] font-medium hover:bg-white/5 transition-colors text-on-surface"
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-[0.82rem] font-medium hover:bg-on-surface-variant/5 transition-colors text-on-surface"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     {t('nav.profile')}
                   </Link>
-                  <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', margin: '2px 0' }} />
+                  <div className="h-px mx-2 bg-on-surface-variant/10" />
                   <button
                     role="menuitem"
                     onClick={() => { signOut(); setProfileOpen(false); }}
                     onKeyDown={(e) => {
                       if (e.key === 'Tab' && !e.shiftKey) { e.preventDefault(); setProfileOpen(false); avatarBtnRef.current?.focus(); }
                     }}
-                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-[0.82rem] font-medium hover:bg-white/5 transition-colors text-left text-red-400"
+                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-[0.82rem] font-medium hover:bg-on-surface-variant/5 transition-colors text-left text-red-400"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                     {t('nav.signOut')}
@@ -198,14 +223,14 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden border-t border-white/10 bg-zinc-950/90 backdrop-blur-xl">
+        <div className="md:hidden border-t border-on-surface-variant/10 bg-background/90 backdrop-blur-xl">
           <div className="flex flex-col gap-1 px-6 py-4">
             {NAV_LINKS.map(({ key, href }) => (
               <Link
                 key={key}
                 to={href}
                 onClick={() => setOpen(false)}
-                className="py-3 text-sm font-semibold text-on-surface-variant hover:text-on-surface border-b border-white/5 transition-colors"
+                className="py-3 text-sm font-semibold text-on-surface-variant hover:text-on-surface border-b border-on-surface-variant/5 transition-colors"
               >
                 {t(`nav.${key}`)}
               </Link>
@@ -227,19 +252,37 @@ export default function Navbar() {
                 <span className="text-on-surface-variant/30" aria-hidden="true">|</span>
                 <span lang="en" className={lang === "en" ? "text-on-surface" : "text-on-surface-variant/40"}>EN</span>
               </button>
+              {/* Mobile theme toggle */}
+              <button
+                onClick={() => { toggle(); setOpen(false); }}
+                aria-label={theme === 'dark' ? t('nav.toggleThemeLight') : t('nav.toggleThemeDark')}
+                className="flex items-center justify-center w-9 h-9 rounded-full
+                           text-on-surface-variant hover:text-primary
+                           hover:bg-primary/[0.08] transition-colors duration-200"
+              >
+                <motion.span
+                  key={theme}
+                  animate={prefersReduced ? {} : { rotate: 360 }}
+                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                  className="material-symbols-outlined"
+                  style={{ fontSize: '20px', display: 'inline-block' }}
+                >
+                  {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+                </motion.span>
+              </button>
             </div>
             {user && (
               <>
                 <Link
                   to="/profiel"
                   onClick={() => setOpen(false)}
-                  className="py-3 text-sm font-semibold text-on-surface-variant hover:text-on-surface border-b border-white/5 transition-colors"
+                  className="py-3 text-sm font-semibold text-on-surface-variant hover:text-on-surface border-b border-on-surface-variant/5 transition-colors"
                 >
                   {t('nav.profile')}
                 </Link>
                 <button
                   onClick={() => { signOut(); setOpen(false); }}
-                  className="py-3 text-sm font-semibold text-red-400 hover:text-red-300 border-b border-white/5 transition-colors text-left"
+                  className="py-3 text-sm font-semibold text-red-400 hover:text-red-300 border-b border-on-surface-variant/5 transition-colors text-left"
                 >
                   {t('nav.signOut')}
                 </button>

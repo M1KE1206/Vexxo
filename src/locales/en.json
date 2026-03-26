@@ -6,6 +6,8 @@
     "pricing": "Pricing",
     "contact": "Contact",
     "getStarted": "Get Started",
+    "toggleThemeLight": "Switch to light mode",
+    "toggleThemeDark": "Switch to dark mode",
     "clientPortal": "Client portal",
     "profile": "My profile",
     "signOut": "Sign out"
