@@ -25,12 +25,12 @@ Dit roadmap brengt Vexxo Studio van een werkende maar onvolledige basis naar een
   3. Light mode heeft correcte kleurwaarden (geen blinde spots of onleesbare tekst)
   4. Themakeuze blijft bewaard na pagina vernieuwen
   5. Zowel dark als light mode respecteren het 60/30/10 kleurprincipe uit CLAUDE.md
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 01-01: Migreer index.css naar HSL custom properties (alle --color-* variabelen)
-- [ ] 01-02: Definieer light mode token set en [data-theme="light"] overrides
-- [ ] 01-03: Sluit ThemeContext aan in App.jsx en voeg toggle toe aan Navbar
+- [ ] 01-01-PLAN.md — Migreer index.css naar HSL custom properties + update tailwind.config.ts
+- [ ] 01-02-PLAN.md — Definieer light mode token set en [data-theme="light"] overrides
+- [ ] 01-03-PLAN.md — Wire ThemeContext in App.jsx, toggle in Navbar, i18n keys
 
 ### Phase 2: Animaties & Portfolio Bugfix
 **Goal**: Scroll-animaties toevoegen aan alle homepage-secties en de portfolio filter bug fixen zodat "alles" opnieuw alle items toont.
@@ -115,7 +115,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. HSL Theming & Light Mode | 0/3 | Not started | - |
+| 1. HSL Theming & Light Mode | 0/3 | Planning complete | - |
 | 2. Animaties & Portfolio Bugfix | 0/2 | Not started | - |
 | 3. Portfolio Content Update | 0/2 | Not started | - |
 | 4. Serviceaanvraag Flow | 0/3 | Not started | - |
