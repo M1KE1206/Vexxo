@@ -53,7 +53,7 @@ Exceptions:
 |------|------|--------|-------------|------|--------|
 | Section label (UPPERCASE above h2) | 12px (0.75rem) | 700 bold | 1 | Inter | CLAUDE.md .section-label |
 | Body | 16px (1rem) | 400 regular | 1.5 | Inter | CLAUDE.md --text-base |
-| Card title (h3) / sub-heading | 20–24px (1.25–1.5rem) | 700 bold | 1.3 | Manrope | CLAUDE.md --text-xl/2xl |
+| Card title (h3) | 20px (1.25rem) / --text-xl | 700 bold | 1.3 | Manrope | CLAUDE.md --text-xl |
 | Section title (h2) | 36px (2.25rem) | 700 bold | 1.2 | Manrope | CLAUDE.md --text-4xl |
 
 Weights in use: **400 (regular)** and **700 (bold)**.
