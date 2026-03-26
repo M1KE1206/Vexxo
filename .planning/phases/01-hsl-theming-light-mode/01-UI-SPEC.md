@@ -51,14 +51,12 @@ Exceptions:
 
 | Role | Size | Weight | Line Height | Font | Source |
 |------|------|--------|-------------|------|--------|
-| Body | 16px (1rem) | 400 regular | 1.5 | Inter | CLAUDE.md --text-base |
-| Label / secondary | 14px (0.875rem) | 400 regular | 1.4 | Inter | CLAUDE.md --text-sm |
 | Section label (UPPERCASE above h2) | 12px (0.75rem) | 700 bold | 1 | Inter | CLAUDE.md .section-label |
-| Card title (h3) | 20–24px (1.25–1.5rem) | 600 semibold | 1.3 | Manrope | CLAUDE.md --text-xl/2xl |
+| Body | 16px (1rem) | 400 regular | 1.5 | Inter | CLAUDE.md --text-base |
+| Card title (h3) / sub-heading | 20–24px (1.25–1.5rem) | 700 bold | 1.3 | Manrope | CLAUDE.md --text-xl/2xl |
 | Section title (h2) | 36px (2.25rem) | 700 bold | 1.2 | Manrope | CLAUDE.md --text-4xl |
-| Hero headline (h1) | 60–72px (3.75–4.5rem) | 800 extrabold | 1.05 | Manrope | CLAUDE.md --text-6xl/7xl |
 
-Weights in use: **400 (regular)** and **700 (bold)**. Semibold 600 reserved for card titles only.
+Weights in use: **400 (regular)** and **700 (bold)**.
 
 Body text max-width: 65ch. Never full-width.
 
