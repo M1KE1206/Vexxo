@@ -7,8 +7,8 @@
 
 ### Theming
 
-- [ ] **THEME-01**: Alle thema-kleuren zijn gedefinieerd als HSL custom properties in index.css (geen hardcoded HEX/RGB voor thema-waarden)
-- [ ] **THEME-02**: Light mode is volledig werkend via data-theme attribuut op `<html>`
+- [x] **THEME-01**: Alle thema-kleuren zijn gedefinieerd als HSL custom properties in index.css (geen hardcoded HEX/RGB voor thema-waarden)
+- [x] **THEME-02**: Light mode is volledig werkend via data-theme attribuut op `<html>`
 - [ ] **THEME-03**: ThemeContext is aangesloten in App.jsx en togglet zichtbaar tussen dark/light
 - [ ] **THEME-04**: Light mode toggle is bereikbaar via de Navbar
 - [ ] **THEME-05**: Thema-keuze wordt bewaard in localStorage en hersteld bij paginalading
@@ -86,8 +86,8 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| THEME-01 | Phase 1 | Pending |
-| THEME-02 | Phase 1 | Pending |
+| THEME-01 | Phase 1 | Complete |
+| THEME-02 | Phase 1 | Complete |
 | THEME-03 | Phase 1 | Pending |
 | THEME-04 | Phase 1 | Pending |
 | THEME-05 | Phase 1 | Pending |
