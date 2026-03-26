@@ -5,26 +5,29 @@
 @tailwind utilities;
 
 :root {
-  --background: #0e0e13;
-  --surface: #0f0f1a;
-  --surface-container: #19191f;
-  --surface-container-high: #1f1f26;
-  --surface-container-highest: #25252d;
-  --surface-bright: #2c2b33;
-  --on-surface: #f9f5fd;
-  --on-surface-variant: #acaab1;
-  --primary: #7C3AED;
-  --primary-dim: #6d28d9;
-  --on-primary-fixed: #ffffff;
-  --secondary: #F97316;
-  --accent: #C084FC;
-  --outline: #76747b;
-  --outline-variant: #48474d;
-  /* Legacy */
-  --orbit-purple: #7C3AED;
-  --border: #48474d;
-  --text-primary: #f9f5fd;
-  --text-muted: #acaab1;
+  /* === Theme tokens (HSL channels — use: hsl(var(--token))) === */
+  --color-bg:           240 25% 4%;
+  --color-surface:      240 20% 6%;
+  --color-surface-2:    240 18% 9%;
+  --color-surface-3:    240 17% 11%;
+  --color-border:       0 0% 100% / 0.08;
+  --color-border-hover: 262 82% 58% / 0.3;
+  --color-text:         270 67% 96%;
+  --color-text-muted:   270 5% 67%;
+  --color-text-faint:   255 5% 35%;
+  --primary:            262 82% 57%;
+  --primary-dim:        263 71% 50%;
+  --secondary:          25 95% 53%;
+  --accent:             280 93% 75%;
+
+  /* === Non-theme tokens (keep as-is) === */
+  --on-primary-fixed:   #ffffff;
+
+  /* === Theme transition (D-08, D-09) === */
+  transition:
+    color 350ms ease,
+    background-color 350ms ease,
+    border-color 350ms ease;
 }
 
 html,
@@ -34,8 +37,8 @@ body {
 }
 
 body {
-  background-color: var(--background);
-  color: var(--on-surface);
+  background-color: hsl(var(--color-bg));
+  color: hsl(var(--color-text));
   font-family: "Inter", system-ui, sans-serif;
 }
 
@@ -71,18 +74,18 @@ body::before {
   background: rgba(37, 37, 45, 0.15);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(249, 245, 253, 0.08);
+  border: 1px solid hsl(var(--color-border));
   transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 .glass-card:hover {
-  border-color: rgba(124, 58, 237, 0.3);
+  border-color: hsl(var(--color-border-hover));
   transform: translateY(-3px);
   box-shadow: 0 8px 32px rgba(124, 58, 237, 0.1), inset 0 0 30px rgba(124, 58, 237, 0.05);
 }
 
 /* --- Gradient text utility --- */
 .gradient-text {
-  background: linear-gradient(to right, var(--primary), var(--secondary));
+  background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -93,7 +96,7 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
+  background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)));
   color: var(--on-primary-fixed);
   font-weight: 700;
   border-radius: 9999px;
@@ -112,8 +115,8 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  border: 1px solid rgba(124, 58, 237, 0.25);
-  color: var(--on-surface);
+  border: 1px solid hsl(var(--primary) / 0.25);
+  color: hsl(var(--color-text));
   font-weight: 700;
   border-radius: 9999px;
   padding: 0.875rem 2rem;
@@ -130,24 +133,24 @@ body::before {
 
 /* --- Legacy card (used in some components) --- */
 .card {
-  @apply rounded-xl border border-[var(--border)] bg-[var(--surface)] transition-all duration-200;
+  @apply rounded-xl border border-[hsl(var(--color-border))] bg-surface-2 transition-all duration-200;
 }
 .card-hover {
   @apply hover:-translate-y-0.5 hover:border-[rgba(124,58,237,0.4)];
 }
 .pill {
-  @apply rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-medium text-[var(--text-muted)];
+  @apply rounded-full border border-[hsl(var(--color-border))] bg-surface-2 px-3 py-1 text-xs font-medium text-on-surface-variant;
 }
 
 /* --- Range input --- */
 input[type="range"] {
-  accent-color: var(--primary);
+  accent-color: hsl(var(--primary));
 }
 input[type="checkbox"] {
-  accent-color: var(--primary);
+  accent-color: hsl(var(--primary));
 }
 input[type="radio"] {
-  accent-color: var(--primary);
+  accent-color: hsl(var(--primary));
 }
 
 /* --- Animated gradient text (hero headline3) --- */
@@ -236,12 +239,12 @@ input[type="radio"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--on-surface-variant);
+  color: hsl(var(--color-text-muted));
   border: 1px solid rgba(255,255,255,0.1);
   transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 .social-icon:hover {
-  color: var(--on-surface);
+  color: hsl(var(--color-text));
   transform: scale(1.15);
   background: linear-gradient(#0e0e13, #0e0e13) padding-box,
               linear-gradient(135deg, #7C3AED, #F97316) border-box;
