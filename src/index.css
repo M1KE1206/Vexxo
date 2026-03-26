@@ -30,6 +30,23 @@
     border-color 350ms ease;
 }
 
+/* === Light mode === */
+[data-theme="light"] {
+  --color-bg:           270 20% 97%;
+  --color-surface:      270 18% 94%;
+  --color-surface-2:    270 15% 91%;
+  --color-surface-3:    270 12% 88%;
+  --color-border:       0 0% 0% / 0.08;
+  --color-border-hover: 263 71% 42% / 0.3;
+  --color-text:         256 30% 12%;
+  --color-text-muted:   256 10% 40%;
+  --color-text-faint:   256 8% 62%;
+  --primary:            263 71% 50%;
+  --primary-dim:        263 60% 44%;
+  --secondary:          24 88% 46%;
+  --accent:             280 80% 65%;
+}
+
 html,
 body {
   height: 100%;
@@ -69,6 +86,15 @@ body::before {
   z-index: 0;
 }
 
+/* Light mode background orbs — reduced opacity */
+[data-theme="light"] body::before {
+  background:
+    radial-gradient(ellipse 800px 600px at 0% 0%,
+      rgba(109, 40, 217, 0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 600px 500px at 100% 100%,
+      rgba(234, 104, 8, 0.03) 0%, transparent 70%);
+}
+
 /* --- Glass card --- */
 .glass-card {
   background: rgba(37, 37, 45, 0.15);
@@ -81,6 +107,17 @@ body::before {
   border-color: hsl(var(--color-border-hover));
   transform: translateY(-3px);
   box-shadow: 0 8px 32px rgba(124, 58, 237, 0.1), inset 0 0 30px rgba(124, 58, 237, 0.05);
+}
+
+/* Light mode glass card (D-03) */
+[data-theme="light"] .glass-card {
+  background: rgba(230, 225, 245, 0.45);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .glass-card:hover {
+  border-color: rgba(109, 40, 217, 0.3);
+  box-shadow: 0 8px 32px rgba(109, 40, 217, 0.10),
+              inset 0 0 30px rgba(109, 40, 217, 0.04);
 }
 
 /* --- Gradient text utility --- */
@@ -129,6 +166,11 @@ body::before {
 }
 .btn-outline:active {
   transform: scale(0.97);
+}
+
+/* Light mode outline button */
+[data-theme="light"] .btn-outline:hover {
+  background: rgba(0, 0, 0, 0.04);
 }
 
 /* --- Legacy card (used in some components) --- */
@@ -254,6 +296,16 @@ input[type="radio"] {
   transform: scale(0.92);
 }
 
+/* Light mode social icon hover */
+[data-theme="light"] .social-icon {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+[data-theme="light"] .social-icon:hover {
+  background: linear-gradient(hsl(var(--color-bg)), hsl(var(--color-bg))) padding-box,
+              linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary))) border-box;
+  border: 1px solid transparent;
+}
+
 /* --- Custom cursor --- */
 .custom-cursor {
   position: fixed;
@@ -294,6 +346,14 @@ input[type="radio"] {
   background: linear-gradient(to top, #0e0e13, transparent);
   z-index: 1;
   pointer-events: none;
+}
+
+/* Light mode section blend gradient */
+[data-theme="light"] .section-fade::before {
+  background: linear-gradient(to bottom, hsl(var(--color-bg)), transparent);
+}
+[data-theme="light"] .section-fade::after {
+  background: linear-gradient(to top, hsl(var(--color-bg)), transparent);
 }
 
 /* --- Reduced motion --- */
