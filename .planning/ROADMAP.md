@@ -25,10 +25,10 @@ Dit roadmap brengt Vexxo Studio van een werkende maar onvolledige basis naar een
   3. Light mode heeft correcte kleurwaarden (geen blinde spots of onleesbare tekst)
   4. Themakeuze blijft bewaard na pagina vernieuwen
   5. Zowel dark als light mode respecteren het 60/30/10 kleurprincipe uit CLAUDE.md
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 Plans:
-- [ ] 01-01-PLAN.md — Migreer index.css naar HSL custom properties + update tailwind.config.ts
+- [x] 01-01-PLAN.md — Migreer index.css naar HSL custom properties + update tailwind.config.ts
 - [ ] 01-02-PLAN.md — Definieer light mode token set en [data-theme="light"] overrides
 - [ ] 01-03-PLAN.md — Wire ThemeContext in App.jsx, toggle in Navbar, i18n keys
 
@@ -115,7 +115,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. HSL Theming & Light Mode | 0/3 | Planning complete | - |
+| 1. HSL Theming & Light Mode | 1/3 | In Progress|  |
 | 2. Animaties & Portfolio Bugfix | 0/2 | Not started | - |
 | 3. Portfolio Content Update | 0/2 | Not started | - |
 | 4. Serviceaanvraag Flow | 0/3 | Not started | - |
