@@ -1,5 +1,5 @@
 // src/components/PricingSection.jsx
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, memo, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import { packages, serviceCategories } from '../config/services'
@@ -129,18 +129,19 @@ function makeValidators(t) {
   }
 }
 
-// ── Field validation icon (check/cross) ──────────────────────
+// ── Field validation icon — CSS transition only (no Framer mount/unmount) ──
 function FieldIcon({ state }) {
-  if (!state) return null
   const isValid = state === 'valid'
+  const show = state === 'valid' || state === 'invalid'
   return (
-    <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0, opacity: 0 }}
-      transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+    <div
       className="absolute right-[11px] top-1/2 -translate-y-1/2 w-[18px] h-[18px] rounded-full flex items-center justify-center pointer-events-none"
-      style={{ background: isValid ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#ef4444,#dc2626)' }}
+      style={{
+        background: isValid ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#ef4444,#dc2626)',
+        transform: `translateY(-50%) scale(${show ? 1 : 0})`,
+        opacity: show ? 1 : 0,
+        transition: 'transform 0.2s cubic-bezier(.34,1.56,.64,1), opacity 0.15s',
+      }}
     >
       <svg viewBox="0 0 24 24" className="w-[9px] h-[9px]" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
         {isValid
@@ -148,21 +149,22 @@ function FieldIcon({ state }) {
           : <><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>
         }
       </svg>
-    </motion.div>
+    </div>
   )
 }
 
 function TextareaIcon({ state }) {
-  if (!state) return null
   const isValid = state === 'valid'
+  const show = state === 'valid' || state === 'invalid'
   return (
-    <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0, opacity: 0 }}
-      transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+    <div
       className="absolute right-[11px] bottom-[11px] w-[18px] h-[18px] rounded-full flex items-center justify-center pointer-events-none"
-      style={{ background: isValid ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#ef4444,#dc2626)' }}
+      style={{
+        background: isValid ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#ef4444,#dc2626)',
+        transform: `scale(${show ? 1 : 0})`,
+        opacity: show ? 1 : 0,
+        transition: 'transform 0.2s cubic-bezier(.34,1.56,.64,1), opacity 0.15s',
+      }}
     >
       <svg viewBox="0 0 24 24" className="w-[9px] h-[9px]" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
         {isValid
@@ -170,7 +172,7 @@ function TextareaIcon({ state }) {
           : <><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>
         }
       </svg>
-    </motion.div>
+    </div>
   )
 }
 
@@ -205,8 +207,8 @@ function StepLabel({ num, text }) {
   )
 }
 
-// ── Service card ──────────────────────────────────────────────
-function ServiceCard({ pkg, lang, selected, onSelect, animDelay }) {
+// ── Service card (memoized — doesn't re-render on form input) ─
+const ServiceCard = memo(function ServiceCard({ pkg, lang, selected, onSelect, animDelay }) {
   const icon = ICONS[pkg.icon] || ICONS.code
   const name = lang === 'nl' ? pkg.nameNL : pkg.name
   const desc = lang === 'nl' ? pkg.descriptionNL : pkg.description
@@ -267,7 +269,7 @@ function ServiceCard({ pkg, lang, selected, onSelect, animDelay }) {
       </div>
     </motion.div>
   )
-}
+})
 
 // ── Field label wrapper ───────────────────────────────────────
 function FieldLabel({ label, required, error, children }) {
@@ -285,19 +287,12 @@ function FieldLabel({ label, required, error, children }) {
   )
 }
 
-// ── Main component ────────────────────────────────────────────
-export default function PricingSection() {
-  const { t, lang } = useLanguage()
-
-  const [selCat, setSelCat] = useState(null)
-  const [selPkg, setSelPkg] = useState(null)
-  const [pages, setPages] = useState(5)
-  const [seoOn, setSeoOn] = useState(false)
-
+// ── Contact form isolated so typing doesn't re-render the rest ─
+const ContactForm = memo(function ContactForm({ formStep, t }) {
   const [form, setForm] = useState({ naam: '', bedrijf: '', email: '', tel: '', notes: '' })
   const [touched, setTouched] = useState({})
-
   const telRef = useRef(null)
+  const validators = makeValidators(t)
 
   useEffect(() => {
     const el = telRef.current
@@ -311,8 +306,6 @@ export default function PricingSection() {
     el.addEventListener('keypress', handler)
     return () => el.removeEventListener('keypress', handler)
   }, [])
-
-  const validators = makeValidators(t)
 
   function getFieldState(key) {
     const val = form[key]
@@ -335,6 +328,100 @@ export default function PricingSection() {
   const handleBlur = useCallback((key) => {
     setTouched(t => ({ ...t, [key]: true }))
   }, [])
+
+  const inputBase = {
+    width: '100%',
+    background: 'rgba(255,255,255,0.03)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: '10px',
+    padding: '11px 38px 11px 14px',
+    fontSize: '13px',
+    color: 'var(--color-text)',
+    outline: 'none',
+    fontFamily: 'Inter, sans-serif',
+  }
+
+  function getInputStyle(key) {
+    const state = getFieldState(key)
+    if (state === 'valid') return { ...inputBase, borderColor: 'rgba(34,197,94,0.45)' }
+    if (state === 'invalid') return { ...inputBase, borderColor: 'rgba(239,68,68,0.5)' }
+    return inputBase
+  }
+
+  return (
+    <Block>
+      <StepLabel num={formStep} text={t('pricingSection.stepFormLabel')} />
+      <div className="grid grid-cols-2 gap-3">
+
+        <FieldLabel label={t('pricingSection.fieldNaam')} required error={getFieldError('naam')}>
+          <div className="relative">
+            <input type="text" value={form.naam} placeholder={t('pricingSection.placeholderNaam')}
+              autoComplete="name" maxLength={60}
+              onChange={e => handleInput('naam', e.target.value)} onBlur={() => handleBlur('naam')}
+              style={getInputStyle('naam')} />
+            <FieldIcon state={getFieldState('naam')} />
+          </div>
+        </FieldLabel>
+
+        <FieldLabel label={t('pricingSection.fieldBedrijf')} error={getFieldError('bedrijf')}>
+          <div className="relative">
+            <input type="text" value={form.bedrijf} placeholder={t('pricingSection.placeholderBedrijf')}
+              autoComplete="organization" maxLength={80}
+              onChange={e => handleInput('bedrijf', e.target.value)} onBlur={() => handleBlur('bedrijf')}
+              style={getInputStyle('bedrijf')} />
+            <FieldIcon state={getFieldState('bedrijf')} />
+          </div>
+        </FieldLabel>
+
+        <FieldLabel label={t('pricingSection.fieldEmail')} required error={getFieldError('email')}>
+          <div className="relative">
+            <input type="email" value={form.email} placeholder={t('pricingSection.placeholderEmail')}
+              autoComplete="email" maxLength={120}
+              onChange={e => handleInput('email', e.target.value)} onBlur={() => handleBlur('email')}
+              style={getInputStyle('email')} />
+            <FieldIcon state={getFieldState('email')} />
+          </div>
+        </FieldLabel>
+
+        <FieldLabel label={t('pricingSection.fieldTel')} error={getFieldError('tel')}>
+          <div className="relative">
+            <input ref={telRef} type="tel" value={form.tel} placeholder={t('pricingSection.placeholderTel')}
+              autoComplete="tel" maxLength={20}
+              onChange={e => handleInput('tel', e.target.value)} onBlur={() => handleBlur('tel')}
+              style={getInputStyle('tel')} />
+            <FieldIcon state={getFieldState('tel')} />
+          </div>
+        </FieldLabel>
+
+        <div className="col-span-2">
+          <FieldLabel label={t('pricingSection.fieldNotes')} error={getFieldError('notes')}>
+            <div className="relative">
+              <textarea value={form.notes} placeholder={t('pricingSection.placeholderNotes')}
+                rows={3} maxLength={1000}
+                onChange={e => handleInput('notes', e.target.value)} onBlur={() => handleBlur('notes')}
+                style={{
+                  ...inputBase, padding: '11px 14px', resize: 'none',
+                  ...(getFieldState('notes') === 'valid' && { borderColor: 'rgba(34,197,94,0.45)' }),
+                  ...(getFieldState('notes') === 'invalid' && { borderColor: 'rgba(239,68,68,0.5)' }),
+                }} />
+              <TextareaIcon state={getFieldState('notes')} />
+            </div>
+          </FieldLabel>
+        </div>
+
+      </div>
+    </Block>
+  )
+})
+
+// ── Main component ────────────────────────────────────────────
+export default function PricingSection() {
+  const { t, lang } = useLanguage()
+
+  const [selCat, setSelCat] = useState(null)
+  const [selPkg, setSelPkg] = useState(null)
+  const [pages, setPages] = useState(5)
+  const [seoOn, setSeoOn] = useState(false)
 
   function selectCat(catId) {
     setSelCat(catId)
@@ -366,37 +453,8 @@ export default function PricingSection() {
   const showAddons = selPkg?.hasSeo
   const formStep = showAddons ? 3 : 2
 
-  const inputBase = {
-    width: '100%',
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '10px',
-    padding: '11px 38px 11px 14px',
-    fontSize: '13px',
-    color: 'var(--color-text)',
-    outline: 'none',
-    fontFamily: 'Inter, sans-serif',
-  }
-
-  function getInputStyle(key) {
-    const state = getFieldState(key)
-    if (state === 'valid') return { ...inputBase, borderColor: 'rgba(34,197,94,0.45)' }
-    if (state === 'invalid') return { ...inputBase, borderColor: 'rgba(239,68,68,0.5)' }
-    return inputBase
-  }
-
   return (
     <section className="py-24 px-8 relative">
-      {/* Ambient glows */}
-      <div
-        className="pointer-events-none fixed rounded-full z-0"
-        style={{ width: 700, height: 700, top: -250, left: -150, background: 'radial-gradient(circle,rgba(124,58,237,0.11) 0%,transparent 68%)' }}
-      />
-      <div
-        className="pointer-events-none fixed rounded-full z-0"
-        style={{ width: 550, height: 550, bottom: -120, right: -100, background: 'radial-gradient(circle,rgba(249,115,22,0.07) 0%,transparent 68%)' }}
-      />
-
       <div className="max-w-[1120px] mx-auto relative z-10">
         {/* Header */}
         <div className="text-center max-w-[560px] mx-auto mb-[52px]">
@@ -629,112 +687,8 @@ export default function PricingSection() {
               )}
             </AnimatePresence>
 
-            {/* Block 3/2: Contact form */}
-            <Block>
-              <StepLabel num={formStep} text={t('pricingSection.stepFormLabel')} />
-
-              <div className="grid grid-cols-2 gap-3">
-
-                <FieldLabel label={t('pricingSection.fieldNaam')} required error={getFieldError('naam')}>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={form.naam}
-                      placeholder={t('pricingSection.placeholderNaam')}
-                      autoComplete="name"
-                      maxLength={60}
-                      onChange={e => handleInput('naam', e.target.value)}
-                      onBlur={() => handleBlur('naam')}
-                      style={getInputStyle('naam')}
-                    />
-                    <AnimatePresence mode="wait">
-                      {getFieldState('naam') && <FieldIcon key={getFieldState('naam')} state={getFieldState('naam')} />}
-                    </AnimatePresence>
-                  </div>
-                </FieldLabel>
-
-                <FieldLabel label={t('pricingSection.fieldBedrijf')} error={getFieldError('bedrijf')}>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={form.bedrijf}
-                      placeholder={t('pricingSection.placeholderBedrijf')}
-                      autoComplete="organization"
-                      maxLength={80}
-                      onChange={e => handleInput('bedrijf', e.target.value)}
-                      onBlur={() => handleBlur('bedrijf')}
-                      style={getInputStyle('bedrijf')}
-                    />
-                    <AnimatePresence mode="wait">
-                      {getFieldState('bedrijf') && <FieldIcon key={getFieldState('bedrijf')} state={getFieldState('bedrijf')} />}
-                    </AnimatePresence>
-                  </div>
-                </FieldLabel>
-
-                <FieldLabel label={t('pricingSection.fieldEmail')} required error={getFieldError('email')}>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      value={form.email}
-                      placeholder={t('pricingSection.placeholderEmail')}
-                      autoComplete="email"
-                      maxLength={120}
-                      onChange={e => handleInput('email', e.target.value)}
-                      onBlur={() => handleBlur('email')}
-                      style={getInputStyle('email')}
-                    />
-                    <AnimatePresence mode="wait">
-                      {getFieldState('email') && <FieldIcon key={getFieldState('email')} state={getFieldState('email')} />}
-                    </AnimatePresence>
-                  </div>
-                </FieldLabel>
-
-                <FieldLabel label={t('pricingSection.fieldTel')} error={getFieldError('tel')}>
-                  <div className="relative">
-                    <input
-                      ref={telRef}
-                      type="tel"
-                      value={form.tel}
-                      placeholder={t('pricingSection.placeholderTel')}
-                      autoComplete="tel"
-                      maxLength={20}
-                      onChange={e => handleInput('tel', e.target.value)}
-                      onBlur={() => handleBlur('tel')}
-                      style={getInputStyle('tel')}
-                    />
-                    <AnimatePresence mode="wait">
-                      {getFieldState('tel') && <FieldIcon key={getFieldState('tel')} state={getFieldState('tel')} />}
-                    </AnimatePresence>
-                  </div>
-                </FieldLabel>
-
-                <div className="col-span-2">
-                  <FieldLabel label={t('pricingSection.fieldNotes')} error={getFieldError('notes')}>
-                    <div className="relative">
-                      <textarea
-                        value={form.notes}
-                        placeholder={t('pricingSection.placeholderNotes')}
-                        rows={3}
-                        maxLength={1000}
-                        onChange={e => handleInput('notes', e.target.value)}
-                        onBlur={() => handleBlur('notes')}
-                        style={{
-                          ...inputBase,
-                          padding: '11px 14px',
-                          resize: 'none',
-                          ...(getFieldState('notes') === 'valid' && { borderColor: 'rgba(34,197,94,0.45)' }),
-                          ...(getFieldState('notes') === 'invalid' && { borderColor: 'rgba(239,68,68,0.5)' }),
-                        }}
-                      />
-                      <AnimatePresence mode="wait">
-                        {getFieldState('notes') && <TextareaIcon key={getFieldState('notes')} state={getFieldState('notes')} />}
-                      </AnimatePresence>
-                    </div>
-                  </FieldLabel>
-                </div>
-
-              </div>
-            </Block>
+            {/* Block 3/2: Contact form — isolated memo, typing won't re-render above */}
+            <ContactForm formStep={formStep} t={t} />
 
           </div>
 
