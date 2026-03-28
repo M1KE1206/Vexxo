@@ -12,8 +12,8 @@ const NAV_LINKS = [
   { key: "home",      href: "/",           isPage: false },
   { key: "portfolio", href: "/#portfolio", isPage: false },
   { key: "about",     href: "/#about",     isPage: false },
-  { key: "pricing",   href: "/prijzen",    isPage: true  },
   { key: "contact",   href: "/#contact",   isPage: false },
+  { key: "pricing",   href: "/prijzen",    isPage: true  },
 ];
 
 export default function Navbar() {
