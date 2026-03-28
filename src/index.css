@@ -389,3 +389,24 @@ body.modal-open .page-content * {
   animation-play-state: paused !important;
   transition: none !important;
 }
+
+/* PricingSection range slider thumb */
+.pricing-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #7C3AED;
+  border: 2px solid #07070d;
+  box-shadow: 0 0 10px rgba(124,58,237,0.5);
+  cursor: pointer;
+}
+.pricing-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #7C3AED;
+  border: 2px solid #07070d;
+  box-shadow: 0 0 10px rgba(124,58,237,0.5);
+  cursor: pointer;
+}

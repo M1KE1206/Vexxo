@@ -1,11 +1,8 @@
 // src/pages/PricingPage.jsx
-import { lazy, Suspense } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useLanguage } from '../context/LanguageContext'
-import PricingTeaser from '../components/PricingTeaser'
+import PricingSection from '../components/PricingSection'
 import PricingFAQ from '../components/PricingFAQ'
-
-const PricingCalculator = lazy(() => import('../components/PricingCalculator'))
 
 export default function PricingPage() {
   const { t } = useLanguage()
@@ -23,8 +20,7 @@ export default function PricingPage() {
         <meta name="twitter:description" content={t('pricingPage.seoDescription')} />
       </Helmet>
       <main id="main-content" className="relative z-10 pt-20">
-        <PricingTeaser scrollLock={false} ctaTarget="#calculator" />
-        <Suspense fallback={null}><PricingCalculator /></Suspense>
+        <PricingSection />
         <PricingFAQ />
       </main>
     </>
