@@ -23,11 +23,7 @@
   /* === Non-theme tokens (keep as-is) === */
   --on-primary-fixed:   #ffffff;
 
-  /* === Theme transition (D-08, D-09) === */
-  transition:
-    color 350ms ease,
-    background-color 350ms ease,
-    border-color 350ms ease;
+  /* Theme transition is applied only on elements that need it, not globally on :root */
 }
 
 /* === Light mode === */
@@ -72,7 +68,7 @@ body {
   direction: ltr;
 }
 
-/* --- Background orbs (fixed, scroll with page) --- */
+/* --- Background orbs (fixed, promoted to own compositor layer) --- */
 body::before {
   content: '';
   position: fixed;
@@ -84,6 +80,8 @@ body::before {
       rgba(249,115,22,0.06) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
+  will-change: transform;
+  contain: strict;
 }
 
 /* Light mode background orbs — reduced opacity */
@@ -98,8 +96,8 @@ body::before {
 /* --- Glass card --- */
 .glass-card {
   background: rgba(37, 37, 45, 0.15);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid hsl(var(--color-border));
   transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -323,24 +321,7 @@ input[type="radio"] {
   border: 1px solid transparent;
 }
 
-/* --- Custom cursor --- */
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  border-radius: 9999px;
-  pointer-events: none;
-  z-index: 99999;
-  transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, border 0.2s ease, opacity 0.3s ease;
-  will-change: transform;
-}
-@media (hover: hover) {
-  html { cursor: none; }
-  input, textarea, select, [contenteditable] { cursor: text !important; }
-}
-@media (hover: none) {
-  .custom-cursor { display: none; }
-}
+
 
 /* --- Section blend gradient (AboutMe section) --- */
 .section-fade {

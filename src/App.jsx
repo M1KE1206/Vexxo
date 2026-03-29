@@ -10,7 +10,6 @@ import StructuredData from './components/StructuredData'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
-import CustomCursor from './components/CustomCursor'
 import HashScrollHandler from './components/HashScrollHandler'
 import HomePage from './pages/HomePage'
 const PricingPage = lazy(() => import('./pages/PricingPage'))
@@ -81,7 +80,6 @@ export default function App() {
                 <StructuredData />
 
                 <div className="min-h-screen bg-background text-on-surface font-body selection:bg-primary/30">
-                  <CustomCursor />
                   <div className="page-content">
                     <Navbar />
                     <Routes>

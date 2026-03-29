@@ -5,9 +5,9 @@
 // ─────────────────────────────────────────────
 
 export const serviceCategories = [
-  { id: "design",      labelEN: "Design",      labelNL: "Design" },
+  { id: "design", labelEN: "Design", labelNL: "Design" },
   { id: "development", labelEN: "Development", labelNL: "Development" },
-  { id: "fullstack",   labelEN: "Fullstack",   labelNL: "Fullstack" },
+  { id: "fullstack", labelEN: "Fullstack", labelNL: "Fullstack" },
 ];
 
 export const packages = {
@@ -56,30 +56,15 @@ export const packages = {
         en: ["Wireframes + user flows", "Full Figma file", "Mobile-first responsive", "Interactive prototype"],
         nl: ["Wireframes + gebruikersstromen", "Volledig Figma-bestand", "Mobile-first responsief", "Interactief prototype"],
       },
-    },
-    {
-      id: "social-media-kit",
-      icon: "photo_camera",
-      name: "Social Media Kit",
-      nameNL: "Social Media Kit",
-      description: "On-brand templates for Instagram, LinkedIn, and more.",
-      descriptionNL: "Merkgebonden templates voor Instagram, LinkedIn en meer.",
-      price: 600,
-      included: 0,
-      hasSeo: false,
-      features: {
-        en: ["10 post templates", "Story & reel formats", "Profile & banner assets", "Editable Canva/Figma files"],
-        nl: ["10 post-templates", "Story- en reelformaten", "Profiel- en bannerassets", "Bewerkbare Canva/Figma-bestanden"],
-      },
-    },
+    }
   ],
 
   development: [
     {
       id: "landing-dev",
       icon: "web",
-      name: "Landing Page",
-      nameNL: "Landingspagina",
+      name: "Single Page",
+      nameNL: "Single Page",
       description: "Fast, conversion-focused single page built to capture leads.",
       descriptionNL: "Snelle, conversiegerichte pagina gebouwd om leads te verzamelen.",
       price: 450,
@@ -93,8 +78,8 @@ export const packages = {
     {
       id: "multi-page",
       icon: "layers",
-      name: "Multi-page Site",
-      nameNL: "Multi-Pagina Site",
+      name: "Multi-Page Site",
+      nameNL: "Multi-Page Site",
       description: "Up to 8 pages with custom animations and a CMS.",
       descriptionNL: "Tot 8 pagina's met aangepaste animaties en een CMS.",
       price: 900,
@@ -121,20 +106,20 @@ export const packages = {
       },
     },
     {
-      id: "website-audit",
-      icon: "manage_search",
-      name: "Website Audit",
-      nameNL: "Website Audit",
-      description: "In-depth performance, SEO, and UX audit with actionable fixes.",
-      descriptionNL: "Diepgaande performance-, SEO- en UX-audit met concrete aanbevelingen.",
-      price: 250,
-      included: 0,
-      hasSeo: false,
+      id: "multi-page-app",
+      icon: "code",
+      name: "Multi-Web App",
+      nameNL: "Multi-Web App",
+      description: "Full-featured app with auth, database, and dashboard UI.",
+      descriptionNL: "Multi pagina met auth, database en dashboard-UI.",
+      price: 4500,
+      included: 8,
+      hasSeo: true,
       features: {
-        en: ["Lighthouse & Core Web Vitals", "SEO analysis report", "UX / accessibility review", "Prioritized fix list"],
-        nl: ["Lighthouse & Core Web Vitals", "SEO-analyserapport", "UX / toegankelijkheidsreview", "Geprioriteerde fixlijst"],
+        en: ["User authentication", "Supabase / PostgreSQL", "API integrations", "Dashboard UI", "Deployed on Vercel"],
+        nl: ["Gebruikersauthenticatie", "Supabase / PostgreSQL", "API-integraties", "Dashboard-UI", "Gedeployd op Vercel"],
       },
-    },
+    }
   ],
 
   fullstack: [
@@ -190,7 +175,7 @@ export const packages = {
       nameNL: "Onderhoud",
       description: "Monthly care plan: updates, security patches, and uptime monitoring.",
       descriptionNL: "Maandelijks onderhoudsplan: updates, beveiligingspatches en uptime-monitoring.",
-      price: 150,
+      price: 200,
       priceNote: "/mo",
       included: 0,
       hasSeo: false,
@@ -204,9 +189,9 @@ export const packages = {
 
 // ── Legacy exports (used by old components) ──────────────
 export const services = [
-  { id: "design",      label: "Design",      tagline: "Van logo tot volledige brand identity",          description: "Een visuele stijl die bij jou past en blijft hangen bij je klanten." },
-  { id: "development", label: "Development", tagline: "Snelle, moderne websites en webapps",            description: "Gebouwd met moderne tools, goed vindbaar en klaar om op te schalen." },
-  { id: "fullstack",   label: "Fullstack",   tagline: "Design én development onder één dak",            description: "Geen losse freelancers, maar één studio die alles voor je coördineert." },
+  { id: "design", label: "Design", tagline: "Van logo tot volledige brand identity", description: "Een visuele stijl die bij jou past en blijft hangen bij je klanten." },
+  { id: "development", label: "Development", tagline: "Snelle, moderne websites en webapps", description: "Gebouwd met moderne tools, goed vindbaar en klaar om op te schalen." },
+  { id: "fullstack", label: "Fullstack", tagline: "Design én development onder één dak", description: "Geen losse freelancers, maar één studio die alles voor je coördineert." },
 ];
 
 export const processSteps = ["Discovery", "Strategy", "Build", "Launch", "Support"];
