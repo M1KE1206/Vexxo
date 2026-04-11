@@ -1,57 +1,12 @@
-import { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { useForm, ValidationError } from "@formspree/react";
 import { useLanguage } from "../context/LanguageContext";
 import { company } from "../config/company";
 import { fadeUp, viewport, ease } from "../lib/animations";
 
-/** Auto-dismissing toast notification */
-function Toast({ message, onDismiss }) {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    // Slide in
-    setTimeout(() => setVisible(true), 10);
-    // Auto-dismiss after 4s
-    const timer = setTimeout(() => {
-      setVisible(false);
-      setTimeout(onDismiss, 300);
-    }, 4000);
-    return () => clearTimeout(timer);
-  }, [onDismiss]);
-
-  return (
-    <div
-      className={`fixed bottom-6 right-6 z-[9998] flex items-center gap-3 px-5 py-4 rounded-2xl border border-secondary/30 shadow-[0_0_30px_rgba(253,118,26,0.15)] transition-all duration-300 ${
-        visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-      }`}
-      style={{ background: "rgba(22,22,30,0.96)", backdropFilter: "blur(16px)" }}
-    >
-      <span className="material-symbols-outlined text-secondary" style={{ fontSize: 20 }}>check_circle</span>
-      <p className="text-sm font-semibold text-on-surface">{message}</p>
-      <button onClick={() => { setVisible(false); setTimeout(onDismiss, 300); }} className="ml-2 text-on-surface-variant hover:text-on-surface text-lg leading-none">×</button>
-    </div>
-  );
-}
-
 export default function Contact() {
   const { t } = useLanguage();
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
-  const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState(false);
-
-  const setField = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    // Wire up to Resend / Formspree / EmailJS here
-    console.log("Contact form submitted:", form);
-    setTimeout(() => {
-      setLoading(false);
-      setForm({ name: "", email: "", subject: "", message: "" });
-      setToast(true);
-    }, 1200);
-  };
+  const [state, handleSubmit] = useForm("xwvwgrva");
 
   const inputCls = "w-full rounded-xl border border-on-surface-variant/20 bg-surface-2 px-4 py-3 text-sm text-on-surface outline-none focus:border-primary/60 transition-colors placeholder:text-on-surface-variant/40";
 
@@ -112,6 +67,22 @@ export default function Contact() {
 
         {/* Right — contact form */}
         <div className="glass-card rounded-3xl p-6 md:p-8">
+          {state.succeeded ? (
+            <motion.div
+              className="flex flex-col items-center justify-center gap-5 py-12 text-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <div className="w-16 h-16 rounded-full bg-primary/15 flex items-center justify-center">
+                <span className="material-symbols-outlined text-primary" style={{ fontSize: 32 }}>check_circle</span>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-headline font-bold text-on-surface">{t("contact.successTitle")}</h3>
+                <p className="text-sm text-on-surface-variant max-w-xs">{t("contact.successBody")}</p>
+              </div>
+            </motion.div>
+          ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Name + Email */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -121,11 +92,11 @@ export default function Contact() {
                 </label>
                 <input
                   type="text"
+                  name="name"
                   required
-                  value={form.name}
-                  onChange={setField("name")}
                   className={inputCls}
                 />
+                <ValidationError field="name" errors={state.errors} className="text-[11px] text-red-400 mt-1" />
               </div>
               <div className="space-y-1.5">
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
@@ -133,11 +104,11 @@ export default function Contact() {
                 </label>
                 <input
                   type="email"
+                  name="email"
                   required
-                  value={form.email}
-                  onChange={setField("email")}
                   className={inputCls}
                 />
+                <ValidationError field="email" errors={state.errors} className="text-[11px] text-red-400 mt-1" />
               </div>
             </div>
 
@@ -148,12 +119,12 @@ export default function Contact() {
               </label>
               <input
                 type="text"
+                name="subject"
                 required
-                value={form.subject}
-                onChange={setField("subject")}
                 placeholder={t("contact.subjectPlaceholder")}
                 className={inputCls}
               />
+              <ValidationError field="subject" errors={state.errors} className="text-[11px] text-red-400 mt-1" />
             </div>
 
             {/* Message */}
@@ -162,21 +133,21 @@ export default function Contact() {
                 {t("contact.message")}
               </label>
               <textarea
+                name="message"
                 required
                 rows={4}
-                value={form.message}
-                onChange={setField("message")}
                 className={inputCls + " resize-none"}
               />
+              <ValidationError field="message" errors={state.errors} className="text-[11px] text-red-400 mt-1" />
             </div>
 
             {/* Submit */}
             <button
               type="submit"
-              disabled={loading}
+              disabled={state.submitting}
               className="btn-primary w-full justify-center text-sm disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
             >
-              {loading ? (
+              {state.submitting ? (
                 <span className="flex items-center gap-2">
                   <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -189,13 +160,10 @@ export default function Contact() {
 
             <p className="text-[11px] text-center text-on-surface-variant">{t("contact.responseTime")}</p>
           </form>
+          )}
         </div>
       </motion.div>
 
-      {/* Success toast */}
-      {toast && (
-        <Toast message={t("contact.toastSuccess")} onDismiss={() => setToast(false)} />
-      )}
     </section>
   );
 }

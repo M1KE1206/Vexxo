@@ -210,6 +210,8 @@
     "send": "Send message",
     "responseTime": "I'll reply within 1–2 business days.",
     "toastSuccess": "Message sent! I'll be in touch soon.",
+    "successTitle": "Message sent!",
+    "successBody": "Thanks for reaching out. I'll get back to you within 24 hours.",
     "thanks": "Thanks! We'll be in touch soon."
   },
   "footer": {

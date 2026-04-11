@@ -210,6 +210,8 @@
     "send": "Verstuur bericht",
     "responseTime": "Ik antwoord binnen 1–2 werkdagen.",
     "toastSuccess": "Bericht verstuurd! Ik neem snel contact op.",
+    "successTitle": "Bericht verstuurd!",
+    "successBody": "Bedankt voor je bericht. Ik neem binnen 24 uur contact op.",
     "thanks": "Bedankt! We nemen snel contact op."
   },
   "footer": {

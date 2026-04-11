@@ -11,6 +11,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@formspree/react": "^3.0.0",
     "@next/font": "^13.5.0",
     "@supabase/supabase-js": "^2.100.0",
     "framer-motion": "^12.38.0",
