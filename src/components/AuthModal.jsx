@@ -171,7 +171,7 @@ export default function AuthModal() {
           {...overlayAnim}
           transition={transition}
           onClick={handleClose}
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+          className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto p-4"
           style={{
             background: 'rgba(5,5,10,0.82)',
           }}
@@ -184,7 +184,7 @@ export default function AuthModal() {
             aria-modal="true"
             aria-labelledby="auth-modal-title"
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-[380px] md:max-w-[680px] rounded-[1.25rem] overflow-hidden flex"
+            className="relative w-full max-w-[380px] md:max-w-[680px] rounded-[1.25rem] overflow-hidden flex my-auto"
             style={{
               background: 'rgb(14,14,20)',
               border: '1px solid rgba(255,255,255,0.1)',
