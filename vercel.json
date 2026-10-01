@@ -4,7 +4,10 @@
   "framework": null,
   "rewrites": [
     { "source": "/M1K3/:path*", "destination": "/M1K3/:path*" },
-    { "source": "/((?!M1K3).*)", "destination": "/index.html" }
+    { "source": "/((?!M1K3|api/).*)", "destination": "/index.html" }
+  ],
+  "crons": [
+    { "path": "/api/keep-alive", "schedule": "0 9 * * *" }
   ],
   "headers": [
     {
