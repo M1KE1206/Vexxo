@@ -166,21 +166,6 @@ const OrderSummary = memo(function OrderSummary({ pkg, prefill, lang, onSend, lo
           <><span className="material-symbols-outlined text-base">check_circle</span> {t("modal.successTitle")}</>
         ) : t("modal.sendRequest")}
       </button>
-
-      <p className="text-[10px] text-on-surface-variant/50 text-center leading-snug">{t("modal.termsNote")}</p>
-
-      {/* Social proof */}
-      <div className="flex items-center gap-3 pt-2 border-t border-outline-variant/20">
-        <div className="flex -space-x-2">
-          {["#7C3AED","#F97316","#6d28d9"].map((c, i) => (
-            <div key={i} className="w-7 h-7 rounded-full border-2 border-surface-container-low flex items-center justify-center text-[9px] font-bold text-on-primary-fixed" style={{ background: c }}>
-              {["M","A","J"][i]}
-            </div>
-          ))}
-          <div className="w-7 h-7 rounded-full border-2 border-surface-container-low bg-surface-container-high flex items-center justify-center text-[9px] text-on-surface-variant font-bold">+12</div>
-        </div>
-        <p className="text-[11px] text-on-surface-variant leading-snug">{t("modal.socialProof")}</p>
-      </div>
     </div>
   );
 });

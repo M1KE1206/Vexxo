@@ -23,7 +23,13 @@
     "ctaSecondary": "View our work",
     "studioLabel": "DIGITAL STUDIO",
     "studioTagline": "One dedicated contact, clear communication, and a website that grows with your business.",
-    "techStack": ["React", "Tailwind", "Figma", "Next.js", "Framer"]
+    "techStack": [
+      "React",
+      "Tailwind",
+      "Figma",
+      "Next.js",
+      "Framer"
+    ]
   },
   "portfolio": {
     "title": "Selected Work",
@@ -61,8 +67,7 @@
     "contactSubtitle": "Have an idea or project in mind? Feel free to send a mail — I usually reply within 1–2 business days.",
     "stats": {
       "projects": "Projects",
-      "countries": "Countries",
-      "satisfaction": "Satisfaction"
+      "countries": "Countries"
     },
     "badge2": "Student Entrepreneur",
     "badge2sub": "Continuous Growth"
@@ -89,7 +94,13 @@
     "process": {
       "title": "How We Work",
       "subtitle": "A clear 5-step process. No surprises — you know where we stand at every moment.",
-      "steps": ["Discovery", "Strategy", "Build", "Launch", "Support"]
+      "steps": [
+        "Discovery",
+        "Strategy",
+        "Build",
+        "Launch",
+        "Support"
+      ]
     },
     "comparison": {
       "title": "Why Vexxo vs the rest?",
@@ -112,9 +123,30 @@
         "No hidden costs",
         "Design + Dev under one roof"
       ],
-      "agencyChecks": [false, false, false, "partial", false, true],
-      "freelancerChecks": [false, false, "partial", true, false, false],
-      "vexxoChecks": [true, true, true, true, true, true]
+      "agencyChecks": [
+        false,
+        false,
+        false,
+        "partial",
+        false,
+        true
+      ],
+      "freelancerChecks": [
+        false,
+        false,
+        "partial",
+        true,
+        false,
+        false
+      ],
+      "vexxoChecks": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
     }
   },
   "pricing": {
@@ -168,8 +200,6 @@
     "vat": "VAT (0%)",
     "totalEstimate": "Total Estimate",
     "sendRequest": "SEND REQUEST",
-    "termsNote": "By clicking send, you agree to our terms of service and initial discovery process.",
-    "socialProof": "Joined 50+ successful brands this month.",
     "fromPrice": "From",
     "select": "SELECT",
     "selected": "SELECTED",
@@ -211,7 +241,7 @@
     "responseTime": "I'll reply within 1–2 business days.",
     "toastSuccess": "Message sent! I'll be in touch soon.",
     "successTitle": "Message sent!",
-    "successBody": "Thanks for reaching out. I'll get back to you within 24 hours.",
+    "successBody": "Thanks for reaching out. I'll get back to you within 2 working days.",
     "thanks": "Thanks! We'll be in touch soon."
   },
   "footer": {
@@ -293,8 +323,7 @@
     "sidebarTotal": "Total (excl. VAT)",
     "sidebarNote": "Non-binding quote",
     "ctaLabel": "Send request",
-    "trustText": "No obligations — reply within 24h",
-    "socialProof": "15 clients went before you — average 4.9★",
+    "trustText": "No obligations",
     "errNaamShort": "Minimum 2 characters required.",
     "errNaamChars": "Only letters, spaces and hyphens allowed.",
     "errInjection": "Invalid characters detected.",
@@ -305,7 +334,12 @@
     "errTelShort": "Minimum 8 digits required.",
     "errNotesShort": "Minimum 10 characters for a good description.",
     "errNotesLong": "Maximum 1000 characters.",
-    "errBedrijfChars": "Invalid characters in company name."
+    "errBedrijfChars": "Invalid characters in company name.",
+    "sending": "Sending…",
+    "sentTitle": "Request sent",
+    "sentBody": "Thanks! Your request was received. You will hear from me within 2 working days.",
+    "sendInvalid": "Please fill in your name, a valid email address and a short project description (at least 10 characters).",
+    "sendError": "Sending failed. Please try again or email mike@vexxo.be."
   },
   "auth": {
     "tab": {

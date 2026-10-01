@@ -7,7 +7,7 @@ import { fadeUp, scaleIn, slideRight, viewport, ease } from "../lib/animations";
 
 export default function Hero() {
   const { t } = useLanguage();
-  const { requireAuth, authOpen } = useAuth();
+  const { authOpen } = useAuth();
   const reduce = useReducedMotion();
   const ini = reduce ? false : "hidden";
 
@@ -99,13 +99,13 @@ export default function Hero() {
               animate="visible"
               transition={{ duration: 0.5, delay: 0.6, ease }}
             >
-              <button
-                onClick={() => requireAuth({ action: 'openServiceModal' })}
+              <a
+                href="#contact"
                 className="btn-primary btn-shimmer text-base group"
               >
                 {t("hero.ctaPrimary")}
                 <span className="opacity-0 translate-y-[4px] group-hover:opacity-100 group-hover:translate-y-0 group-hover:ml-1.5 ml-0 text-xs transition-all duration-200">↗</span>
-              </button>
+              </a>
               <a href="#portfolio" className="btn-outline text-base">
                 {t("hero.ctaSecondary")}
               </a>

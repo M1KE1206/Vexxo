@@ -288,8 +288,11 @@ function FieldLabel({ label, required, error, children }) {
 }
 
 // ── Contact form isolated so typing doesn't re-render the rest ─
-const ContactForm = memo(function ContactForm({ formStep, t }) {
+const ContactForm = memo(function ContactForm({ formStep, t, formRef }) {
   const [form, setForm] = useState({ naam: '', bedrijf: '', email: '', tel: '', notes: '' })
+
+  // Expose current values to the sidebar submit button without re-rendering the parent
+  useEffect(() => { formRef.current = form }, [form, formRef])
   const [touched, setTouched] = useState({})
   const telRef = useRef(null)
   const validators = makeValidators(t)
@@ -446,6 +449,41 @@ export default function PricingSection() {
   }
 
   const price = calcPrice()
+
+  const formRef = useRef(null)
+  const [sendState, setSendState] = useState('idle') // idle | invalid | sending | sent | error
+
+  async function handleSend() {
+    if (sendState === 'sending' || sendState === 'sent') return
+    const form = formRef.current ?? {}
+    const validators = makeValidators(t)
+    const requiredOk = ['naam', 'email', 'notes'].every((k) => validators[k](form[k]) === true)
+    const optionalOk = ['bedrijf', 'tel'].every((k) => typeof validators[k](form[k]) !== 'string')
+    if (!requiredOk || !optionalOk) { setSendState('invalid'); return }
+
+    setSendState('sending')
+    try {
+      const res = await fetch('https://formspree.io/f/xwvwgrva', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: 'Offerteaanvraag via /prijzen',
+          name: form.naam,
+          email: form.email,
+          company: form.bedrijf || '',
+          phone: form.tel || '',
+          message: form.notes,
+          service: selPkg ? selPkg.nameNL : '',
+          pages: showSlider ? pages : '',
+          seo: seoOn ? 'ja' : 'nee',
+          indicativePrice: price != null ? `€${price}` : '',
+        }),
+      })
+      setSendState(res.ok ? 'sent' : 'error')
+    } catch {
+      setSendState('error')
+    }
+  }
   const extraPages = selPkg?.included > 0 ? Math.max(0, pages - selPkg.included) : 0
   const sliderPct = ((pages - 1) / 29) * 100
   const catPackages = selCat ? packages[selCat] : []
@@ -688,7 +726,7 @@ export default function PricingSection() {
             </AnimatePresence>
 
             {/* Block 3/2: Contact form — isolated memo, typing won't re-render above */}
-            <ContactForm formStep={formStep} t={t} />
+            <ContactForm formStep={formStep} t={t} formRef={formRef} />
 
           </div>
 
@@ -794,7 +832,10 @@ export default function PricingSection() {
                     </div>
 
                     <button
-                      className="flex items-center justify-center gap-2 w-full py-[15px] rounded-[12px] text-[14px] font-bold text-white cursor-pointer mb-3 transition-opacity duration-150 hover:opacity-90 active:scale-[0.98]"
+                      type="button"
+                      onClick={handleSend}
+                      disabled={sendState === 'sending' || sendState === 'sent'}
+                      className="flex items-center justify-center gap-2 w-full py-[15px] rounded-[12px] text-[14px] font-bold text-white cursor-pointer mb-3 transition-opacity duration-150 hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
                       style={{
                         background: 'linear-gradient(to right,#7C3AED,#F97316)',
                         border: 'none',
@@ -803,11 +844,17 @@ export default function PricingSection() {
                         letterSpacing: '0.02em',
                       }}
                     >
-                      {t('pricingSection.ctaLabel')}
+                      {sendState === 'sending' ? t('pricingSection.sending') : sendState === 'sent' ? t('pricingSection.sentTitle') : t('pricingSection.ctaLabel')}
                       <svg viewBox="0 0 24 24" className="w-[14px] h-[14px] flex-shrink-0" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                       </svg>
                     </button>
+
+                    <p role="status" aria-live="polite" className="text-[12px] leading-[1.4] mb-3" style={{ color: sendState === 'sent' ? 'var(--color-text)' : 'rgba(239,68,68,0.9)' }}>
+                      {sendState === 'invalid' && t('pricingSection.sendInvalid')}
+                      {sendState === 'error' && t('pricingSection.sendError')}
+                      {sendState === 'sent' && t('pricingSection.sentBody')}
+                    </p>
 
                     <div
                       className="flex items-center gap-2 p-[10px] rounded-[10px] mb-[14px]"
@@ -823,34 +870,6 @@ export default function PricingSection() {
                   </motion.div>
                 )}
               </AnimatePresence>
-
-              {/* Social proof */}
-              <div className="flex items-center gap-[10px] pt-[14px]" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                <div className="flex">
-                  {[
-                    { l: 'M', bg: '#7C3AED' },
-                    { l: 'A', bg: '#F97316' },
-                    { l: 'J', bg: '#6d28d9' },
-                  ].map((av, i) => (
-                    <div
-                      key={i}
-                      className="w-[26px] h-[26px] rounded-full flex items-center justify-center text-[9px] font-bold text-white"
-                      style={{ background: av.bg, border: '2px solid #07070d', marginRight: '-7px' }}
-                    >
-                      {av.l}
-                    </div>
-                  ))}
-                  <div
-                    className="w-[26px] h-[26px] rounded-full flex items-center justify-center text-[8px] font-bold"
-                    style={{ background: '#1a1a2e', color: '#acaab1', border: '2px solid #07070d', marginRight: '-7px' }}
-                  >
-                    +12
-                  </div>
-                </div>
-                <p className="text-[11px] leading-[1.4] flex-1 pl-[14px]" style={{ color: 'var(--color-text-faint)' }}>
-                  {t('pricingSection.socialProof')}
-                </p>
-              </div>
 
             </div>
           </div>

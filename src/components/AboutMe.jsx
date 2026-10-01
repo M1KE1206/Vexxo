@@ -1,45 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, useReducedMotion, useInView } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 import { founder, company } from "../config/company";
 import { slideLeft, slideRight, scaleIn, stagger, viewport, ease } from "../lib/animations";
-
-const STATS = [
-  { numValue: 3, suffix: "+", key: "projects" },
-  { numValue: 2, suffix: "",  key: "countries" },
-  { numValue: 100, suffix: "%", key: "satisfaction" },
-];
-
-function CountStat({ numValue, suffix, statKey, t, reduce }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  const [count, setCount] = useState(reduce ? numValue : 0);
-
-  useEffect(() => {
-    if (!isInView || reduce) return;
-    const duration = 1500;
-    const start = performance.now();
-    const tick = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(numValue * eased));
-      if (progress < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }, [isInView, reduce, numValue]);
-
-  return (
-    <motion.div
-      ref={ref}
-      variants={scaleIn}
-      transition={{ duration: 0.35, ease }}
-      className="glass-card px-6 py-3 rounded-full flex items-center gap-3"
-    >
-      <span className="text-primary font-bold text-lg tabular-nums">{count}{suffix}</span>
-      <span className="text-sm font-semibold text-on-surface-variant">{t(`about.stats.${statKey}`)}</span>
-    </motion.div>
-  );
-}
 
 export default function AboutMe() {
   const { t } = useLanguage();
@@ -78,19 +40,6 @@ export default function AboutMe() {
           <p className="text-on-surface-variant text-lg leading-relaxed">
             {t("about.subtitle")}
           </p>
-
-          {/* Stats with count-up */}
-          <motion.div
-            className="flex flex-wrap gap-4"
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } } }}
-            initial={ini}
-            whileInView="visible"
-            viewport={viewport}
-          >
-            {STATS.map(({ numValue, suffix, key }) => (
-              <CountStat key={key} numValue={numValue} suffix={suffix} statKey={key} t={t} reduce={reduce} />
-            ))}
-          </motion.div>
 
           {/* Skills */}
           <div>

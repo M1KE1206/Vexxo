@@ -23,7 +23,13 @@
     "ctaSecondary": "Bekijk ons werk",
     "studioLabel": "DIGITAAL STUDIO",
     "studioTagline": "Eén vast aanspreekpunt, heldere communicatie en een website die mee groeit met je bedrijf.",
-    "techStack": ["React", "Tailwind", "Figma", "Next.js", "Framer"]
+    "techStack": [
+      "React",
+      "Tailwind",
+      "Figma",
+      "Next.js",
+      "Framer"
+    ]
   },
   "portfolio": {
     "title": "Geselecteerd Werk",
@@ -61,8 +67,7 @@
     "contactSubtitle": "Heb je een idee of project in gedachten? Stuur gerust een mail — ik antwoord meestal binnen 1–2 werkdagen.",
     "stats": {
       "projects": "Projecten",
-      "countries": "Landen",
-      "satisfaction": "Tevredenheid"
+      "countries": "Landen"
     },
     "badge2": "Student Ondernemer",
     "badge2sub": "Voortdurende Groei"
@@ -89,7 +94,13 @@
     "process": {
       "title": "Hoe We Werken",
       "subtitle": "Een helder 5-stappen proces. Geen verrassingen — jij weet op elk moment waar we staan.",
-      "steps": ["Discovery", "Strategie", "Bouwen", "Lancering", "Support"]
+      "steps": [
+        "Discovery",
+        "Strategie",
+        "Bouwen",
+        "Lancering",
+        "Support"
+      ]
     },
     "comparison": {
       "title": "Waarom Vexxo vs de rest?",
@@ -112,9 +123,30 @@
         "Geen verborgen kosten",
         "Design + Dev onder één dak"
       ],
-      "agencyChecks": [false, false, false, "partial", false, true],
-      "freelancerChecks": [false, false, "partial", true, false, false],
-      "vexxoChecks": [true, true, true, true, true, true]
+      "agencyChecks": [
+        false,
+        false,
+        false,
+        "partial",
+        false,
+        true
+      ],
+      "freelancerChecks": [
+        false,
+        false,
+        "partial",
+        true,
+        false,
+        false
+      ],
+      "vexxoChecks": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
     }
   },
   "pricing": {
@@ -168,8 +200,6 @@
     "vat": "BTW (0%)",
     "totalEstimate": "Totaalschatting",
     "sendRequest": "VERSTUUR AANVRAAG",
-    "termsNote": "Door op verstuur te klikken, ga je akkoord met onze servicevoorwaarden en het ontdekkingsproces.",
-    "socialProof": "Sloot zich aan bij 50+ succesvolle merken deze maand.",
     "fromPrice": "Vanaf",
     "select": "KIES",
     "selected": "GEKOZEN",
@@ -201,7 +231,7 @@
   "contact": {
     "badge": "Contact",
     "title": "Neem contact op",
-    "subtitle": "Heb je een vraag? Wil je gewoon even chatten? Ik reageer binnen 1 werkdag.",
+    "subtitle": "Heb je een vraag? Wil je gewoon even chatten? Ik reageer binnen 2 werkdagen.",
     "email": "E-mailadres",
     "name": "Volledige Naam",
     "subject": "Onderwerp",
@@ -211,7 +241,7 @@
     "responseTime": "Ik antwoord binnen 1–2 werkdagen.",
     "toastSuccess": "Bericht verstuurd! Ik neem snel contact op.",
     "successTitle": "Bericht verstuurd!",
-    "successBody": "Bedankt voor je bericht. Ik neem binnen 24 uur contact op.",
+    "successBody": "Bedankt voor je bericht. Ik neem binnen 2 werkdagen contact op.",
     "thanks": "Bedankt! We nemen snel contact op."
   },
   "footer": {
@@ -293,8 +323,7 @@
     "sidebarTotal": "Totaal (excl. btw)",
     "sidebarNote": "Vrijblijvende offerte",
     "ctaLabel": "Aanvraag versturen",
-    "trustText": "Geen verplichtingen — reactie binnen 24u",
-    "socialProof": "15 klanten gingen je voor — gemiddeld 4.9★",
+    "trustText": "Vrijblijvend, geen verplichtingen",
     "errNaamShort": "Minimaal 2 tekens vereist.",
     "errNaamChars": "Alleen letters, spaties en koppeltekens toegestaan.",
     "errInjection": "Ongeldige tekens gedetecteerd.",
@@ -305,7 +334,12 @@
     "errTelShort": "Minimaal 8 cijfers vereist.",
     "errNotesShort": "Minimaal 10 tekens voor een goede beschrijving.",
     "errNotesLong": "Maximaal 1000 tekens.",
-    "errBedrijfChars": "Ongeldige tekens in bedrijfsnaam."
+    "errBedrijfChars": "Ongeldige tekens in bedrijfsnaam.",
+    "sending": "Versturen…",
+    "sentTitle": "Aanvraag verstuurd",
+    "sentBody": "Bedankt! Je aanvraag is goed ontvangen. Je hoort binnen 2 werkdagen van me.",
+    "sendInvalid": "Vul je naam, een geldig e-mailadres en een korte projectomschrijving (minstens 10 tekens) in.",
+    "sendError": "Versturen lukte niet. Probeer opnieuw of mail naar mike@vexxo.be."
   },
   "auth": {
     "tab": {
